@@ -170,7 +170,7 @@ class SFFormatter(object):
         for r in self.reader:
             record = self._flatten(*r, fields) 
             func(json.dumps(record))
-     
+
     def toJsonStdOut(self, fields=None):
         """Writes SysFlow as JSON to stdout.
 
@@ -182,6 +182,17 @@ class SFFormatter(object):
             record = self._flatten(*r, fields) 
             print(json.dumps(record))
 
+    def toJsonStdOut2(self, fields=None):
+        """Writes SysFlow as version 0.2 JSON to stdout.
+
+        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
+                       formatter.py for a list of fields
+        :type fields: list
+        """
+        for r in self.reader:
+            record = self._flatten2(*r, fields) 
+            print(json.dumps(record))
+    
     def toJsonFile(self, path, fields=None):
         """Writes SysFlow to JSON file.
 
@@ -194,6 +205,19 @@ class SFFormatter(object):
         """
         with open(path, mode='w') as jsonfile:
             json.dump([self._flatten(*r, fields) for r in self.reader], jsonfile)
+    
+    def toJsonFile2(self, path, fields=None):
+        """Writes SysFlow to v0.2 JSON file.
+
+        :param path: the full path of the output file. 
+        :type path: str
+        
+        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
+                       formatter.py for a list of fields
+        :type fields: list
+        """
+        with open(path, mode='w') as jsonfile:
+            json.dump([self._flatten2(*r, fields) for r in self.reader], jsonfile)
 
     def toCsvFile(self, path, fields=None, header=True): 
         """Writes SysFlow to CSV file.
@@ -267,13 +291,13 @@ class SFFormatter(object):
         _flat_map['ts_uts'] = evflow.ts if evflow is not None else ''
         _flat_map['end_ts'] = utils.getTimeStr(evflow.endTs) if flow is not None else ''
         _flat_map['end_ts_uts'] = evflow.endTs if flow is not None else ''
-        _flat_map['proc_pid'] = proc.oid.hpid if proc is not None else ''
+        _flat_map['proc_pid'] = proc.oid.hpid
         _flat_map['proc_tid'] = evflow.tid if evflow is not None else ''
         _flat_map['proc_uid'] = proc.uid if proc is not None else ''
-        _flat_map['proc_user'] = proc.userName if proc is not None else '' 
+        _flat_map['proc_user'] = proc.userName if proc is not None else ''
         _flat_map['proc_gid'] = proc.gid if proc is not None else ''
         _flat_map['proc_group'] = proc.groupName if proc is not None else ''
-        _flat_map['proc_exe'] = proc.exe if proc is not None else '' 
+        _flat_map['proc_exe'] = proc.exe if proc is not None else ''
         _flat_map['proc_args'] = proc.exeArgs if proc is not None else ''
         _flat_map['proc_tty'] = proc.tty if proc is not None else ''
         _flat_map['proc_create_ts'] = proc.oid.createTS if proc is not None else ''
@@ -317,6 +341,115 @@ class SFFormatter(object):
             od = OrderedDict()
             for k in fields:
                 od[k]=_flat_map[k]
+            return od
+        
+        return _flat_map
+
+
+    def _flatten2(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
+        _flat_map = OrderedDict()
+        evflow = evt or flow
+
+        _flat_map['flow_type'] = OBJECT_MAP.get(objtype,'?')
+
+        # time stamps
+        _ts_field = 'ts'
+        if objtype in [ObjectTypes.FILE_FLOW, ObjectTypes.NET_FLOW]:
+            _ts_field = 'start_ts'
+
+        _flat_map[_ts_field] = utils.getTimeStrIso8601(evflow.ts) if evflow is not None else ''
+        _flat_map[_ts_field + '_uts'] = evflow.ts if evflow is not None else ''
+
+        if objtype in [ObjectTypes.FILE_FLOW, ObjectTypes.NET_FLOW]:
+            _flat_map['end_ts'] = utils.getTimeStrIso8601(evflow.endTs) if flow is not None else ''
+            _flat_map['end_ts_uts'] = evflow.endTs if flow is not None else ''
+
+        # process information
+        _proc = OrderedDict()
+        if proc is not None:
+            _proc['pid'] = proc.oid.hpid
+            _proc['tid'] = evflow.tid if evflow is not None else ''
+            _proc['uid'] = proc.uid
+            _proc['user'] = proc.userName 
+            _proc['gid'] = proc.gid
+            _proc['group'] = proc.groupName
+            _proc['exe'] = proc.exe 
+            _proc['args'] = proc.exeArgs
+            _proc['tty'] = proc.tty
+            _proc['create_ts'] = proc.oid.createTS
+        _flat_map['proc'] = _proc
+
+        # parent process information
+        _pproc = OrderedDict()
+        if pproc is not None:
+            _pproc['pid'] = pproc.oid.hpid
+            _pproc['gid'] = pproc.gid
+            _pproc['uid'] = pproc.uid
+            _pproc['group'] = pproc.groupName
+            _pproc['tty'] = pproc.tty
+            _pproc['user'] = pproc.userName
+            _pproc['exe'] = pproc.exe
+            _pproc['args'] = pproc.exeArgs
+            _pproc['create_ts'] = pproc.oid.createTS
+        _flat_map['pproc'] = _pproc
+  
+        # op (flags)
+        if objtype in [ObjectTypes.FILE_EVT, ObjectTypes.PROC_EVT]:
+            _flat_map['op'] = utils.getOpStr(evflow.opFlags) if evflow is not None else ''
+
+        if objtype in [ObjectTypes.FILE_FLOW, ObjectTypes.NET_FLOW]:
+            _flat_map['opflags'] = utils.getOpFlagsDict(evflow.opFlags) if evflow is not None else {}
+ 
+        # return code
+        if objtype in [ObjectTypes.FILE_EVT, ObjectTypes.PROC_EVT]:
+            _flat_map['ret'] = evflow.ret if evt is not None else '' 
+
+        # network resources
+        if objtype in [ObjectTypes.NET_FLOW]:
+            _flat_map['sip'] = utils.getIpIntStr(evflow.sip)
+            _flat_map['dip'] = utils.getIpIntStr(evflow.dip)
+            _flat_map['proto'] = evflow.proto
+            _flat_map['sport'] = evflow.sport
+            _flat_map['dport'] = evflow.dport
+        
+        # file resources
+        if objtype in [ObjectTypes.FILE_FLOW, ObjectTypes.FILE_EVT]:
+            if files is not None:
+                _flat_map['file'] = files[0].path if files[0] is not None else ''
+                if files[1] is not None:
+                    _flat_map['file2'] = files[1].path
+            _flat_map['fd'] = flow.fd if flow is not None else ''
+            _flat_map['open_flags'] = flow.openFlags if objtype == ObjectTypes.FILE_FLOW else ''
+
+        # volumetric information
+        if objtype in [ObjectTypes.NET_FLOW]:
+            _flat_map['rcvd_bytes'] = flow.numRRecvBytes if flow is not None else ''
+            _flat_map['rcvd_ops'] = flow.numRRecvOps if flow is not None else ''
+            _flat_map['sent_bytes'] = flow.numWSendBytes if flow is not None else ''
+            _flat_map['sent_ops'] = flow.numWSendOps if flow is not None else ''
+
+        if objtype in [ObjectTypes.FILE_FLOW]:
+            _flat_map['r_bytes'] = flow.numRRecvBytes if flow is not None else ''
+            _flat_map['r_ops'] = flow.numRRecvOps if flow is not None else ''
+            _flat_map['w_bytes'] = flow.numWSendBytes if flow is not None else ''
+            _flat_map['w_ops'] = flow.numWSendOps if flow is not None else ''
+
+        # contextual information
+        _cont = OrderedDict()
+        if cont is not None:
+            _cont['id'] = cont.id
+            _cont['name'] = cont.name
+            _cont['image_id'] = cont.imageid
+            _cont['image'] = cont.image
+            _cont['type'] = cont.type
+            _cont['privileged'] = cont.privileged
+        _flat_map['cont'] = _cont
+        
+        if fields: 
+            od = OrderedDict()
+            for k in fields:
+                if k in _flat_map:
+                    od[k] = _flat_map[k] 
             return od
         
         return _flat_map
