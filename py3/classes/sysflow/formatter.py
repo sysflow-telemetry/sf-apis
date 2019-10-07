@@ -347,10 +347,13 @@ class SFFormatter(object):
 
 
     def _flatten2(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
+        
         _flat_map = OrderedDict()
+        _flat_map['v'] = '0.2.0'
+
         evflow = evt or flow
 
-        _flat_map['flow_type'] = OBJECT_MAP.get(objtype,'?')
+        _flat_map['type'] = OBJECT_MAP.get(objtype,'?')
 
         # time stamps
         _ts_field = 'ts'
@@ -447,9 +450,21 @@ class SFFormatter(object):
         
         if fields: 
             od = OrderedDict()
+            od['v'] = _flat_map['v']
+            
+            # recursive projection (allows for "git -f proc.pid")
             for k in fields:
-                if k in _flat_map:
-                    od[k] = _flat_map[k] 
+                o = od
+                v = _flat_map
+                lo = None
+                lk = None
+                for kk in k.split('.'):
+                    lo = o
+                    lk = kk
+                    o[kk] = OrderedDict() if kk not in o else o[kk]
+                    v = v[kk]
+                    o = o[kk]
+                lo[lk] = v
             return od
         
         return _flat_map
