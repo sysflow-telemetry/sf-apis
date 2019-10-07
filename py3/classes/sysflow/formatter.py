@@ -347,6 +347,7 @@ class SFFormatter(object):
 
 
     def _flatten2(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
+<<<<<<< HEAD
         
         _flat_map = OrderedDict()
         _flat_map['v'] = '0.2.0'
@@ -354,6 +355,12 @@ class SFFormatter(object):
         evflow = evt or flow
 
         _flat_map['type'] = OBJECT_MAP.get(objtype,'?')
+=======
+        _flat_map = OrderedDict()
+        evflow = evt or flow
+
+        _flat_map['flow_type'] = OBJECT_MAP.get(objtype,'?')
+>>>>>>> 1e851d0675230d60c10222b3f43772f49b14ff09
 
         # time stamps
         _ts_field = 'ts'
@@ -465,6 +472,7 @@ class SFFormatter(object):
                     v = v[kk]
                     o = o[kk]
                 lo[lk] = v
+
             return od
         
         return _flat_map
