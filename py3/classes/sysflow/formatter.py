@@ -346,21 +346,13 @@ class SFFormatter(object):
         return _flat_map
 
 
-    def _flatten2(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
-<<<<<<< HEAD
-        
+    def _flatten2(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):        
         _flat_map = OrderedDict()
         _flat_map['v'] = '0.2.0'
 
         evflow = evt or flow
 
         _flat_map['type'] = OBJECT_MAP.get(objtype,'?')
-=======
-        _flat_map = OrderedDict()
-        evflow = evt or flow
-
-        _flat_map['flow_type'] = OBJECT_MAP.get(objtype,'?')
->>>>>>> 1e851d0675230d60c10222b3f43772f49b14ff09
 
         # time stamps
         _ts_field = 'ts'
@@ -466,12 +458,17 @@ class SFFormatter(object):
                 lo = None
                 lk = None
                 for kk in k.split('.'):
+                    if kk not in v:
+                        v = None
+                        continue
                     lo = o
                     lk = kk
                     o[kk] = OrderedDict() if kk not in o else o[kk]
                     v = v[kk]
                     o = o[kk]
-                lo[lk] = v
+                
+                if v is not None:
+                    lo[lk] = v
 
             return od
         
