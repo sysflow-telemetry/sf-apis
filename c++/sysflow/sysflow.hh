@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef __SRC_SYSFLOW_SYSFLOW_HH_810194984__H_
-#define __SRC_SYSFLOW_SYSFLOW_HH_810194984__H_
+#ifndef __SRC_SYSFLOW_SYSFLOW_HH_2119762948__H_
+#define __SRC_SYSFLOW_SYSFLOW_HH_2119762948__H_
 
 
 #include <sstream>
@@ -37,7 +37,7 @@ struct SFHeader {
         { }
 };
 
-enum ContainerType {
+enum class ContainerType: unsigned {
     CT_DOCKER,
     CT_LXC,
     CT_LIBVIRT_LXC,
@@ -63,7 +63,7 @@ struct Container {
         { }
 };
 
-enum SFObjectState {
+enum class SFObjectState: unsigned {
     CREATED,
     MODIFIED,
     REUP,
@@ -166,14 +166,14 @@ public:
 struct File {
     typedef _SysFlow_avsc_Union__2__ containerId_t;
     SFObjectState state;
-    boost::array<uint8_t, 20> oid;
+    std::array<uint8_t, 20> oid;
     int64_t ts;
     int32_t restype;
     std::string path;
     containerId_t containerId;
     File() :
         state(SFObjectState()),
-        oid(boost::array<uint8_t, 20>()),
+        oid(std::array<uint8_t, 20>()),
         ts(int64_t()),
         restype(int32_t()),
         path(std::string()),
@@ -240,7 +240,7 @@ struct FileFlow {
     int32_t opFlags;
     int32_t openFlags;
     int64_t endTs;
-    boost::array<uint8_t, 20> fileOID;
+    std::array<uint8_t, 20> fileOID;
     int32_t fd;
     int64_t numRRecvOps;
     int64_t numWSendOps;
@@ -253,7 +253,7 @@ struct FileFlow {
         opFlags(int32_t()),
         openFlags(int32_t()),
         endTs(int64_t()),
-        fileOID(boost::array<uint8_t, 20>()),
+        fileOID(std::array<uint8_t, 20>()),
         fd(int32_t()),
         numRRecvOps(int64_t()),
         numWSendOps(int64_t()),
@@ -275,8 +275,8 @@ public:
         idx_ = 0;
         value_ = boost::any();
     }
-    boost::array<uint8_t, 20> get_FOID() const;
-    void set_FOID(const boost::array<uint8_t, 20>& v);
+    std::array<uint8_t, 20> get_FOID() const;
+    void set_FOID(const std::array<uint8_t, 20>& v);
     _SysFlow_avsc_Union__3__();
 };
 
@@ -286,7 +286,7 @@ struct FileEvent {
     int64_t ts;
     int64_t tid;
     int32_t opFlags;
-    boost::array<uint8_t, 20> fileOID;
+    std::array<uint8_t, 20> fileOID;
     int32_t ret;
     newFileOID_t newFileOID;
     FileEvent() :
@@ -294,7 +294,7 @@ struct FileEvent {
         ts(int64_t()),
         tid(int64_t()),
         opFlags(int32_t()),
-        fileOID(boost::array<uint8_t, 20>()),
+        fileOID(std::array<uint8_t, 20>()),
         ret(int32_t()),
         newFileOID(newFileOID_t())
         { }
@@ -403,15 +403,15 @@ void _SysFlow_avsc_Union__2__::set_string(const std::string& v) {
 }
 
 inline
-boost::array<uint8_t, 20> _SysFlow_avsc_Union__3__::get_FOID() const {
+std::array<uint8_t, 20> _SysFlow_avsc_Union__3__::get_FOID() const {
     if (idx_ != 1) {
         throw avro::Exception("Invalid type for union");
     }
-    return boost::any_cast<boost::array<uint8_t, 20> >(value_);
+    return boost::any_cast<std::array<uint8_t, 20> >(value_);
 }
 
 inline
-void _SysFlow_avsc_Union__3__::set_FOID(const boost::array<uint8_t, 20>& v) {
+void _SysFlow_avsc_Union__3__::set_FOID(const std::array<uint8_t, 20>& v) {
     idx_ = 1;
     value_ = v;
 }
@@ -580,17 +580,17 @@ template<> struct codec_traits<sysflow::SFHeader> {
 
 template<> struct codec_traits<sysflow::ContainerType> {
     static void encode(Encoder& e, sysflow::ContainerType v) {
-		if (v < sysflow::CT_DOCKER || v > sysflow::CT_CUSTOM)
+		if (v > sysflow::ContainerType::CT_CUSTOM)
 		{
 			std::ostringstream error;
-			error << "enum value " << v << " is out of bound for sysflow::ContainerType and cannot be encoded";
+			error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::ContainerType and cannot be encoded";
 			throw avro::Exception(error.str());
 		}
-        e.encodeEnum(v);
+        e.encodeEnum(static_cast<size_t>(v));
     }
     static void decode(Decoder& d, sysflow::ContainerType& v) {
 		size_t index = d.decodeEnum();
-		if (index < sysflow::CT_DOCKER || index > sysflow::CT_CUSTOM)
+		if (index > static_cast<size_t>(sysflow::ContainerType::CT_CUSTOM))
 		{
 			std::ostringstream error;
 			error << "enum value " << index << " is out of bound for sysflow::ContainerType and cannot be decoded";
@@ -651,17 +651,17 @@ template<> struct codec_traits<sysflow::Container> {
 
 template<> struct codec_traits<sysflow::SFObjectState> {
     static void encode(Encoder& e, sysflow::SFObjectState v) {
-		if (v < sysflow::CREATED || v > sysflow::REUP)
+		if (v > sysflow::SFObjectState::REUP)
 		{
 			std::ostringstream error;
-			error << "enum value " << v << " is out of bound for sysflow::SFObjectState and cannot be encoded";
+			error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::SFObjectState and cannot be encoded";
 			throw avro::Exception(error.str());
 		}
-        e.encodeEnum(v);
+        e.encodeEnum(static_cast<size_t>(v));
     }
     static void decode(Decoder& d, sysflow::SFObjectState& v) {
 		size_t index = d.decodeEnum();
-		if (index < sysflow::CREATED || index > sysflow::REUP)
+		if (index > static_cast<size_t>(sysflow::SFObjectState::REUP))
 		{
 			std::ostringstream error;
 			error << "enum value " << index << " is out of bound for sysflow::SFObjectState and cannot be decoded";
@@ -1165,7 +1165,7 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__3__> {
             break;
         case 1:
             {
-                boost::array<uint8_t, 20> vv;
+                std::array<uint8_t, 20> vv;
                 avro::decode(d, vv);
                 v.set_FOID(vv);
             }

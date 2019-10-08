@@ -28,7 +28,7 @@ setup(
     description = ('Install SysFlow python API and utilities'),    
     packages=['sysflow'],
     package_data={'sysflow': ['schema.avsc']},
-    install_requires=['avro-python3==1.8.2', 'avro-gen==0.3.0', 'tabulate==0.8.3', 'minio==4.0.18'],
+    install_requires=['avro-python3==1.9.1', 'avro-gen==0.3.0', 'tabulate==0.8.3', 'minio==4.0.18'],
     scripts=['utils/sysprint'],
     package_dir = {'': 'classes'}
 )
