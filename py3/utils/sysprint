@@ -83,11 +83,11 @@ def sysprint(trace, args):
             formatter.toJsonFile(args.file, fields=fields)
         else:
             formatter.toJsonStdOut(fields=fields)
-    if args.output == 'json2':
+    elif args.output == 'flatjson':
         if args.file is not None:
-            formatter.toJsonFile2(args.file, fields=fields)
+            formatter.toJsonFile(args.file, fields=fields, flat=True)
         else:
-            formatter.toJsonStdOut2(fields=fields)
+            formatter.toJsonStdOut(fields=fields, flat=True)
     elif args.output == 'csv' and args.file is not None:
             formatter.toCsvFile(args.file, fields=fields)
     elif args.output == 'str':
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     )
     parser.add_argument('paths', metavar='path', nargs='+', help='list of paths or bucket names from where to read trace files')
     parser.add_argument('-i', '--input', help='input type', choices=['local','cos'], default='local')
-    parser.add_argument('-o', '--output', help='output format', choices=['str','json','json2','csv'], default='str')
+    parser.add_argument('-o', '--output', help='output format', choices=['str','flatjson','json','csv'], default='str')
     parser.add_argument('-w', '--file', help='output file path', default=None)
     parser.add_argument('-f', '--fields', help='comma-separated list of sysflow fields to be printed', default=None)
     parser.add_argument('-c', '--cosendpoint', help='cos server address from where to read sysflows', default=None) 

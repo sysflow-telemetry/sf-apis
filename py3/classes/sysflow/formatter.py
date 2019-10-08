@@ -171,29 +171,20 @@ class SFFormatter(object):
             record = self._flatten(*r, fields) 
             func(json.dumps(record))
 
-    def toJsonStdOut(self, fields=None):
+    def toJsonStdOut(self, fields=None, flat=False):
         """Writes SysFlow as JSON to stdout.
 
         :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
                        formatter.py for a list of fields
         :type fields: list
+        :flat: specifies if JSON output should be flattened
         """
+        __format = self._flatten if flat else self._nest 
         for r in self.reader:
-            record = self._flatten(*r, fields) 
-            print(json.dumps(record))
-
-    def toJsonStdOut2(self, fields=None):
-        """Writes SysFlow as version 0.2 JSON to stdout.
-
-        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
-                       formatter.py for a list of fields
-        :type fields: list
-        """
-        for r in self.reader:
-            record = self._flatten2(*r, fields) 
+            record = __format(*r, fields) 
             print(json.dumps(record))
     
-    def toJsonFile(self, path, fields=None):
+    def toJsonFile(self, path, fields=None, flat=False):
         """Writes SysFlow to JSON file.
 
         :param path: the full path of the output file. 
@@ -202,23 +193,12 @@ class SFFormatter(object):
         :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
                        formatter.py for a list of fields
         :type fields: list
+        :flat: specifies if JSON output should be flattened
         """
+        __format = self._flatten if flat else self._nest 
         with open(path, mode='w') as jsonfile:
-            json.dump([self._flatten(*r, fields) for r in self.reader], jsonfile)
+            json.dump([__format(*r, fields) for r in self.reader], jsonfile)
     
-    def toJsonFile2(self, path, fields=None):
-        """Writes SysFlow to v0.2 JSON file.
-
-        :param path: the full path of the output file. 
-        :type path: str
-        
-        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
-                       formatter.py for a list of fields
-        :type fields: list
-        """
-        with open(path, mode='w') as jsonfile:
-            json.dump([self._flatten2(*r, fields) for r in self.reader], jsonfile)
-
     def toCsvFile(self, path, fields=None, header=True): 
         """Writes SysFlow to CSV file.
 
@@ -346,9 +326,9 @@ class SFFormatter(object):
         return _flat_map
 
 
-    def _flatten2(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):        
+    def _nest(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):        
         _flat_map = OrderedDict()
-        _flat_map['v'] = '0.2.0'
+        _flat_map['v'] = '0.1.0'
 
         evflow = evt or flow
 
@@ -451,7 +431,7 @@ class SFFormatter(object):
             od = OrderedDict()
             od['v'] = _flat_map['v']
             
-            # recursive projection (allows for "git -f proc.pid")
+            # recursive projection (allows for "sysprint -f proc.pid")
             for k in fields:
                 o = od
                 v = _flat_map
