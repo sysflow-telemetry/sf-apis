@@ -81,5 +81,5 @@ This project is in its infancy and with limited resources we haven't built a tes
 
 
 ## Coding style guidelines
-We follow the [LLVM Coding standards](https://llvm.org/docs/CodingStandards.html) in this project.   There is a .clang-format file in the master repo [clang-format](https://github.com/sysflow-telemetry/sf-apis/blob/master/src/.clang-format) that can be used in conjunction with [ClangFormat Tool](https://clang.llvm.org/docs/ClangFormat.html) to automatically format code. For linting,
+We follow the [LLVM Coding standards](https://llvm.org/docs/CodingStandards.html) in this project.   There is a .clang-format file in the master repo [clang-format](https://github.com/sysflow-telemetry/sf-collector/blob/master/src/.clang-format) that can be used in conjunction with [ClangFormat Tool](https://clang.llvm.org/docs/ClangFormat.html) to automatically format code. For linting,
 we use [Clang Tidy Linter](https://clang.llvm.org/extra/clang-tidy/).  This is referenced in the Makefile.
