@@ -1,4 +1,4 @@
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/sysflowtelemetry/sf-apis)](https://hub.docker.com/r/sysflowtelemetry/sf-apis/builds)
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/sysflowtelemetry/sysprint)](https://hub.docker.com/r/sysflowtelemetry/sf-apis/builds)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sysflowtelemetry/sf-apis)](https://hub.docker.com/r/sysflowtelemetry/sf-exporter)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sysflow-telemetry/sf-apis)
 [![Documentation Status](https://readthedocs.org/projects/sysflow/badge/?version=latest)](https://sysflow.readthedocs.io/en/latest/?badge=latest)
