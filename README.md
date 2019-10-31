@@ -1,73 +1,51 @@
-#  SysFlow APIs and Utilities
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/sysflowtelemetry/sf-apis)](https://hub.docker.com/r/sysflowtelemetry/sf-apis/builds)
+[![Docker Pulls](https://img.shields.io/docker/pulls/sysflowtelemetry/sf-apis)](https://hub.docker.com/r/sysflowtelemetry/sf-exporter)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sysflow-telemetry/sf-apis)
+[![Documentation Status](https://readthedocs.org/projects/sysflow/badge/?version=latest)](https://sysflow.readthedocs.io/en/latest/?badge=latest)
+[![GitHub](https://img.shields.io/github/license/sysflow-telemetry/sf-apis)](https://github.com/sysflow-telemetry/sf-exporter/blob/master/LICENSE.md)
 
-SysFlow uses [Apache Avro](https://avro.apache.org/) serialization to create compact records that can be processed by a wide variety of programming languages, and big data analytics platforms such as [Apache Spark](https://spark.apache.org/). Avro enables a user to generate programming stubs for serializing and deserializing data, using either [Apache Avro IDL](https://avro.apache.org/docs/1.9.1/idl.html) or [Apache schema files](https://avro.apache.org/docs/1.9.1/spec.html).  
+# Supported tags and respective `Dockerfile` links
 
-## Cloning source
+-	[`0.1`, `latest`](https://github.com/sysflow-telemetry/sf-exporter/blob/0.1/Dockerfile)
 
-The sf-apis project has been tested primarily on Ubuntu 16.04 and 18.04.  The project will be tested on other flavors of UNIX in the future. This document describes how to build and run the application both on a linux host. 
+# Quick reference
 
-To build the project, first pull down the source code:
-```
-git clone git@github.com:sysflow-telemetry/sf-apis.git 
-```
+-	**Documentation**:  
+	[the SysFlow Documentation](https://sysflow.readthedocs.io)
+  
+-	**Where to get help**:  
+	[the SysFlow Community Slack](https://join.slack.com/t/sysflow-telemetry/shared_invite/enQtODA5OTA3NjE0MTAzLTlkMGJlZDQzYTc3MzhjMzUwNDExNmYyNWY0NWIwODNjYmRhYWEwNGU0ZmFkNGQ2NzVmYjYxMWFjYTM1MzA5YWQ)
 
-## Avro IDL and schema files
+-	**Where to file issues**:  
+	[the github issue tracker](https://github.com/sysflow-telemetry/sf-docs/issues) (include the `sf-apis` tag)
 
-The Avro IDL files for SysFlow are available in the repository under `sf-apis/avro/avdl`, while the schema files are available under `sf-apis/avro/avsc`.   The `avrogen` tool can be used to generate classes using the schema.  See `sf-apis/avro/generateCClasses.sh` for an example of how to generate C++ headers from apache schema files.  
+-	**Source of this description**:  
+	[repo's readme](https://github.com/sysflow-telemetry/sf-apis/edit/master/README.md) ([history](https://github.com/sysflow-telemetry/sf-apis/commits/master))
 
-##  SysFlow Avro C++
+# What is SysFlow?
 
-SysFlow C++ SysFlow objects and encoders/decoders are all available in `sf-apis/c++/sysflow/sysflow.hh`.  `sf-collector/src/sysreader.cpp` provides a good example of how to read and process different SysFlow avro objects in C++.   Note that one must install [Apache Avro 1.9.1 cpp](https://avro.apache.org/releases.html) to run an application that includes `sysflow.hh`.  The library file `-lavrocpp` must also be linked during compilation. 
+The SysFlow Telemetry Pipeline is a framework for monitoring cloud workloads and for creating performance and security analytics. The goal of this project is to build all the plumbing required for system telemetry so that users can focus on writing and sharing analytics on a scalable, common open-source platform. The backbone of the telemetry pipeline is a new data format called SysFlow, which lifts raw system event information into an abstraction that describes process behaviors, and their relationships with containers, files, and network. This object-relational format is highly compact, yet it provides broad visibility into container clouds. We have also built several APIs that allow users to process SysFlow with their favorite toolkits. Learn more about SysFlow in the [SysFlow specification document](https://sysflow.readthedocs.io/en/latest/spec.html).
 
-## SysFlow Avro Python 3
+# About This Image
 
-SysFlow Python 3 APIs are generated with the avro-gen Python package. These classes are available in `sf-apis/py3`.
+This image packages sysprint, which reads, prints, and converts SysFlow traces to human-readale outputs, including console, JSON, and CSV formats. It supports reading traces from local disk and from S3-compliant object stores. Please check [Sysflow APIs](https://sysflow.readthedocs.io/en/latest/api-utils.html) for programmatic APIs and more information about sysprint.
 
-In order to install the SysFlow Python package:
+# How to use this image
 
-```
-cd sf-apis/py3
-sudo python3 setup.py install
-```
-
-Please see the SysFlow Python API reference documents for more information on the modules and objects in the library.
-
-## SysFlow utilities
-
-### sysprint
-
-`sysprint` is a tool written using the SysFlow Python API that will print out SysFlow traces from a file into several different formats including JSON, CSV, and tabular pretty print form.  Not only will sysprint help you interact with SysFlow, it is also a good example for how to write new analytics tools using the SysFlow API.   
+The easiest way to run sysprint is from a Docker container, with host mount for the directories from where to read trace files. The following command shows how to run sysprint with trace files located in `/mnt/data` on the host.
 
 ```
-usage: sysprint [-h] [-i {local,s3}] [-o {str,json,csv}] [-w FILE]
-                [-f FIELDS] [-c S3ENDPOINT] [-p S3PORT] [-a S3ACCESSKEY]
-                [-s S3SECRETKEY] [-l S3LOCATION] [--secure [SECURE]]
-                path [path ...]
-
-sysprint: a human-readable printer for Sysflow captures.
-
-positional arguments:
-  path                  list of paths or bucket names from where to read trace
-                        files
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i {local,s3}, --input {local,s3}
-                        input type
-  -o {str,json,csv}, --output {str,json,csv}
-                        output format
-  -w FILE, --file FILE  output file path
-  -f FIELDS, --fields FIELDS
-                        comma-separated list of sysflow fields to be printed
-  -c S3ENDPOINT, --s3endpoint S3ENDPOINT
-                        s3 server address from where to read sysflows
-  -p S3PORT, --s3port S3PORT
-                        s3 server port
-  -a S3ACCESSKEY, --s3accesskey S3ACCESSKEY
-                        s3 access key
-  -s S3SECRETKEY, --s3secretkey S3SECRETKEY
-                        s3 secret key
-  -l S3LOCATION, --s3location S3LOCATION
-                        target data bucket location
-  --secure [SECURE]     indicates if SSL connection
+docker run --rm -v /mnt/data:/mnt/data sysflowtelemetry/sysprint <file path>    
 ```
+For help, run:
+```
+docker run --rm -v /mnt/data:/mnt/data sysflowtelemetry/sysprint -h
+```
+
+# License
+
+View [license information](https://github.com/sysflow-telemetry/sf-exporter/blob/master/LICENSE.md) for the software contained in this image.
+
+As with all Docker images, these likely also contain other software which may be under other licenses (such as Bash, etc from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
+
+As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
