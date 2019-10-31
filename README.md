@@ -2,7 +2,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/sysflowtelemetry/sf-apis)](https://hub.docker.com/r/sysflowtelemetry/sf-exporter)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sysflow-telemetry/sf-apis)
 [![Documentation Status](https://readthedocs.org/projects/sysflow/badge/?version=latest)](https://sysflow.readthedocs.io/en/latest/?badge=latest)
-[![GitHub](https://img.shields.io/github/license/sysflow-telemetry/sf-apis)](https://github.com/sysflow-telemetry/sf-exporter/blob/master/LICENSE.md)
+[![GitHub](https://img.shields.io/github/license/sysflow-telemetry/sf-apis)](https://github.com/sysflow-telemetry/sf-apis/blob/master/LICENSE.md)
 
 # Supported tags and respective `Dockerfile` links
 
