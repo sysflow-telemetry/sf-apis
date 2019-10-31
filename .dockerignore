@@ -1,0 +1,9 @@
+# ignore these files and directories when running docker build
+*/.git*
+*/.cache
+.travis*
+avro
+c++
+hooks*
+*/*.md
+!README*.md
