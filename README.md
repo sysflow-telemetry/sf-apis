@@ -6,7 +6,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.1-rc1`]((https://github.com/sysflow-telemetry/sf-exporter/blob/0.1-rc1/Dockerfile)), [`latest`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile)
+-	[`0.1-rc1`](https://github.com/sysflow-telemetry/sf-exporter/blob/0.1-rc1/Dockerfile), [`latest`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile)
 
 # Quick reference
 
