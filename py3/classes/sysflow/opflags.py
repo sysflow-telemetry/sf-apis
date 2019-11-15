@@ -21,7 +21,7 @@
 """
 .. module:: sysflow.opflags
    :synopsis: This module lists all operations currently supported by SysFlow.
-.. moduleauthor:: Teryl Taylor, Frederico Araujo
+.. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 """
   OP_CLONE = (1 << 0) 

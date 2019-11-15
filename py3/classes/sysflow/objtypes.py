@@ -23,7 +23,7 @@ from enum import Enum
 """
 .. module:: sysflow.objtypes
    :synopsis: This module represents each entity/flow/event class as a ID, and maps those ids to strings.
-.. moduleauthor:: Teryl Taylor, Frederico Araujo
+.. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
 class ObjectTypes(Enum):

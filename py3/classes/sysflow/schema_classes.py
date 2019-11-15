@@ -31,8 +31,6 @@ if six.PY3:    from avro.schema import SchemaFromJSONData as make_avsc_object
 else:
     from avro.schema import make_avsc_object
     
-
-
 def __read_file(file_name):
     with open(file_name, "r") as f:
         return f.read()
@@ -50,8 +48,7 @@ __SCHEMAS = dict((n.fullname.lstrip("."), n) for n in six.itervalues(__NAMES.nam
 
 
 class SchemaClasses(object):
-    
-    
+       
     pass
     class sysflow(object):
         
@@ -1497,6 +1494,15 @@ class SchemaClasses(object):
                     #:param int value:
                     #"""
                     self._inner_dict['hpid'] = value
+
+                def __hash__(self):
+                    return hash((self.hpid, self.createTS))
+
+                def __eq__(self, other):
+                    return (self.hpid, self.createTS) == (other.hpid, other.createTS)
+
+                def __ne__(self, other):
+                    return not(self == other)
                 
                 
             class SFObjectStateClass(object):

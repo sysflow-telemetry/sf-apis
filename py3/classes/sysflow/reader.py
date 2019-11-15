@@ -31,7 +31,7 @@ from uuid import UUID
 """
 .. module:: sysflow.reader
    :synopsis: All readers for reading sysflow are defined here.
-.. moduleauthor:: Teryl Taylor, Frederico Araujo
+.. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
 class SFReader(object):

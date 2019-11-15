@@ -19,13 +19,14 @@
 # limitations under the License.
 #
 import sysflow.opflags as opflags
+import sysflow.openflags as openflags
 from datetime import datetime
 from collections import OrderedDict
 
 """
 .. module:: sysflow.utils
    :synopsis: Utility functions to help transform attributes into strings. 
-.. moduleauthor:: Teryl Taylor, Frederico Araujo
+.. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
 NANO_TO_SECS = 1000000000
@@ -55,37 +56,36 @@ def getOpFlagsStr(opFlags):
        :return: A string representation of the operations bitmap.
     """
     ops = ""
-    ops +=  "MKDIR" if (opFlags & opflags.OP_MKDIR) else "";
-    ops +=  "RMDIR" if (opFlags & opflags.OP_RMDIR) else "";
-    ops +=  "LINK" if (opFlags & opflags.OP_LINK) else "";
-    ops +=  "SYMLINK" if (opFlags & opflags.OP_SYMLINK) else  "";
-    ops +=  "UNLINK" if (opFlags & opflags.OP_UNLINK) else  "";
-    ops +=  "RENAME" if (opFlags & opflags.OP_RENAME) else  "";
+    ops +=  "MKDIR" if (opFlags & opflags.OP_MKDIR) else ""
+    ops +=  "RMDIR" if (opFlags & opflags.OP_RMDIR) else ""
+    ops +=  "LINK" if (opFlags & opflags.OP_LINK) else ""
+    ops +=  "SYMLINK" if (opFlags & opflags.OP_SYMLINK) else  ""
+    ops +=  "UNLINK" if (opFlags & opflags.OP_UNLINK) else  ""
+    ops +=  "RENAME" if (opFlags & opflags.OP_RENAME) else  ""
 
     if(len(ops) > 0):
         return ops
     
-    ops +=  "CLONE" if (opFlags & opflags.OP_CLONE) else "";
-    ops +=  "EXEC" if (opFlags & opflags.OP_EXEC) else "";
-    ops +=  "EXIT" if (opFlags & opflags.OP_EXIT) else "";
-    ops +=  "SETUID" if (opFlags & opflags.OP_SETUID) else  "";
+    ops +=  "CLONE" if (opFlags & opflags.OP_CLONE) else ""
+    ops +=  "EXEC" if (opFlags & opflags.OP_EXEC) else ""
+    ops +=  "EXIT" if (opFlags & opflags.OP_EXIT) else ""
+    ops +=  "SETUID" if (opFlags & opflags.OP_SETUID) else  ""
     
     if(len(ops) > 0):
         return ops
 
-    ops +=  "O" if (opFlags & opflags.OP_OPEN) else  " ";
-    ops +=  "A" if (opFlags & opflags.OP_ACCEPT) else " ";
-    ops +=  "C" if (opFlags & opflags.OP_CONNECT) else  " ";
-    ops +=  "W" if (opFlags & opflags.OP_WRITE_SEND)  else " ";
-    ops +=  "R" if (opFlags & opflags.OP_READ_RECV)  else " ";
-    ops +=  "N" if (opFlags & opflags.OP_SETNS)  else " ";
-    ops +=  "M" if (opFlags & opflags.OP_MMAP)  else " ";
-    ops +=  "S" if (opFlags & opflags.OP_SHUTDOWN)  else " ";
-    ops +=  "C" if (opFlags & opflags.OP_CLOSE)  else " ";
-    ops +=  "T" if (opFlags & opflags.OP_TRUNCATE) else " ";
-    ops +=  "D" if (opFlags & opflags.OP_DIGEST)  else " ";
+    ops +=  "O" if (opFlags & opflags.OP_OPEN) else  " "
+    ops +=  "A" if (opFlags & opflags.OP_ACCEPT) else " "
+    ops +=  "C" if (opFlags & opflags.OP_CONNECT) else  " "
+    ops +=  "W" if (opFlags & opflags.OP_WRITE_SEND)  else " "
+    ops +=  "R" if (opFlags & opflags.OP_READ_RECV)  else " "
+    ops +=  "N" if (opFlags & opflags.OP_SETNS)  else " "
+    ops +=  "M" if (opFlags & opflags.OP_MMAP)  else " "
+    ops +=  "S" if (opFlags & opflags.OP_SHUTDOWN)  else " "
+    ops +=  "C" if (opFlags & opflags.OP_CLOSE)  else " "
+    ops +=  "T" if (opFlags & opflags.OP_TRUNCATE) else " "
+    ops +=  "D" if (opFlags & opflags.OP_DIGEST)  else " "
     return ops
-
 
 def getOpStr(opFlags):
     """
@@ -98,6 +98,40 @@ def getOpStr(opFlags):
        :return: A string representation of the operations bitmap.
     """
     return OPS_FLAG_STRINGS[opFlags]
+
+
+def getOpFlags(opFlags):
+    """
+       Converts a sysflow operations flag bitmap into a set representation.
+       
+       :param opflag: An operations bitmap from a flow or event.
+       :type opflag: int
+        
+       :rtype: set
+       :return: A set representation of the operations bitmap.
+    """
+    ops = set()
+    if (opFlags & opflags.OP_MKDIR):        ops.add("MKDIR")
+    if (opFlags & opflags.OP_RMDIR):        ops.add("RMDIR")
+    if (opFlags & opflags.OP_LINK):         ops.add("LINK")
+    if (opFlags & opflags.OP_SYMLINK):      ops.add("SYMLINK")
+    if (opFlags & opflags.OP_UNLINK):       ops.add("UNLINK")
+    if (opFlags & opflags.OP_RENAME):       ops.add("RENAME")
+    if (opFlags & opflags.OP_CLONE):        ops.add("CLONE")
+    if (opFlags & opflags.OP_EXEC):         ops.add("EXEC")
+    if (opFlags & opflags.OP_SETUID):       ops.add("SETUID")
+    if (opFlags & opflags.OP_OPEN):         ops.add("OPEN")
+    if (opFlags & opflags.OP_ACCEPT):       ops.add("ACCEPT")
+    if (opFlags & opflags.OP_CONNECT):      ops.add("CONNECT")
+    if (opFlags & opflags.OP_WRITE_SEND):   ops.add("WRITE"); ops.add("SEND")
+    if (opFlags & opflags.OP_READ_RECV):    ops.add("READ"); ops.add("RECV")
+    if (opFlags & opflags.OP_SETNS):        ops.add("SETNS")
+    if (opFlags & opflags.OP_MMAP):         ops.add("MMAP")
+    if (opFlags & opflags.OP_SHUTDOWN):     ops.add("SHUTDOWN")
+    if (opFlags & opflags.OP_CLOSE):        ops.add("CLOSE")
+    if (opFlags & opflags.OP_TRUNCATE):     ops.add("TRUNCATE")
+    if (opFlags & opflags.OP_DIGEST):       ops.add("DIGEST")      
+    return ops
 
 def getOpFlagsDict(opFlags):
     ops = OrderedDict()
@@ -114,7 +148,40 @@ def getOpFlagsDict(opFlags):
     if (opFlags & opflags.OP_DIGEST):       ops["digest"] = True 
     return ops
 
-
+def getOpenFlags(openFlags):
+    """
+       Converts a sysflow open modes flag bitmap into a set representation.
+       
+       :param opflag: An open modes bitmap from a flow or event.
+       :type openflag: int
+        
+       :rtype: set
+       :return: A set representation of the open modes bitmap.
+    """
+    ops = set()
+    if (openFlags & openflags.O_RDONLY):        ops.add("RDONLY")
+    if (openFlags & openflags.O_WRONLY):        ops.add("WRONLY")
+    if (openFlags & openflags.O_RDWR):          ops.add("RDWR")
+    if (openFlags & openflags.O_ACCMODE):       ops.add("ACCMODE")
+    if (openFlags & openflags.O_CREAT):         ops.add("CREAT")
+    if (openFlags & openflags.O_EXCL):          ops.add("EXCL")
+    if (openFlags & openflags.O_NOCTTY):        ops.add("NOCTTY")
+    if (openFlags & openflags.O_TRUNC):         ops.add("TRUNC")
+    if (openFlags & openflags.O_APPEND):        ops.add("APPEND")
+    if (openFlags & openflags.O_NONBLOCK):      ops.add("NONBLOCK")
+    if (openFlags & openflags.O_NDELAY):        ops.add("NDELAY")
+    if (openFlags & openflags.O_DSYNC):         ops.add("DSYNC")
+    if (openFlags & openflags.O_FASYNC):        ops.add("FASYNC")
+    if (openFlags & openflags.O_DIRECT):        ops.add("DIRECT")
+    if (openFlags & openflags.O_LARGEFILE):     ops.add("LARGEFILE")
+    if (openFlags & openflags.O_DIRECTORY):     ops.add("DIRECTORY")
+    if (openFlags & openflags.O_NOFOLLOW):      ops.add("NOFOLLOW")
+    if (openFlags & openflags.O_NOATIME):       ops.add("NOATIME")
+    if (openFlags & openflags.O_CLOEXEC):       ops.add("CLOEXEC")
+    if (openFlags & openflags.O_SYNC):          ops.add("SYNC")      
+    if (openFlags & openflags.O_PATH):          ops.add("PATH")      
+    if (openFlags & openflags.O_TMPFILE):       ops.add("TMPFILE")      
+    return ops
 
 def getTimeStr(ts):
     """
