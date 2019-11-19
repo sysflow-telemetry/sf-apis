@@ -315,7 +315,7 @@ class SFFormatter(object):
                 continue
             break
         else:  # set default if the loop completes which means all failed
-            columns = fallback
+            columns, row = fallback
         return columns, row
 
     def _flatten(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
