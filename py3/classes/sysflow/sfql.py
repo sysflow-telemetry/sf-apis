@@ -49,7 +49,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             # using 'filter' to filter the input stream
             reader = FlattenedSFReader('trace.sf')
             interpreter = SfqlInterpreter()
-            query = '- sfql: sf.type = FF'    
+            query = '- sfql: type = FF'    
             for r in interpreter.filter(reader, query):
                 print(r)
        
@@ -58,6 +58,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
     """
     _macros = {}
     _lists = {}
+    _criteria = None
     
     def __init__(self, query: str = None, paths: list = [], inputs: list = []):
         """Create a sfql interpreter and optionally pre-compiles input expressions.
@@ -89,7 +90,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         """
         inputs.extend([FileStream(f) for f in paths])
         if query:
-            input_stream = InputStream(query)
+            input_stream = InputStream('- sfql: ' + query)
             inputs.append(input_stream)
         walker = ParseTreeWalker()
         for input_stream in filter(None, inputs):
@@ -111,8 +112,9 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         if query:
             self.compile(query)
             return self._criteria(t)
-        else:
-            return self._criteria(t)
+        if not self._criteria:
+            return True
+        return self._criteria(t)
     
     def filter(self, reader, query: str = None):
         """Filter iterable reader according to sfql expression.
@@ -125,6 +127,8 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         """
         if query:
             self.compile(query)
+        if not self._criteria:
+            return reader
         return filter(lambda t: self._criteria(t), reader)
             
     def exitF_query(self, ctx: sfqlParser.F_queryContext):        
@@ -340,67 +344,63 @@ class SfqlMapper(Generic[T]):
             return SfqlMapper._rgetattr(evflow, attr)
 
     _mapper = {
-        'sf.type': partial(_getObjType.__func__, attr='type'),
-        'sf.opflags': partial(_getEvtFlowAttr.__func__, attr='opflags'),        
-        'sf.ret': partial(_getEvtFlowAttr.__func__, attr='ret'),
-        'sf.ts': partial(_getEvtFlowAttr.__func__, attr='ts'),
-        'sf.endts': partial(_getEvtFlowAttr.__func__, attr='endTs'),        
-        'sf.proc.pid': partial(_getProcAttr.__func__, attr='oid.hpid'),      
-        'sf.proc.name': partial(_getProcAttr.__func__, attr='exe'), 
-        'sf.proc.exe': partial(_getProcAttr.__func__, attr='exe'),          
-        'sf.proc.args': partial(_getProcAttr.__func__, attr='exeArgs'),
-        'sf.proc.uid': partial(_getProcAttr.__func__, attr='uid'),
-        'sf.proc.username': partial(_getProcAttr.__func__, attr='userName'),
-        'sf.proc.tid': partial(_getEvtFlowAttr.__func__, attr='tid'),
-        'sf.proc.gid': partial(_getProcAttr.__func__, attr='gid'),
-        'sf.proc.groupname': partial(_getProcAttr.__func__, attr='groupName'),
-        'sf.proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
-        'sf.proc.duration': partial(_getProcAttr.__func__, attr='duration'),
-        'sf.proc.tty': partial(_getProcAttr.__func__, attr='tty'),   
-        'sf.proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
-        'sf.proc.aname': partial(_getProcAttr.__func__, attr='aname'),   
-        'sf.proc.apid': partial(_getProcAttr.__func__, attr='apid'),        
-        'sf.pproc.pid': partial(_getPProcAttr.__func__, attr='oid.hpid'),      
-        'sf.pproc.name': partial(_getPProcAttr.__func__, attr='exe'), 
-        'sf.pproc.exe': partial(_getPProcAttr.__func__, attr='exe'),          
-        'sf.pproc.args': partial(_getPProcAttr.__func__, attr='exeArgs'),
-        'sf.pproc.uid': partial(_getPProcAttr.__func__, attr='uid'),
-        'sf.pproc.username': partial(_getPProcAttr.__func__, attr='userName'),
-        'sf.pproc.gid': partial(_getPProcAttr.__func__, attr='gid'),
-        'sf.pproc.groupname': partial(_getPProcAttr.__func__, attr='groupName'),
-        'sf.pproc.createts': partial(_getPProcAttr.__func__, attr='oid.createTS'),
-        'sf.pproc.duration': partial(_getPProcAttr.__func__, attr='duration'),
-        'sf.pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),   
-        'sf.pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
-        'sf.file.name': partial(_getFileAttr.__func__, attr='name'),      
-        'sf.file.path': partial(_getFileAttr.__func__, attr='path'), 
-        'sf.file.directory': partial(_getFileAttr.__func__, attr='dir'), 
-        'sf.file.type': partial(_getFileAttr.__func__, attr='restype'), 
-        'sf.file.is_open_write': partial(_getFileFlowAttr.__func__, attr='openwrite'), 
-        'sf.file.is_open_read': partial(_getFileFlowAttr.__func__, attr='openread'), 
-        'sf.file.fd': partial(_getEvtFlowAttr.__func__, attr='fd'), 
-        'sf.file.openflags': partial(_getFileFlowAttr.__func__, attr='openFlags'), 
-        'sf.file.rbytes': partial(_getFileFlowAttr.__func__, attr='numRRecvBytes'), 
-        'sf.file.rops': partial(_getFileFlowAttr.__func__, attr='numRRecvOps'), 
-        'sf.file.wbytes': partial(_getFileFlowAttr.__func__, attr='numWSendBytes'), 
-        'sf.file.wops': partial(_getFileFlowAttr.__func__, attr='numWSendOps'), 
-        'sf.net.proto': partial(_getNetFlowAttr.__func__, attr='proto'), 
-        'sf.net.sport': partial(_getNetFlowAttr.__func__, attr='sport'), 
-        'sf.net.dport': partial(_getNetFlowAttr.__func__, attr='dport'), 
-        'sf.net.port': partial(_getNetFlowAttr.__func__, attr='port'), 
-        'sf.net.sip': partial(_getNetFlowAttr.__func__, attr='sip'), 
-        'sf.net.dip': partial(_getNetFlowAttr.__func__, attr='dip'), 
-        'sf.net.ip': partial(_getNetFlowAttr.__func__, attr='ip'), 
-        'sf.net.rcvbytes': partial(_getNetFlowAttr.__func__, attr='numRRecvBytes'), 
-        'sf.net.rcvops': partial(_getNetFlowAttr.__func__, attr='numRRecvOps'), 
-        'sf.net.sndbytes': partial(_getNetFlowAttr.__func__, attr='numWSendBytes'), 
-        'sf.net.sndops': partial(_getNetFlowAttr.__func__, attr='numWSendOps'), 
-        'sf.container.id': partial(_getContAttr.__func__, attr='id'), 
-        'sf.container.name': partial(_getContAttr.__func__, attr='name'), 
-        'sf.container.image.id': partial(_getContAttr.__func__, attr='imageid'), 
-        'sf.container.image': partial(_getContAttr.__func__, attr='image'),         
-        'sf.container.type': partial(_getContAttr.__func__, attr='type'), 
-        'sf.container.privileged': partial(_getContAttr.__func__, attr='privileged')
+        'type': partial(_getObjType.__func__, attr='type'),
+        'opflags': partial(_getEvtFlowAttr.__func__, attr='opflags'),        
+        'ret': partial(_getEvtFlowAttr.__func__, attr='ret'),
+        'ts': partial(_getEvtFlowAttr.__func__, attr='ts'),
+        'endts': partial(_getEvtFlowAttr.__func__, attr='endTs'),        
+        'proc.pid': partial(_getProcAttr.__func__, attr='oid.hpid'),      
+        'proc.name': partial(_getProcAttr.__func__, attr='exe'), 
+        'proc.exe': partial(_getProcAttr.__func__, attr='exe'),          
+        'proc.args': partial(_getProcAttr.__func__, attr='exeArgs'),
+        'proc.uid': partial(_getProcAttr.__func__, attr='uid'),
+        'proc.username': partial(_getProcAttr.__func__, attr='userName'),
+        'proc.tid': partial(_getEvtFlowAttr.__func__, attr='tid'),
+        'proc.gid': partial(_getProcAttr.__func__, attr='gid'),
+        'proc.groupname': partial(_getProcAttr.__func__, attr='groupName'),
+        'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
+        'proc.duration': partial(_getProcAttr.__func__, attr='duration'),
+        'proc.tty': partial(_getProcAttr.__func__, attr='tty'),   
+        'proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
+        'proc.aname': partial(_getProcAttr.__func__, attr='aname'),   
+        'proc.apid': partial(_getProcAttr.__func__, attr='apid'),        
+        'pproc.pid': partial(_getPProcAttr.__func__, attr='oid.hpid'),      
+        'pproc.name': partial(_getPProcAttr.__func__, attr='exe'), 
+        'pproc.exe': partial(_getPProcAttr.__func__, attr='exe'),          
+        'pproc.args': partial(_getPProcAttr.__func__, attr='exeArgs'),
+        'pproc.uid': partial(_getPProcAttr.__func__, attr='uid'),
+        'pproc.username': partial(_getPProcAttr.__func__, attr='userName'),
+        'pproc.gid': partial(_getPProcAttr.__func__, attr='gid'),
+        'pproc.groupname': partial(_getPProcAttr.__func__, attr='groupName'),
+        'pproc.createts': partial(_getPProcAttr.__func__, attr='oid.createTS'),
+        'pproc.duration': partial(_getPProcAttr.__func__, attr='duration'),
+        'pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),   
+        'pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
+        'file.name': partial(_getFileAttr.__func__, attr='name'),      
+        'file.path': partial(_getFileAttr.__func__, attr='path'), 
+        'file.directory': partial(_getFileAttr.__func__, attr='dir'), 
+        'file.type': partial(_getFileAttr.__func__, attr='restype'), 
+        'file.is_open_write': partial(_getFileFlowAttr.__func__, attr='openwrite'), 
+        'file.is_open_read': partial(_getFileFlowAttr.__func__, attr='openread'), 
+        'file.fd': partial(_getEvtFlowAttr.__func__, attr='fd'), 
+        'file.openflags': partial(_getFileFlowAttr.__func__, attr='openFlags'),                 
+        'net.proto': partial(_getNetFlowAttr.__func__, attr='proto'), 
+        'net.sport': partial(_getNetFlowAttr.__func__, attr='sport'), 
+        'net.dport': partial(_getNetFlowAttr.__func__, attr='dport'), 
+        'net.port': partial(_getNetFlowAttr.__func__, attr='port'), 
+        'net.sip': partial(_getNetFlowAttr.__func__, attr='sip'), 
+        'net.dip': partial(_getNetFlowAttr.__func__, attr='dip'), 
+        'net.ip': partial(_getNetFlowAttr.__func__, attr='ip'),         
+        'flow.rbytes': partial(_getEvtFlowAttr.__func__, attr='numRRecvBytes'), 
+        'flow.rops': partial(_getEvtFlowAttr.__func__, attr='numRRecvOps'), 
+        'flow.wbytes': partial(_getEvtFlowAttr.__func__, attr='numWSendBytes'), 
+        'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'), 
+        'container.id': partial(_getContAttr.__func__, attr='id'), 
+        'container.name': partial(_getContAttr.__func__, attr='name'), 
+        'container.imageid': partial(_getContAttr.__func__, attr='imageid'), 
+        'container.image': partial(_getContAttr.__func__, attr='image'),         
+        'container.type': partial(_getContAttr.__func__, attr='type'), 
+        'container.privileged': partial(_getContAttr.__func__, attr='privileged')
     }
    
     def __init__(self):

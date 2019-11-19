@@ -36,3 +36,4 @@
 build
 dist
 *.egg-info
+*.antlr
