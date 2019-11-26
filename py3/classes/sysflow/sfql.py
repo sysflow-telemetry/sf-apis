@@ -244,7 +244,7 @@ class SfqlMapper(Generic[T]):
     @staticmethod
     def _rgetattr(obj, attr, *args):
         def _getattr(obj, attr):
-            return getattr(obj, attr, *args)        
+            return getattr(obj, attr, *args) if obj else None       
         return reduce(_getattr, [obj] + attr.split('.'))
 
     @staticmethod
@@ -407,7 +407,12 @@ class SfqlMapper(Generic[T]):
         super().__init__()
     
     def getAttr(self, t: T, attr: str):
-        self._ptree[t[4].oid] = t[3]
-        return self._mapper[attr](t)
+        try:
+            self._ptree[t[4].oid] = t[3]
+            return self._mapper[attr](t)
+        except KeyError:
+            raise Exception('SFQL syntax error: unrecognized attribute {0}'.format(attr))
+        else:
+            raise Exception('SFQL syntax error: error caught while interpreting attribute {0}'.format(attr))
     
   
