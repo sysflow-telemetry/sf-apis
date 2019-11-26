@@ -184,7 +184,7 @@ class SFFormatter(object):
         for idx, r in enumerate(self.sfqlint.filter(self.reader, expr)):
             _r = self._flatten(*r, fields)
             data[idx] = _r.values()
-        return pd.DataFrame.from_dict(data, orient='index', columns=_r.keys())        
+        return pd.DataFrame.from_dict(data, orient='index', columns=_r.keys() if _r else None)        
 
     def applyFuncJson(self, func, fields=None, expr=None):
         """Enables a delegate function to be applied to each JSON record read.
