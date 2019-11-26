@@ -185,25 +185,25 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
                     'SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
         elif ctx.binary_operator():
             lop = ctx.atom(0).getText()
-            rop = ctx.atom(1).getText().strip('\"')
+            rop = lambda t: self.mapper.getAttr(t, ctx.atom(1).getText())
             if ctx.binary_operator().CONTAINS():
-                return lambda t: self._evalPred(t, lop, lambda s: str(rop) in s)
+                return lambda t: self._evalPred(t, lop, lambda s: str(rop(t)) in s)
             elif ctx.binary_operator().ICONTAINS():
-                return lambda t: self._evalPred(t, lop, lambda s: str(rop).lower() in s.lower())
+                return lambda t: self._evalPred(t, lop, lambda s: str(rop(t)).lower() in s.lower())
             elif ctx.binary_operator().STARTSWITH():
-                return lambda t: self._evalPred(t, lop, lambda s: s.startswith(str(rop)))
+                return lambda t: self._evalPred(t, lop, lambda s: s.startswith(str(rop(t))))
             elif ctx.binary_operator().EQ():
-                return lambda t: self._evalPred(t, lop, lambda s: s == str(rop))
+                return lambda t: self._evalPred(t, lop, lambda s: s == str(rop(t)))
             elif ctx.binary_operator().NEQ():
-                return lambda t: self._evalPred(t, lop, lambda s: s != str(rop))
+                return lambda t: self._evalPred(t, lop, lambda s: s != str(rop(t)))
             elif ctx.binary_operator().GT():
-                return lambda t: self._evalPred(t, lop, lambda s: int(s) > int(rop))
+                return lambda t: self._evalPred(t, lop, lambda s: int(s) > int(rop(t)))
             elif ctx.binary_operator().GE():
-                return lambda t: self._evalPred(t, lop, lambda s: int(s) >= int(rop))
+                return lambda t: self._evalPred(t, lop, lambda s: int(s) >= int(rop(t)))
             elif ctx.binary_operator().LT():
-                return lambda t: self._evalPred(t, lop, lambda s: int(s) < int(rop))
+                return lambda t: self._evalPred(t, lop, lambda s: int(s) < int(rop(t)))
             elif ctx.binary_operator().LE():
-                return lambda t: self._evalPred(t, lop, lambda s: int(s) >= int(rop))
+                return lambda t: self._evalPred(t, lop, lambda s: int(s) >= int(rop(t)))
             else:
                 raise Exception(
                     'SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
@@ -406,13 +406,14 @@ class SfqlMapper(Generic[T]):
     def __init__(self):
         super().__init__()
     
+    def hasAttr(self, attr: str):
+        return attr in self._mapper
+
     def getAttr(self, t: T, attr: str):
-        try:
+        if self.hasAttr(attr):
             self._ptree[t[4].oid] = t[3]
             return self._mapper[attr](t)
-        except KeyError:
-            raise Exception('SFQL syntax error: unrecognized attribute {0}'.format(attr))
         else:
-            raise Exception('SFQL syntax error: error caught while interpreting attribute {0}'.format(attr))
+            return attr.strip('\"')
     
   
