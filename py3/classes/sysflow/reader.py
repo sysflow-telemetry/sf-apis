@@ -168,12 +168,12 @@ class FlattenedSFReader(SFReader):
             if isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.SFHeaderClass):
                 self.header = rec
                 if self.retEntities:
-                    return (ObjectTypes.HEADER, rec, None, None, None, None)
+                    return (ObjectTypes.HEADER, rec, None, None, None, None, None, None)
             elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.ContainerClass):
                 key = rec.id
                 self.conts[key] = rec
                 if self.retEntities:
-                    return (ObjectTypes.CONT, self.header, rec, None,  None, None)
+                    return (ObjectTypes.CONT, self.header, rec, None,  None, None, None, None)
             elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.ProcessClass):
                 key = self.getProcessKey(rec.oid)
                 self.processes[key] = rec
@@ -184,7 +184,7 @@ class FlattenedSFReader(SFReader):
                             print("ERROR: Cannot find container object for record.  This should not happen.") 
                         else:
                             container = self.conts[rec.containerId]
-                    return (ObjectTypes.PROC, self.header, container, rec, None, None)
+                    return (ObjectTypes.PROC, self.header, container, None, rec, None, None, None)
             elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.FileClass):
                 key = rec.oid
                 self.files[key] = rec
@@ -195,7 +195,7 @@ class FlattenedSFReader(SFReader):
                             print("ERROR: Cannot find container object for record.  This should not happen.") 
                         else:
                             container = self.conts[rec.containerId]
-                    return (ObjectTypes.FILE, self.header, container, None, (rec, None), None)
+                    return (ObjectTypes.FILE, self.header, container, None, None, (rec, None), None, None)
             else:
                 procOID = self.getProcessKey(rec.procOID)
                 proc = None
