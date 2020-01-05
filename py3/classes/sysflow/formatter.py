@@ -161,10 +161,13 @@ class SFFormatter(object):
        
        :param reader: A reader representing the sysflow file being read.
        :type reader: sysflow.reader.FlattenedSFReader
+
+       :param defs: A list of paths to filter definitions.
+       :type defs: list
     """
-    def __init__(self, reader):  
+    def __init__(self, reader, defs=[]):  
         self.reader = reader
-        self.sfqlint = SfqlInterpreter() 
+        self.sfqlint = SfqlInterpreter(paths=defs) 
    
     def toDataframe(self, fields=None, expr=None):
         """Enables a delegate function to be applied to each JSON record read.
