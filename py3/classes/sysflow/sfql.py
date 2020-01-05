@@ -100,7 +100,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             tree = parser.definitions()
             walker.walk(self, tree)
 
-    def evaluate(self, t: T, query: str = None) -> bool:
+    def evaluate(self, t: T, query: str = None, paths: list = []) -> bool:
         """Evaluate sfql expression against flattened sysflow record t.
 
         :param reader: individual sysflow record
@@ -108,15 +108,18 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         
         :param query: sfql query. 
         :type query: str
+
+        :param paths: a list of paths to file containing sfql list and macro definitions.
+        :type paths: list
         """
         if query:
-            self.compile(query)
+            self.compile(query, paths)
             return self._criteria(t)
         if not self._criteria:
             return True
         return self._criteria(t)
     
-    def filter(self, reader, query: str = None):
+    def filter(self, reader, query: str = None, paths: list = []):
         """Filter iterable reader according to sfql expression.
 
         :param reader: sysflow reader
@@ -124,9 +127,12 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         
         :param query: sfql query. 
         :type query: str
+
+        :param paths: a list of paths to file containing sfql list and macro definitions.
+        :type paths: list
         """
         if query:
-            self.compile(query)
+            self.compile(query, paths)
         if not self._criteria:
             return reader
         return filter(lambda t: self._criteria(t), reader)

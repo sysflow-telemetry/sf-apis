@@ -167,7 +167,8 @@ class SFFormatter(object):
     """
     def __init__(self, reader, defs=[]):  
         self.reader = reader
-        self.sfqlint = SfqlInterpreter(paths=defs) 
+        self.sfqlint = SfqlInterpreter() 
+        self.defs = defs
    
     def toDataframe(self, fields=None, expr=None):
         """Enables a delegate function to be applied to each JSON record read.
@@ -184,7 +185,7 @@ class SFFormatter(object):
         """
         _r = None
         data = OrderedDict()
-        for idx, r in enumerate(self.sfqlint.filter(self.reader, expr)):
+        for idx, r in enumerate(self.sfqlint.filter(self.reader, expr, self.defs)):
             _r = self._flatten(*r, fields)
             data[idx] = _r.values()
         return pd.DataFrame.from_dict(data, orient='index', columns=_r.keys() if _r else None)        
@@ -202,7 +203,7 @@ class SFFormatter(object):
         :param expr: a sfql filter expression
         :type expr: str
         """
-        for r in self.sfqlint.filter(self.reader, expr):
+        for r in self.sfqlint.filter(self.reader, expr, self.defs):
             record = self._flatten(*r, fields) 
             func(json.dumps(record))
 
@@ -218,7 +219,7 @@ class SFFormatter(object):
         :type expr: str
         """
         __format = self._flatten if flat else self._nest 
-        for r in self.sfqlint.filter(self.reader, expr):
+        for r in self.sfqlint.filter(self.reader, expr, self.defs):
             record = __format(*r, fields) 
             print(json.dumps(record))
     
@@ -238,7 +239,7 @@ class SFFormatter(object):
         """
         __format = self._flatten if flat else self._nest         
         with open(path, mode='w') as jsonfile:
-            json.dump([__format(*r, fields) for r in self.sfqlint.filter(self.reader, expr)], jsonfile)
+            json.dump([__format(*r, fields) for r in self.sfqlint.filter(self.reader, expr, self.defs)], jsonfile)
     
     def toCsvFile(self, path, fields=None, header=True, expr=None): 
         """Writes SysFlow to CSV file.
@@ -254,7 +255,7 @@ class SFFormatter(object):
         :type expr: str
         """
         with open(path, mode='w') as csv_file:
-            for idx, r in enumerate(self.sfqlint.filter(self.reader, expr)):
+            for idx, r in enumerate(self.sfqlint.filter(self.reader, expr, self.defs)):
                 record = self._flatten(*r, fields) 
                 if idx == 0:
                   fieldnames = list(record.keys()) 
@@ -290,7 +291,7 @@ class SFFormatter(object):
         pw = len(sel) * 6 + 10
         wf = min((self._get_terminal_size()[0] - pw) / tw, 1.25)                
         
-        for idx, r in enumerate(self.sfqlint.filter(self.reader, expr)):            
+        for idx, r in enumerate(self.sfqlint.filter(self.reader, expr, self.defs)):            
             record = self._flatten(*r, fields) 
             if showindex:
                 record['idx'] = idx
