@@ -359,8 +359,8 @@ class SFFormatter(object):
         _flat_map['net.proto'] = evflow.proto if objtype == ObjectTypes.NET_FLOW else ''
         _flat_map['net.sport'] = evflow.sport if objtype == ObjectTypes.NET_FLOW else ''
         _flat_map['net.dport'] = evflow.dport if objtype == ObjectTypes.NET_FLOW else ''
-        _flat_map['net.sip'] = evflow.sip if objtype == ObjectTypes.NET_FLOW else ''
-        _flat_map['net.dip'] = evflow.dip if objtype == ObjectTypes.NET_FLOW else ''        
+        _flat_map['net.sip'] = utils.getIpIntStr(evflow.sip) if objtype == ObjectTypes.NET_FLOW else ''
+        _flat_map['net.dip'] = utils.getIpIntStr(evflow.dip) if objtype == ObjectTypes.NET_FLOW else ''        
 
         if objtype in [ObjectTypes.FILE_FLOW, ObjectTypes.FILE_EVT]:
             _flat_map['res'] = files[0].path if files and files[0] else ''
