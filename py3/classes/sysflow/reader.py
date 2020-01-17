@@ -70,7 +70,6 @@ class SFReader(object):
     
     def __next__(self):
         return self.next()
-
    
     def close(self):
         self.reader.close()
