@@ -16,15 +16,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM python:3.7-alpine
+FROM registry.access.redhat.com/ubi8/python-36
+
+# change to root user
+USER root
 
 # sources
-COPY py3 /build
+COPY py3 /tmp/build
 
 # install sysflow API
-RUN cd /build && python setup.py install && rm -r /build
+RUN cd /tmp/build && easy_install . && rm -r /tmp/build 
+
+# switch back to default user
+USER default
 
 # set timezone
 ENV TZ=UTC
 
-ENTRYPOINT ["/usr/local/bin/sysprint"]
+ENTRYPOINT ["/opt/app-root/bin/sysprint"]

@@ -16,20 +16,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 [UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...HEAD)
 ====================================================================
 
-[0.1-rc3](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc1...0.1-rc2) - 2020-01-17
+[0.1-rc3](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc2...0.1-rc3) - 2020-01-17
 ===============================================================================
 
 Added
 -------
 
-- Added support for Pandas Dataframe conversion
-- Query language and support for filtering SysFlow records (Python)
+- Added support for Pandas Dataframe conversion.
+- Query language and support for filtering SysFlow records (Python).
 
 Changed
 -------
 
-- Refactored and improved JSON converters; new JSON schema [breaking change]
-- Several bug fixes in formatting API
+- Changed sysprint's base image to ubi8/python36.
+- Refactored and improved JSON converters; new JSON schema [breaking change].
+- Several bug fixes in formatting API.
 - Increased `sf-apis` version to the latest release candidate 0.1-rc2.
 
 
