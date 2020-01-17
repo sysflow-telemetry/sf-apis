@@ -196,7 +196,7 @@ class SFFormatter(object):
         :param func: delegate function of the form func(str) 
         :type func: function
         
-        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
+        :param fields: a list of the SysFlow fields to be exported in JSON. See 
                        formatter.py for a list of fields
         :type fields: list
 
@@ -207,10 +207,25 @@ class SFFormatter(object):
             record = self._flatten(*r, fields) 
             func(json.dumps(record))
 
+    def toJson(self, fields=None, flat=False, expr=None):
+        """Writes SysFlow as JSON object.
+
+        :param fields: a list of the SysFlow fields to be exported in JSON. See 
+                       formatter.py for a list of fields
+        :type fields: list
+        :flat: specifies if JSON output should be flattened
+
+        :param expr: a sfql filter expression
+        :type expr: str
+        """
+        __format = self._flatten if flat else self._nest 
+        recs = [__format(*r, fields) for r in self.sfqlint.filter(self.reader, expr, self.defs)]
+        return json.dumps(recs)
+    
     def toJsonStdOut(self, fields=None, flat=False, expr=None):
         """Writes SysFlow as JSON to stdout.
 
-        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
+        :param fields: a list of the SysFlow fields to be exported in JSON. See 
                        formatter.py for a list of fields
         :type fields: list
         :flat: specifies if JSON output should be flattened
@@ -229,7 +244,7 @@ class SFFormatter(object):
         :param path: the full path of the output file. 
         :type path: str
         
-        :param fields: a list of the SysFlow fields to be exported in the JSON.  See 
+        :param fields: a list of the SysFlow fields to be exported in JSON. See 
                        formatter.py for a list of fields
         :type fields: list
         :flat: specifies if JSON output should be flattened
