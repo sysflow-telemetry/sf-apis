@@ -6,7 +6,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.1-rc2`](https://github.com/sysflow-telemetry/sf-exporter/blob/0.1-rc2/Dockerfile), [`latest`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile)
+-	[`0.1-rc3`](https://github.com/sysflow-telemetry/sf-exporter/blob/0.1-rc3/Dockerfile), [`latest`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile)
 
 # Quick reference
 
@@ -35,7 +35,7 @@ This image packages sysprint, which reads, prints, and converts SysFlow traces t
 The easiest way to run sysprint is from a Docker container, with host mount for the directories from where to read trace files. The following command shows how to run sysprint with trace files located in `/mnt/data` on the host.
 
 ```
-docker run --rm -v /mnt/data:/mnt/data sysflowtelemetry/sysprint /mnt/data/<trace>    
+docker run --rm -v /mnt/data:/mnt/data sysflowtelemetry/sysprint /mnt/data/<trace>
 ```
 For help, run:
 ```
