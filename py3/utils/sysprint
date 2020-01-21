@@ -18,8 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-import sys, os, argparse, tempfile
+import logging, sys, os, argparse, tempfile
 sys.path.append('.')
 from sysflow.reader import FlattenedSFReader
 from sysflow.formatter import SFFormatter
@@ -52,7 +51,7 @@ def run(args):
     """execute sysprint"""
     if args.input == 's3':
         s3 = Minio('%s:%s' % (args.s3endpoint, args.s3port), access_key=args.s3accesskey, secret_key=args.s3secretkey, secure=args.secure)
-        for path in args.paths:
+        for path in args.paths:            
             if s3.bucket_exists(path):
                 objs = s3.list_objects(path)
                 with tempfile.TemporaryDirectory() as tmpdir:
@@ -60,7 +59,7 @@ def run(args):
                         s3.fget_object(obj.bucket_name, obj.object_name, '/{0}/{1}/{2}'.format(tmpdir, obj.bucket_name, obj.object_name))
                         sysprint('/{0}/{1}/{2}'.format(tmpdir, obj.bucket_name, obj.object_name), args)
             else:
-                print('Bucket {0} does not exist.'.format(path))
+                logging.warn('Bucket {0} does not exist.'.format(path))
     elif args.input == 'local':
         for path in args.paths:
             if os.path.isfile(path):
@@ -71,7 +70,7 @@ def run(args):
                 for t in traces:
                     sysprint(t, args)
             else:
-                print('Existent file or dir path expected.')
+                logging.warn('Existent file or dir path expected.')
            
 def sysprint(trace, args):
     """print a sysflow file in human-readable format"""
@@ -80,19 +79,19 @@ def sysprint(trace, args):
     fields=args.fields.split(',') if args.fields is not None else None
     if args.output == 'json':
         if args.file is not None:
-            formatter.toJsonFile(args.file, fields=fields)
+            formatter.toJsonFile(args.file, fields=fields, expr=args.filter)
         else:
             formatter.toJsonStdOut(fields=fields)
     elif args.output == 'flatjson':
         if args.file is not None:
-            formatter.toJsonFile(args.file, fields=fields, flat=True)
+            formatter.toJsonFile(args.file, fields=fields, expr=args.filter, flat=True)
         else:
-            formatter.toJsonStdOut(fields=fields, flat=True)
+            formatter.toJsonStdOut(fields=fields, expr=args.filter, flat=True)
     elif args.output == 'csv' and args.file is not None:
-            formatter.toCsvFile(args.file, fields=fields)
+            formatter.toCsvFile(args.file, fields=fields, expr=args.filter)
     elif args.output == 'str':
-        formatter.toStdOut(fields=fields)
-    else:
+        formatter.toStdOut(fields=fields, expr=args.filter)
+    else:        
         raise argparse.ArgumentTypeError('unknown output type.')
 
 if __name__ == '__main__':
@@ -105,12 +104,12 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--input', help='input type', choices=['local','s3'], default='local')
     parser.add_argument('-o', '--output', help='output format', choices=['str','flatjson','json','csv'], default='str')
     parser.add_argument('-w', '--file', help='output file path', default=None)
-    parser.add_argument('-f', '--fields', help='comma-separated list of sysflow fields to be printed', default=None)
-    parser.add_argument('-c', '--s3endpoint', help='s3 server address from where to read sysflows', default=None) 
+    parser.add_argument('-c', '--fields', help='comma-separated list of sysflow fields to be printed', default=None)
+    parser.add_argument('-f', '--filter', help='filter expression', default=None)
+    parser.add_argument('-e', '--s3endpoint', help='s3 server address from where to read sysflows', default=None) 
     parser.add_argument('-p', '--s3port', help='s3 server port', default=443)
     parser.add_argument('-a', '--s3accesskey', help='s3 access key', default=None)
-    parser.add_argument('-s', '--s3secretkey', help='s3 secret key', default=None)
-    parser.add_argument('-l', '--s3location', help='target data bucket location', default='us-south')
+    parser.add_argument('-s', '--s3secretkey', help='s3 secret key', default=None)    
     parser.add_argument('--secure', help='indicates if SSL connection', type=str2bool, nargs='?', const=True, default=True)
   
     # parse args and configuration
@@ -119,12 +118,21 @@ if __name__ == '__main__':
     if not os.environ.get('TZ'):
         os.environ['TZ'] = 'UTC'
 
+    # setup logging
+    logging.basicConfig(level=logging.INFO, format='%(message)s')    
+
     # input validation
     if args.output == 'csv' and args.file is None:
-            raise argparse.ArgumentTypeError('output file path is required for csv output.')
+            raise argparse.ArgumentTypeError('Output file path is required for CSV output.')
     
     # run sysprint
-    run(args)
-    sys.exit(0)
+    try: 
+        run(args)
+    except (KeyboardInterrupt, SystemExit):
+        pass
+    except:
+        logging.exception('Error while executing sysprint.')
+    else:
+        sys.exit(0)
 
 
