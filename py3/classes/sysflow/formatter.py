@@ -346,7 +346,7 @@ class SFFormatter(object):
         evflow = evt or flow
         _flat_map['v'] = _version
         _flat_map['type'] = OBJECT_MAP.get(objtype,'?')
-        _flat_map['opflags'] = utils.getOpFlagsStr(evflow.opFlags) if evflow else ''
+        _flat_map['opflags'] = utils.getOpFlagsStr(evflow.opFlags).strip() if evflow else ''
         _flat_map['opflags_bitmap'] = evflow.opFlags if evflow else ''
         _flat_map['ret'] = evflow.ret if evt else '' 
         _flat_map['ts'] = utils.getTimeStr(evflow.ts) if evflow else ''
