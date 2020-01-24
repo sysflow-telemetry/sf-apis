@@ -38,7 +38,7 @@ import pandas as pd
 
 _version = '0.1-rc3'
 
-_default_fields = ['ts_uts', 'type', 'state', 'proc.exe', 'proc.args', 'pproc.pid', 'proc.pid', 'proc.tid', 'opflags', 'res', 'flow.rbytes', 'flow.wbytes', 'container.id']
+_default_fields = ['ts_uts', 'type', 'proc.exe', 'proc.args', 'pproc.pid', 'proc.pid', 'proc.tid', 'opflags', 'res', 'flow.rbytes', 'flow.wbytes', 'container.id']
 
 _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_only>)
                 'idx': ('Rec #', 6, 'Record number', False),
