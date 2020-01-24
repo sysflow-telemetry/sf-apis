@@ -80,6 +80,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'pproc.duration': ('PProc. Duration', 8, 'Process duration/time from creation (query only)', True),
                 'file.fd': ('FD', 5, 'File descriptor number', False),
                 'file.path': ('Path', 30, 'File path', False),
+                'file.newpath': ('New Path', 30, 'New file path', False),
                 'file.name': ('File Name', 30, 'File name (query only)', True),
                 'file.directory': ('Dir', 30, 'File directory (query only)', True),
                 'file.type': ('File Type', 8, 'File type (query only)', True),
@@ -354,6 +355,7 @@ class SFFormatter(object):
         _flat_map['pproc.createts'] = pproc.oid.createTS if pproc else ''
         _flat_map['file.fd'] = flow.fd if flow else ''
         _flat_map['file.path'] = files[0].path if files and files[0] else ''
+        _flat_map['file.newpath'] = files[1].path if files and files[1] else ''
         _flat_map['file.openflags'] = flow.openFlags if objtype == ObjectTypes.FILE_FLOW else ''        
         _flat_map['net.proto'] = evflow.proto if objtype == ObjectTypes.NET_FLOW else ''
         _flat_map['net.sport'] = int(evflow.sport) if objtype == ObjectTypes.NET_FLOW else None
