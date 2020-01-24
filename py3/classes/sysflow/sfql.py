@@ -5,7 +5,7 @@
 # Authors:
 # Frederico Araujo <frederico.araujo@ibm.com>
 # Teryl Taylor <terylt@ibm.com>
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -31,7 +31,7 @@ import sysflow.openflags as openflags
 
 """
 .. module:: sysflow.sfql
-   :synopsis: Query interpreter for SysFlow query language. 
+   :synopsis: Query interpreter for SysFlow query language.
 .. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
@@ -41,31 +41,31 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
     """
        **SfqlInterpreter**
 
-       This class takes a sfql expression (and optionally a file containining a library of 
-       lists and macros) and produces a predicate expression that can be matched against 
+       This class takes a sfql expression (and optionally a file containining a library of
+       lists and macros) and produces a predicate expression that can be matched against
        sysflow records.
        Example Usage::
 
             # using 'filter' to filter the input stream
             reader = FlattenedSFReader('trace.sf')
             interpreter = SfqlInterpreter()
-            query = '- sfql: type = FF'    
+            query = '- sfql: type = FF'
             for r in interpreter.filter(reader, query):
                 print(r)
-       
+
        :param interpreter: An interpreter for executing sfql expressions.
        :type interpreter: sysflow.SfqlInterpreter
     """
     _macros = {}
     _lists = {}
     _criteria = None
-    
+
     def __init__(self, query: str = None, paths: list = [], inputs: list = []):
         """Create a sfql interpreter and optionally pre-compiles input expressions.
 
-        :param query: sfql query. 
+        :param query: sfql query.
         :type query: str
-        
+
         :param paths: a list of paths to file containing sfql list and macro definitions.
         :type paths: list
 
@@ -79,9 +79,9 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
     def compile(self, query: str = None, paths: list = [], inputs: list = []):
         """Compile sfql into a predicate expression to match sysflow records.
 
-        :param query: sfql query. 
+        :param query: sfql query.
         :type query: str
-        
+
         :param paths: a list of paths to file containing sfql list and macro definitions.
         :type paths: list
 
@@ -105,8 +105,8 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
 
         :param reader: individual sysflow record
         :type t: flatttened record (as obtained from FlattenedSFReader)
-        
-        :param query: sfql query. 
+
+        :param query: sfql query.
         :type query: str
 
         :param paths: a list of paths to file containing sfql list and macro definitions.
@@ -118,14 +118,14 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         if not self._criteria:
             return True
         return self._criteria(t)
-    
+
     def filter(self, reader, query: str = None, paths: list = []):
         """Filter iterable reader according to sfql expression.
 
         :param reader: sysflow reader
         :type reader: FlattenedSFReader
-        
-        :param query: sfql query. 
+
+        :param query: sfql query.
         :type query: str
 
         :param paths: a list of paths to file containing sfql list and macro definitions.
@@ -136,14 +136,18 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         if not self._criteria:
             return reader
         return filter(lambda t: self._criteria(t), reader)
-            
-    def exitF_query(self, ctx: sfqlParser.F_queryContext):        
+
+    def getAttributes(self):
+        """Return list of attributes supported by sfql."""
+        return dict(self.mapper._mapper)
+
+    def exitF_query(self, ctx: sfqlParser.F_queryContext):
         self._criteria = self.visitExpression(ctx.expression())
 
-    def exitF_macro(self, ctx: sfqlParser.F_macroContext):        
+    def exitF_macro(self, ctx: sfqlParser.F_macroContext):
         self._macros[ctx.ID().getText()] = ctx.expression()
 
-    def exitF_list(self, ctx: sfqlParser.F_listContext):        
+    def exitF_list(self, ctx: sfqlParser.F_listContext):
         self._lists[ctx.ID().getText()] = [item.getText().strip('\"')
                                            for item in ctx.items().atom()]
 
@@ -155,7 +159,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
 
     def _getAttr(self, t: T, attr: str):
         return self.mapper.getAttr(t, attr)
-    
+
     def _evalPred(self, t: T, lop: str, pred: Callable[[str], bool]):
         return any(pred(s) for s in str(self._getAttr(t, lop)).split(','))
 
@@ -222,7 +226,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         elif ctx.PMATCH():
             lop = ctx.atom(0).getText()
             rop = self._getList(ctx)
-            return lambda t: any(self._evalPred(t, lop, lambda s: e in s) for e in rop)            
+            return lambda t: any(self._evalPred(t, lop, lambda s: e in s) for e in rop)
         else:
             raise Exception(
                 'SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
@@ -244,13 +248,13 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         return lst
 
 class SfqlMapper(Generic[T]):
-    
+
     _ptree= {}
 
     @staticmethod
     def _rgetattr(obj, attr, *args):
         def _getattr(obj, attr):
-            return getattr(obj, attr, *args) if obj else None       
+            return getattr(obj, attr, *args) if obj else None
         return reduce(_getattr, [obj] + attr.split('.'))
 
     @staticmethod
@@ -263,7 +267,7 @@ class SfqlMapper(Generic[T]):
 
     @staticmethod
     def _getContAttr(t: T, attr: str):
-        cont = t[2]        
+        cont = t[2]
         return SfqlMapper._rgetattr(cont, attr)
 
     @staticmethod
@@ -271,39 +275,39 @@ class SfqlMapper(Generic[T]):
         evflow = t[6] or t[7]
         if not evflow:
             return None
-        if attr == 'opflags':        
-            return ','.join(utils.getOpFlags(evflow.opFlags))       
+        if attr == 'opflags':
+            return ','.join(utils.getOpFlags(evflow.opFlags))
         else:
             return SfqlMapper._rgetattr(evflow, attr)
 
     @staticmethod
-    def _getProcAttr(t: T, attr: str):        
+    def _getProcAttr(t: T, attr: str):
         proc = t[4]
-        if attr == 'duration':            
+        if attr == 'duration':
             return int(time.time()) - int(proc.oid.createTs)
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
         elif attr == 'apid':
-            apid = SfqlMapper._getProcAncestry(proc.oid, 'oid.hpid', [proc.oid.hpid])            
-            return ','.join([str(i) for i in apid])        
+            apid = SfqlMapper._getProcAncestry(proc.oid, 'oid.hpid', [proc.oid.hpid])
+            return ','.join([str(i) for i in apid])
         elif attr == 'aname':
-            aname = SfqlMapper._getProcAncestry(proc.oid, 'exe', [proc.exe])            
-            return ','.join(aname)        
+            aname = SfqlMapper._getProcAncestry(proc.oid, 'exe', [proc.exe])
+            return ','.join(aname)
         else:
             return SfqlMapper._rgetattr(proc, attr)
-    
+
     @staticmethod
-    def _getProcAncestry(oid, attr: str, anc: list):        
-        pproc = SfqlMapper._ptree[oid] if oid in SfqlMapper._ptree else None       
+    def _getProcAncestry(oid, attr: str, anc: list):
+        pproc = SfqlMapper._ptree[oid] if oid in SfqlMapper._ptree else None
         return SfqlMapper._getProcAncestry(pproc.oid, attr, anc + [SfqlMapper._rgetattr(pproc, attr)]) if pproc else anc
 
     @staticmethod
-    def _getPProcAttr(t: T, attr: str):        
+    def _getPProcAttr(t: T, attr: str):
         proc = t[3]
-        if attr == 'duration':            
+        if attr == 'duration':
             return int(time.time()) - int(proc.oid.createTs)
         elif attr == 'cmdline':
-            return proc.exe + ' ' + proc.exeArgs         
+            return proc.exe + ' ' + proc.exeArgs
         else:
             return SfqlMapper._rgetattr(proc, attr)
 
@@ -312,11 +316,11 @@ class SfqlMapper(Generic[T]):
         files = t[5]
         if not files:
             return None
-        if attr == 'name':        
+        if attr == 'name':
             return SfqlMapper._getPathBasename(SfqlMapper._rgetattr(files[0], attr))
-        elif attr == 'dir':        
+        elif attr == 'dir':
             return os.path.dirname(SfqlMapper._rgetattr(files[0], attr))
-        elif attr == 'restype':        
+        elif attr == 'restype':
             return chr(SfqlMapper._rgetattr(files[0], attr))
         else:
             return SfqlMapper._rgetattr(files[0], attr)
@@ -329,11 +333,11 @@ class SfqlMapper(Generic[T]):
         if attr == 'openFlags':
             return ','.join(utils.getOpenFlags(SfqlMapper._rgetattr(evflow, attr)))
         elif attr == 'openwrite':
-            ops = utils.getOpenFlags(SfqlMapper._rgetattr(evflow, 'openFlags'))            
-            return str(any(o in ops for o in ['WRONLY', 'RDWR']))  
+            ops = utils.getOpenFlags(SfqlMapper._rgetattr(evflow, 'openFlags'))
+            return str(any(o in ops for o in ['WRONLY', 'RDWR']))
         elif attr == 'openread':
-            ops = utils.getOpenFlags(SfqlMapper._rgetattr(evflow, 'openFlags'))            
-            return str(any(o in ops for o in ['RDONLY', 'RDWR']))  
+            ops = utils.getOpenFlags(SfqlMapper._rgetattr(evflow, 'openFlags'))
+            return str(any(o in ops for o in ['RDONLY', 'RDWR']))
         else:
             return SfqlMapper._rgetattr(evflow, attr)
 
@@ -342,76 +346,76 @@ class SfqlMapper(Generic[T]):
         evflow = t[6] or t[7]
         if t[0] != ObjectTypes.NET_FLOW:
             return None
-        if attr == 'ip':        
+        if attr == 'ip':
             return ','.join([SfqlMapper._rgetattr(evflow, 'sip'), SfqlMapper._rgetattr(evflow, 'dip')])
-        elif attr == 'port':        
+        elif attr == 'port':
             return ','.join([SfqlMapper._rgetattr(evflow, 'sport'), SfqlMapper._rgetattr(evflow, 'dport')])
         else:
             return SfqlMapper._rgetattr(evflow, attr)
 
     _mapper = {
         'type': partial(_getObjType.__func__, attr='type'),
-        'opflags': partial(_getEvtFlowAttr.__func__, attr='opflags'),        
+        'opflags': partial(_getEvtFlowAttr.__func__, attr='opflags'),
         'ret': partial(_getEvtFlowAttr.__func__, attr='ret'),
         'ts': partial(_getEvtFlowAttr.__func__, attr='ts'),
-        'endts': partial(_getEvtFlowAttr.__func__, attr='endTs'),        
-        'proc.pid': partial(_getProcAttr.__func__, attr='oid.hpid'),      
-        'proc.name': partial(_getProcAttr.__func__, attr='exe'), 
-        'proc.exe': partial(_getProcAttr.__func__, attr='exe'),          
+        'endts': partial(_getEvtFlowAttr.__func__, attr='endTs'),
+        'proc.pid': partial(_getProcAttr.__func__, attr='oid.hpid'),
+        'proc.name': partial(_getProcAttr.__func__, attr='exe'),
+        'proc.exe': partial(_getProcAttr.__func__, attr='exe'),
         'proc.args': partial(_getProcAttr.__func__, attr='exeArgs'),
         'proc.uid': partial(_getProcAttr.__func__, attr='uid'),
-        'proc.username': partial(_getProcAttr.__func__, attr='userName'),
+        'proc.user': partial(_getProcAttr.__func__, attr='userName'),
         'proc.tid': partial(_getEvtFlowAttr.__func__, attr='tid'),
         'proc.gid': partial(_getProcAttr.__func__, attr='gid'),
-        'proc.groupname': partial(_getProcAttr.__func__, attr='groupName'),
+        'proc.group': partial(_getProcAttr.__func__, attr='groupName'),
         'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
         'proc.duration': partial(_getProcAttr.__func__, attr='duration'),
-        'proc.tty': partial(_getProcAttr.__func__, attr='tty'),   
+        'proc.tty': partial(_getProcAttr.__func__, attr='tty'),
         'proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
-        'proc.aname': partial(_getProcAttr.__func__, attr='aname'),   
-        'proc.apid': partial(_getProcAttr.__func__, attr='apid'),        
-        'pproc.pid': partial(_getPProcAttr.__func__, attr='oid.hpid'),      
-        'pproc.name': partial(_getPProcAttr.__func__, attr='exe'), 
-        'pproc.exe': partial(_getPProcAttr.__func__, attr='exe'),          
+        'proc.aname': partial(_getProcAttr.__func__, attr='aname'),
+        'proc.apid': partial(_getProcAttr.__func__, attr='apid'),
+        'pproc.pid': partial(_getPProcAttr.__func__, attr='oid.hpid'),
+        'pproc.name': partial(_getPProcAttr.__func__, attr='exe'),
+        'pproc.exe': partial(_getPProcAttr.__func__, attr='exe'),
         'pproc.args': partial(_getPProcAttr.__func__, attr='exeArgs'),
         'pproc.uid': partial(_getPProcAttr.__func__, attr='uid'),
-        'pproc.username': partial(_getPProcAttr.__func__, attr='userName'),
+        'pproc.user': partial(_getPProcAttr.__func__, attr='userName'),
         'pproc.gid': partial(_getPProcAttr.__func__, attr='gid'),
-        'pproc.groupname': partial(_getPProcAttr.__func__, attr='groupName'),
+        'pproc.group': partial(_getPProcAttr.__func__, attr='groupName'),
         'pproc.createts': partial(_getPProcAttr.__func__, attr='oid.createTS'),
         'pproc.duration': partial(_getPProcAttr.__func__, attr='duration'),
-        'pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),   
+        'pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),
         'pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
-        'file.name': partial(_getFileAttr.__func__, attr='name'),      
-        'file.path': partial(_getFileAttr.__func__, attr='path'), 
-        'file.directory': partial(_getFileAttr.__func__, attr='dir'), 
-        'file.type': partial(_getFileAttr.__func__, attr='restype'), 
-        'file.is_open_write': partial(_getFileFlowAttr.__func__, attr='openwrite'), 
-        'file.is_open_read': partial(_getFileFlowAttr.__func__, attr='openread'), 
-        'file.fd': partial(_getEvtFlowAttr.__func__, attr='fd'), 
-        'file.openflags': partial(_getFileFlowAttr.__func__, attr='openFlags'),                 
-        'net.proto': partial(_getNetFlowAttr.__func__, attr='proto'), 
-        'net.sport': partial(_getNetFlowAttr.__func__, attr='sport'), 
-        'net.dport': partial(_getNetFlowAttr.__func__, attr='dport'), 
-        'net.port': partial(_getNetFlowAttr.__func__, attr='port'), 
-        'net.sip': partial(_getNetFlowAttr.__func__, attr='sip'), 
-        'net.dip': partial(_getNetFlowAttr.__func__, attr='dip'), 
-        'net.ip': partial(_getNetFlowAttr.__func__, attr='ip'),         
-        'flow.rbytes': partial(_getEvtFlowAttr.__func__, attr='numRRecvBytes'), 
-        'flow.rops': partial(_getEvtFlowAttr.__func__, attr='numRRecvOps'), 
-        'flow.wbytes': partial(_getEvtFlowAttr.__func__, attr='numWSendBytes'), 
-        'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'), 
-        'container.id': partial(_getContAttr.__func__, attr='id'), 
-        'container.name': partial(_getContAttr.__func__, attr='name'), 
-        'container.imageid': partial(_getContAttr.__func__, attr='imageid'), 
-        'container.image': partial(_getContAttr.__func__, attr='image'),         
-        'container.type': partial(_getContAttr.__func__, attr='type'), 
+        'file.name': partial(_getFileAttr.__func__, attr='name'),
+        'file.path': partial(_getFileAttr.__func__, attr='path'),
+        'file.directory': partial(_getFileAttr.__func__, attr='dir'),
+        'file.type': partial(_getFileAttr.__func__, attr='restype'),
+        'file.is_open_write': partial(_getFileFlowAttr.__func__, attr='openwrite'),
+        'file.is_open_read': partial(_getFileFlowAttr.__func__, attr='openread'),
+        'file.fd': partial(_getEvtFlowAttr.__func__, attr='fd'),
+        'file.openflags': partial(_getFileFlowAttr.__func__, attr='openFlags'),
+        'net.proto': partial(_getNetFlowAttr.__func__, attr='proto'),
+        'net.sport': partial(_getNetFlowAttr.__func__, attr='sport'),
+        'net.dport': partial(_getNetFlowAttr.__func__, attr='dport'),
+        'net.port': partial(_getNetFlowAttr.__func__, attr='port'),
+        'net.sip': partial(_getNetFlowAttr.__func__, attr='sip'),
+        'net.dip': partial(_getNetFlowAttr.__func__, attr='dip'),
+        'net.ip': partial(_getNetFlowAttr.__func__, attr='ip'),
+        'flow.rbytes': partial(_getEvtFlowAttr.__func__, attr='numRRecvBytes'),
+        'flow.rops': partial(_getEvtFlowAttr.__func__, attr='numRRecvOps'),
+        'flow.wbytes': partial(_getEvtFlowAttr.__func__, attr='numWSendBytes'),
+        'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'),
+        'container.id': partial(_getContAttr.__func__, attr='id'),
+        'container.name': partial(_getContAttr.__func__, attr='name'),
+        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),
+        'container.image': partial(_getContAttr.__func__, attr='image'),
+        'container.type': partial(_getContAttr.__func__, attr='type'),
         'container.privileged': partial(_getContAttr.__func__, attr='privileged')
     }
-   
+
     def __init__(self):
         super().__init__()
-    
+
     def hasAttr(self, attr: str):
         return attr in self._mapper
 
@@ -421,5 +425,4 @@ class SfqlMapper(Generic[T]):
             return self._mapper[attr](t)
         else:
             return attr.strip('\"')
-    
-  
+

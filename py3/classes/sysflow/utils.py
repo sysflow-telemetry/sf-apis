@@ -5,7 +5,7 @@
 # Authors:
 # Frederico Araujo <frederico.araujo@ibm.com>
 # Teryl Taylor <terylt@ibm.com>
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -25,7 +25,7 @@ from collections import OrderedDict
 
 """
 .. module:: sysflow.utils
-   :synopsis: Utility functions to help transform attributes into strings. 
+   :synopsis: Utility functions to help transform attributes into strings.
 .. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
@@ -48,10 +48,10 @@ OPS_FLAG_STRINGS[opflags.OP_SETUID] = 'SETUID'
 def getOpFlagsStr(opFlags):
     """
        Converts a sysflow operations flag bitmap into a string representation.
-       
+
        :param opflag: An operations bitmap from a flow or event.
        :type opflag: int
-        
+
        :rtype: str
        :return: A string representation of the operations bitmap.
     """
@@ -65,12 +65,12 @@ def getOpFlagsStr(opFlags):
 
     if(len(ops) > 0):
         return ops
-    
+
     ops +=  "CLONE" if (opFlags & opflags.OP_CLONE) else ""
     ops +=  "EXEC" if (opFlags & opflags.OP_EXEC) else ""
     ops +=  "EXIT" if (opFlags & opflags.OP_EXIT) else ""
     ops +=  "SETUID" if (opFlags & opflags.OP_SETUID) else  ""
-    
+
     if(len(ops) > 0):
         return ops
 
@@ -90,10 +90,10 @@ def getOpFlagsStr(opFlags):
 def getOpStr(opFlags):
     """
        Converts a sysflow operations into a string representation.
-       
+
        :param opflag: An operations bitmap from a flow or event.
        :type opflag: int
-        
+
        :rtype: str
        :return: A string representation of the operations bitmap.
     """
@@ -103,10 +103,10 @@ def getOpStr(opFlags):
 def getOpFlags(opFlags):
     """
        Converts a sysflow operations flag bitmap into a set representation.
-       
+
        :param opflag: An operations bitmap from a flow or event.
        :type opflag: int
-        
+
        :rtype: set
        :return: A set representation of the operations bitmap.
     """
@@ -130,7 +130,7 @@ def getOpFlags(opFlags):
     if (opFlags & opflags.OP_SHUTDOWN):     ops.add("SHUTDOWN")
     if (opFlags & opflags.OP_CLOSE):        ops.add("CLOSE")
     if (opFlags & opflags.OP_TRUNCATE):     ops.add("TRUNCATE")
-    if (opFlags & opflags.OP_DIGEST):       ops.add("DIGEST")      
+    if (opFlags & opflags.OP_DIGEST):       ops.add("DIGEST")
     return ops
 
 def getOpFlagsDict(opFlags):
@@ -138,23 +138,23 @@ def getOpFlagsDict(opFlags):
     if (opFlags & opflags.OP_OPEN):         ops["open"] = True
     if (opFlags & opflags.OP_ACCEPT):       ops["accept"] = True
     if (opFlags & opflags.OP_CONNECT):      ops["connect"] = True
-    if (opFlags & opflags.OP_WRITE_SEND):   ops["write"] = True 
-    if (opFlags & opflags.OP_READ_RECV):    ops["read"] = True 
-    if (opFlags & opflags.OP_SETNS):        ops["setns"] = True 
-    if (opFlags & opflags.OP_MMAP):         ops["mmap"] = True 
-    if (opFlags & opflags.OP_SHUTDOWN):     ops["shutdown"] = True 
-    if (opFlags & opflags.OP_CLOSE):        ops["close"] = True 
+    if (opFlags & opflags.OP_WRITE_SEND):   ops["write"] = True
+    if (opFlags & opflags.OP_READ_RECV):    ops["read"] = True
+    if (opFlags & opflags.OP_SETNS):        ops["setns"] = True
+    if (opFlags & opflags.OP_MMAP):         ops["mmap"] = True
+    if (opFlags & opflags.OP_SHUTDOWN):     ops["shutdown"] = True
+    if (opFlags & opflags.OP_CLOSE):        ops["close"] = True
     if (opFlags & opflags.OP_TRUNCATE):     ops["truncate"] = True
-    if (opFlags & opflags.OP_DIGEST):       ops["digest"] = True 
+    if (opFlags & opflags.OP_DIGEST):       ops["digest"] = True
     return ops
 
 def getOpenFlags(openFlags):
     """
        Converts a sysflow open modes flag bitmap into a set representation.
-       
+
        :param opflag: An open modes bitmap from a flow or event.
        :type openflag: int
-        
+
        :rtype: set
        :return: A set representation of the open modes bitmap.
     """
@@ -178,18 +178,18 @@ def getOpenFlags(openFlags):
     if (openFlags & openflags.O_NOFOLLOW):      ops.add("NOFOLLOW")
     if (openFlags & openflags.O_NOATIME):       ops.add("NOATIME")
     if (openFlags & openflags.O_CLOEXEC):       ops.add("CLOEXEC")
-    if (openFlags & openflags.O_SYNC):          ops.add("SYNC")      
-    if (openFlags & openflags.O_PATH):          ops.add("PATH")      
-    if (openFlags & openflags.O_TMPFILE):       ops.add("TMPFILE")      
+    if (openFlags & openflags.O_SYNC):          ops.add("SYNC")
+    if (openFlags & openflags.O_PATH):          ops.add("PATH")
+    if (openFlags & openflags.O_TMPFILE):       ops.add("TMPFILE")
     return ops
 
 def getTimeStr(ts):
     """
        Converts a nanosecond ts into a string representation.
-       
+
        :param ts: A nanosecond epoch.
        :type ts: int
-        
+
        :rtype: str
        :return: A string representation of the timestamp in %m/%d/%YT%H:%M:%S.%f format.
     """
@@ -200,10 +200,10 @@ def getTimeStr(ts):
 def getTimeStrIso8601(ts):
     """
        Converts a nanosecond ts into a string representation in UTC time zone.
-       
+
        :param ts: A nanosecond epoch.
        :type ts: int
-        
+
        :rtype: str
        :return: A string representation of the timestamp in ISO 8601 format.
     """
@@ -213,23 +213,23 @@ def getTimeStrIso8601(ts):
 def getNetFlowStr(nf):
     """
        Converts a NetworkFlow into a string representation.
-       
+
        :param nf: a NetworkFlow object.
        :type nf: sysflow.schema_classes.SchemaClasses.sysflow.flow.NetworkFlowClass
-        
+
        :rtype: str
        :return: A string representation of the NetworkFlow in form (sip:sport-dip:dport).
     """
     sip = getIpIntStr(nf.sip)
     dip = getIpIntStr(nf.dip)
-    return str(sip) + ":" + str(nf.sport) + "-" + str(dip) + ":" + str(nf.dport)  
+    return str(sip) + ":" + str(nf.sport) + "-" + str(dip) + ":" + str(nf.dport)
 
 def getIpIntStr(ipInt):
     """
         Converts an IP address in host order integer to a string representation.
 
         :param ipInt: an IP address integer
-        
+
         :rtype: str
         :return: A string representation of the IP address
     """

@@ -5,7 +5,7 @@
 # Authors:
 # Frederico Araujo <frederico.araujo@ibm.com>
 # Teryl Taylor <terylt@ibm.com>
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -39,11 +39,11 @@
   O_FASYNC = (1 << 13)
   O_DIRECT = (1 << 14)
   O_LARGEFILE = (1 << 15)
-  O_DIRECTORY = (1 << 16) 
+  O_DIRECTORY = (1 << 16)
   O_NOFOLLOW = (1 << 17)
   O_NOATIME = (1 << 18)
   O_CLOEXEC  = (1 << 19)
-  O_SYNC = (1 << 20 | O_DSYNC) 
+  O_SYNC = (1 << 20 | O_DSYNC)
   O_PATH = (1 << 21)
   O_TMPFILE = (1 << 22)
 """
@@ -62,10 +62,10 @@ O_DSYNC = (1 << 12)
 O_FASYNC = (1 << 13)
 O_DIRECT = (1 << 14)
 O_LARGEFILE = (1 << 15)
-O_DIRECTORY = (1 << 16) 
+O_DIRECTORY = (1 << 16)
 O_NOFOLLOW = (1 << 17)
 O_NOATIME = (1 << 18)
 O_CLOEXEC  = (1 << 19)
-O_SYNC = (1 << 20 | O_DSYNC) 
+O_SYNC = (1 << 20 | O_DSYNC)
 O_PATH = (1 << 21)
 O_TMPFILE = (1 << 22)

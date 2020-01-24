@@ -5,7 +5,7 @@
 # Authors:
 # Frederico Araujo <frederico.araujo@ibm.com>
 # Teryl Taylor <terylt@ibm.com>
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -32,7 +32,7 @@ class ObjectTypes(Enum):
 
        Enumeration representing each of the object types:
           HEADER = 0,
-          CONT = 1, 
+          CONT = 1,
           PROC = 2,
           FILE = 3,
           PROC_EVT = 4,
@@ -41,7 +41,7 @@ class ObjectTypes(Enum):
           FILE_EVT = 7
     """
     HEADER = 0
-    CONT = 1 
+    CONT = 1
     PROC = 2
     FILE = 3
     PROC_EVT = 4
@@ -49,9 +49,9 @@ class ObjectTypes(Enum):
     FILE_FLOW = 6
     FILE_EVT = 7
 
-OBJECT_MAP = { 
-    ObjectTypes.HEADER: "H", 
-    ObjectTypes.CONT: "C", 
+OBJECT_MAP = {
+    ObjectTypes.HEADER: "H",
+    ObjectTypes.CONT: "C",
     ObjectTypes.PROC : "P",
     ObjectTypes.FILE : "F",
     ObjectTypes.PROC_EVT : "PE",
