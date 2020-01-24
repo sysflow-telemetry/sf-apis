@@ -322,6 +322,8 @@ class SfqlMapper(Generic[T]):
             return os.path.dirname(SfqlMapper._rgetattr(files[0], attr))
         elif attr == 'restype':
             return chr(SfqlMapper._rgetattr(files[0], attr))
+        elif attr == 'newpath':
+            return SfqlMapper._rgetattr(files[1], 'path')
         else:
             return SfqlMapper._rgetattr(files[0], attr)
 
@@ -388,6 +390,7 @@ class SfqlMapper(Generic[T]):
         'pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
         'file.name': partial(_getFileAttr.__func__, attr='name'),
         'file.path': partial(_getFileAttr.__func__, attr='path'),
+        'file.newpath': partial(_getFileAttr.__func__, attr='newpath'),
         'file.directory': partial(_getFileAttr.__func__, attr='dir'),
         'file.type': partial(_getFileAttr.__func__, attr='restype'),
         'file.is_open_write': partial(_getFileFlowAttr.__func__, attr='openwrite'),
