@@ -53,13 +53,13 @@ docker run --rm -v /mnt/data:/mnt/data sysflowtelemetry/sysprint -h
 The following command shows how to run sfnb.
 
 ```
-docker run --rm -d --name sfnb -p 8888:8888 sfnb
+docker run --rm -d --name sfnb -p 8888:8888 sysflowtelemetry/sfnb
 ```
 
 To mount example notebooks and data files into Jupyter's `work` directory, git clone this repository locally, cd into it, and run:
 
 ```
-docker run --rm -d --name sfnb --user $(id -u):$(id -g) --group-add users -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 sfnb
+docker run --rm -d --name sfnb --user $(id -u):$(id -g) --group-add users -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 sysflowtelemetry/sfnb
 ```
 
 Then, open a web browser and point it to `http://localhost:8888` (alternatively, the remote server name or IP where the notebook is hosted). To obtain the notebook authentication token, run `docker logs sfnb`.
