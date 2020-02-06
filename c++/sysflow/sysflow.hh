@@ -44,6 +44,10 @@ enum class ContainerType: unsigned {
     CT_MESOS,
     CT_RKT,
     CT_CUSTOM,
+    CT_CRI,
+    CT_CONTAINERD,
+    CT_CRIO,
+    CT_BPM,
 };
 
 struct Container {
@@ -580,7 +584,7 @@ template<> struct codec_traits<sysflow::SFHeader> {
 
 template<> struct codec_traits<sysflow::ContainerType> {
     static void encode(Encoder& e, sysflow::ContainerType v) {
-		if (v > sysflow::ContainerType::CT_CUSTOM)
+		if (v > sysflow::ContainerType::CT_BPM)
 		{
 			std::ostringstream error;
 			error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::ContainerType and cannot be encoded";
@@ -590,7 +594,7 @@ template<> struct codec_traits<sysflow::ContainerType> {
     }
     static void decode(Decoder& d, sysflow::ContainerType& v) {
 		size_t index = d.decodeEnum();
-		if (index > static_cast<size_t>(sysflow::ContainerType::CT_CUSTOM))
+		if (index > static_cast<size_t>(sysflow::ContainerType::CT_BPM))
 		{
 			std::ostringstream error;
 			error << "enum value " << index << " is out of bound for sysflow::ContainerType and cannot be decoded";

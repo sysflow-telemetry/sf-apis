@@ -27,7 +27,7 @@ output_directory = "python"
 from avrogen import write_schema_files 
 
 
-for file in glob.glob("../avsc/SysFlow.avsc"):
+for file in glob.glob("../avro/avsc/SysFlow.avsc"):
     with open(file, 'r') as myfile:
         schema_json=myfile.read().replace('\n', '')
     base=os.path.basename(file)

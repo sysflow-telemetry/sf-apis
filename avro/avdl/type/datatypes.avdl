@@ -61,7 +61,11 @@ enum ContainerType {
     CT_LIBVIRT_LXC,
     CT_MESOS,
     CT_RKT,
-    CT_CUSTOM
+    CT_CUSTOM,
+    CT_CRI,
+	CT_CONTAINERD,
+	CT_CRIO,
+	CT_BPM
 }
 
 

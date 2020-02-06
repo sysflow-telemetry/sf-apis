@@ -1,6 +1,6 @@
 #!/bin/bash
-java -jar avro-tools/avro-tools-1.8.2.jar idl avdl/sysflow.avdl ./avpr/sysflow.avpr
-java -jar avro-tools/avro-tools-1.8.2.jar idl2schemata ./avdl/sysflow.avdl avsc/
+java -jar avro-tools/avro-tools-1.9.1.jar idl avdl/sysflow.avdl ./avpr/sysflow.avpr
+java -jar avro-tools/avro-tools-1.9.1.jar idl2schemata ./avdl/sysflow.avdl avsc/
 
 # cpp stub generation
 #avrogencpp -i ./avsc/ContainerID.avsc  -o ./src/sysflow/container_id.hh -n sysflow.type

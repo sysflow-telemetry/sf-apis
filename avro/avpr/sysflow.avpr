@@ -1,6 +1,7 @@
 {
   "protocol" : "SysFlow",
   "namespace" : "sysflow",
+  "doc" : "Copyright (C) 2019 IBM Corporation.\n*\n* Authors:\n* Frederico Araujo <frederico.araujo@ibm.com>\n* Teryl Taylor <terylt@ibm.com>\n*\n* Licensed under the Apache License, Version 2.0 (the \"License\");\n* you may not use this file except in compliance with the License.\n* You may obtain a copy of the License at\n*\n*     http://www.apache.org/licenses/LICENSE-2.0\n*\n* Unless required by applicable law or agreed to in writing, software\n* distributed under the License is distributed on an \"AS IS\" BASIS,\n* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n* See the License for the specific language governing permissions and\n* limitations under the License.\n*",
   "types" : [ {
     "type" : "record",
     "name" : "OID",
@@ -34,7 +35,7 @@
     "type" : "enum",
     "name" : "ContainerType",
     "namespace" : "sysflow.type",
-    "symbols" : [ "CT_DOCKER", "CT_LXC", "CT_LIBVIRT_LXC", "CT_MESOS", "CT_RKT", "CT_CUSTOM" ]
+    "symbols" : [ "CT_DOCKER", "CT_LXC", "CT_LIBVIRT_LXC", "CT_MESOS", "CT_RKT", "CT_CUSTOM", "CT_CRI", "CT_CONTAINERD", "CT_CRIO", "CT_BPM" ]
   }, {
     "type" : "record",
     "name" : "ProcessFlow",

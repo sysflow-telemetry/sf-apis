@@ -1,0 +1,49 @@
+{
+  "type" : "record",
+  "name" : "FileEvent",
+  "namespace" : "sysflow.event",
+  "fields" : [ {
+    "name" : "procOID",
+    "type" : {
+      "type" : "record",
+      "name" : "OID",
+      "namespace" : "sysflow.type",
+      "fields" : [ {
+        "name" : "createTS",
+        "type" : {
+          "type" : "long",
+          "logicalType" : "timestamp-millis"
+        }
+      }, {
+        "name" : "hpid",
+        "type" : "long"
+      } ]
+    }
+  }, {
+    "name" : "ts",
+    "type" : {
+      "type" : "long",
+      "logicalType" : "timestamp-millis"
+    }
+  }, {
+    "name" : "tid",
+    "type" : "long"
+  }, {
+    "name" : "opFlags",
+    "type" : "int"
+  }, {
+    "name" : "fileOID",
+    "type" : {
+      "type" : "fixed",
+      "name" : "FOID",
+      "namespace" : "sysflow.type",
+      "size" : 20
+    }
+  }, {
+    "name" : "ret",
+    "type" : "int"
+  }, {
+    "name" : "newFileOID",
+    "type" : [ "null", "sysflow.type.FOID" ]
+  } ]
+}
