@@ -83,7 +83,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'file.newpath': ('New Path', 30, 'New file path', False),
                 'file.name': ('File Name', 30, 'File name (query only)', True),
                 'file.directory': ('Dir', 30, 'File directory (query only)', True),
-                'file.type': ('File Type', 8, 'File type (query only)', True),
+                'file.type': ('File Type', 8, 'File type', False),
                 'file.is_open_write': ('W', 5, 'File open with write flag (query only)', True),
                 'file.is_open_read': ('R', 5, 'File open with read flag (query only)', True),
                 'file.openflags': ('Open Flags', 5, 'File open flags', False),                
@@ -356,6 +356,7 @@ class SFFormatter(object):
         _flat_map['file.fd'] = flow.fd if flow else ''
         _flat_map['file.path'] = files[0].path if files and files[0] else ''
         _flat_map['file.newpath'] = files[1].path if files and files[1] else ''
+        _flat_map['file.type'] = chr(files[0].restype) if files and files[0] else ''
         _flat_map['file.openflags'] = flow.openFlags if objtype == ObjectTypes.FILE_FLOW else ''        
         _flat_map['net.proto'] = evflow.proto if objtype == ObjectTypes.NET_FLOW else ''
         _flat_map['net.sport'] = int(evflow.sport) if objtype == ObjectTypes.NET_FLOW else None
