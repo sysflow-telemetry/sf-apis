@@ -284,7 +284,7 @@ class SFFormatter(object):
                 sw = int(wf * (colwidths[key]))
                 w = sw if sw > 8 else colwidths[key]
                 data = '{0: <{width}}'.format('' if value is None else value, width=w)
-                record[key] = data[:w] + (data[w:] and '..')
+                record[key] = (data[w:] and '..') + data[-w:]
             bulkRecs.append(record)
             if idx > 0 and idx % 1000 == 0:
                 if first:
