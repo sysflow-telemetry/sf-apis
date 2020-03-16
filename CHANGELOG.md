@@ -15,13 +15,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...HEAD)]
 
-## [[0.1-rc3](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc2...0.1-rc3)] - 2020-01-21
+## [[0.1-rc3](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc2...0.1-rc3)] - 2020-03-17
 
 ### Added
 
 - Added support for Pandas Dataframe conversion.
 - Query language and support for filtering SysFlow records (Python).
 - Added filter option for sysprint.
+- Added SysFlow Jupyter notebook with sample notebooks and data science libraries.
 
 ### Changed
 
