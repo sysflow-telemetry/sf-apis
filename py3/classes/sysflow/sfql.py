@@ -424,7 +424,7 @@ class SfqlMapper(Generic[T]):
 
     def getAttr(self, t: T, attr: str):
         if self.hasAttr(attr):
-            self._ptree[t[4].oid] = t[3]
+            self._ptree[frozenset(t[4].oid)] = t[3]
             return self._mapper[attr](t)
         else:
             return attr.strip('\"')
