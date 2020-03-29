@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	. "github.com/sysflow-telemetry/sf-apis/go"
+	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
 )
 
 const (
@@ -16,42 +16,42 @@ const (
 func GetOpFlagsStr(opFlags int32) string {
 	var b bytes.Buffer
 	b.WriteString(func() string {
-		if opFlags&OP_MKDIR == OP_MKDIR {
+		if opFlags&sfgo.OP_MKDIR == sfgo.OP_MKDIR {
 			return "MKDIR"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_RMDIR == OP_RMDIR {
+		if opFlags&sfgo.OP_RMDIR == sfgo.OP_RMDIR {
 			return "RMDIR"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_LINK == OP_LINK {
+		if opFlags&sfgo.OP_LINK == sfgo.OP_LINK {
 			return "LINK"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_SYMLINK == OP_SYMLINK {
+		if opFlags&sfgo.OP_SYMLINK == sfgo.OP_SYMLINK {
 			return "SYMLINK"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_UNLINK == OP_UNLINK {
+		if opFlags&sfgo.OP_UNLINK == sfgo.OP_UNLINK {
 			return "UNLINK"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_RENAME == OP_RENAME {
+		if opFlags&sfgo.OP_RENAME == sfgo.OP_RENAME {
 			return "RENAME"
 		} else {
 			return ""
@@ -61,28 +61,28 @@ func GetOpFlagsStr(opFlags int32) string {
 		return b.String()
 	}
 	b.WriteString(func() string {
-		if opFlags&OP_CLONE == OP_CLONE {
+		if opFlags&sfgo.OP_CLONE == sfgo.OP_CLONE {
 			return "CLONE"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_EXEC == OP_EXEC {
+		if opFlags&sfgo.OP_EXEC == sfgo.OP_EXEC {
 			return "EXEC"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_EXIT == OP_EXIT {
+		if opFlags&sfgo.OP_EXIT == sfgo.OP_EXIT {
 			return "EXIT"
 		} else {
 			return ""
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_SETUID == OP_SETUID {
+		if opFlags&sfgo.OP_SETUID == sfgo.OP_SETUID {
 			return "SETUID"
 		} else {
 			return ""
@@ -92,77 +92,77 @@ func GetOpFlagsStr(opFlags int32) string {
 		return b.String()
 	}
 	b.WriteString(func() string {
-		if opFlags&OP_OPEN == OP_OPEN {
+		if opFlags&sfgo.OP_OPEN == sfgo.OP_OPEN {
 			return "O"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_ACCEPT == OP_ACCEPT {
+		if opFlags&sfgo.OP_ACCEPT == sfgo.OP_ACCEPT {
 			return "A"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_CONNECT == OP_CONNECT {
+		if opFlags&sfgo.OP_CONNECT == sfgo.OP_CONNECT {
 			return "C"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
+		if opFlags&sfgo.OP_WRITE_SEND == sfgo.OP_WRITE_SEND {
 			return "W"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_READ_RECV == OP_READ_RECV {
+		if opFlags&sfgo.OP_READ_RECV == sfgo.OP_READ_RECV {
 			return "R"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_SETNS == OP_SETNS {
+		if opFlags&sfgo.OP_SETNS == sfgo.OP_SETNS {
 			return "N"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_MMAP == OP_MMAP {
+		if opFlags&sfgo.OP_MMAP == sfgo.OP_MMAP {
 			return "M"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
+		if opFlags&sfgo.OP_SHUTDOWN == sfgo.OP_SHUTDOWN {
 			return "S"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_CLOSE == OP_CLOSE {
+		if opFlags&sfgo.OP_CLOSE == sfgo.OP_CLOSE {
 			return "C"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_TRUNCATE == OP_TRUNCATE {
+		if opFlags&sfgo.OP_TRUNCATE == sfgo.OP_TRUNCATE {
 			return "T"
 		} else {
 			return " "
 		}
 	}())
 	b.WriteString(func() string {
-		if opFlags&OP_DIGEST == OP_DIGEST {
+		if opFlags&sfgo.OP_DIGEST == sfgo.OP_DIGEST {
 			return "D"
 		} else {
 			return " "
@@ -193,7 +193,7 @@ func GetIPStr(ip int32) string {
 	return b.String()
 }
 
-func GetNetworkFlowStr(nf *NetworkFlow) string {
+func GetNetworkFlowStr(nf *sfgo.NetworkFlow) string {
 	var b bytes.Buffer
 	b.WriteString(GetIPStr(nf.Sip))
 	b.WriteString(":")
