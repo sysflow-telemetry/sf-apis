@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.ibm.com/sysflow/sfgo"
+	sfgo "github.com/sysflow-telemetry/sf-apis/go"
 )
 
 type SFHandler interface {
