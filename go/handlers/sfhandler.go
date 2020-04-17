@@ -18,5 +18,6 @@ type SFHandler interface {
 	HandleFileEvt(hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, file1 *sfgo.File, file2 *sfgo.File, fe *sfgo.FileEvent) error
 	HandleProcEvt(hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, pe *sfgo.ProcessEvent) error
 	SetOutChan(ch interface{})
+	Init(conf map[string]string) error
 	Cleanup()
 }
