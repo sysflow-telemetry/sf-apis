@@ -3,8 +3,6 @@ package sfgo
 import "sync"
 
 const (
-	EMPTY_STR             = ""
-	EMPTY_INT             = -1
 	TS_INT      Attribute = EV_FILE_TS_INT
 	TID_INT     Attribute = EV_FILE_TID_INT
 	OPFLAGS_INT Attribute = EV_FILE_OPFLAGS_INT
@@ -26,6 +24,15 @@ const (
 	FILE_FLOW int64 = 6
 	FILE_EVT  int64 = 7
 )
+
+// sftypes is used to obtain zero values for types used during flattening.
+type sftypes struct {
+	Int64  int64
+	String string
+}
+
+// Zeros is a zero-initialized struct used to obtain zero values for types used during flattening.
+var Zeros = sftypes{}
 
 // FlatRecord represents a flattened SysFlow record
 type FlatRecord struct {
