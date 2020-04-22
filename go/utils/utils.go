@@ -153,54 +153,178 @@ func GetOpFlagsStr(opFlags int32) string {
 
 // GetOpFlags creates a list representation of opflag strings.
 func GetOpFlags(opFlags int32) []string {
-	var ops []string
-	switch opFlags & sfgo.OP_MKDIR {
-	case sfgo.OP_MKDIR:
+	var ops = make([]string, 0)
+	if opFlags&sfgo.OP_MKDIR == sfgo.OP_MKDIR {
 		ops = append(ops, "MKDIR")
-	case sfgo.OP_RMDIR:
+	}
+	if opFlags&sfgo.OP_RMDIR == sfgo.OP_RMDIR {
 		ops = append(ops, "RMDIR")
-	case sfgo.OP_LINK:
+	}
+	if opFlags&sfgo.OP_LINK == sfgo.OP_LINK {
 		ops = append(ops, "LINK")
-	case sfgo.OP_SYMLINK:
+	}
+	if opFlags&sfgo.OP_SYMLINK == sfgo.OP_SYMLINK {
 		ops = append(ops, "SYMLINK")
-	case sfgo.OP_UNLINK:
+	}
+	if opFlags&sfgo.OP_UNLINK == sfgo.OP_UNLINK {
 		ops = append(ops, "UNLINK")
-	case sfgo.OP_RENAME:
+	}
+	if opFlags&sfgo.OP_RENAME == sfgo.OP_RENAME {
 		ops = append(ops, "RENAME")
-	case sfgo.OP_CLONE:
+	}
+	if opFlags&sfgo.OP_CLONE == sfgo.OP_CLONE {
 		ops = append(ops, "CLONE")
-	case sfgo.OP_EXEC:
+	}
+	if opFlags&sfgo.OP_EXEC == sfgo.OP_EXEC {
 		ops = append(ops, "EXEC")
-	case sfgo.OP_EXIT:
+	}
+	if opFlags&sfgo.OP_EXIT == sfgo.OP_EXIT {
 		ops = append(ops, "EXIT")
-	case sfgo.OP_SETUID:
+	}
+	if opFlags&sfgo.OP_SETUID == sfgo.OP_SETUID {
 		ops = append(ops, "SETUID")
-	case sfgo.OP_OPEN:
+	}
+	if opFlags&sfgo.OP_OPEN == sfgo.OP_OPEN {
 		ops = append(ops, "OPEN")
-	case sfgo.OP_ACCEPT:
+	}
+	if opFlags&sfgo.OP_ACCEPT == sfgo.OP_ACCEPT {
 		ops = append(ops, "ACCEPT")
-	case sfgo.OP_CONNECT:
+	}
+	if opFlags&sfgo.OP_CONNECT == sfgo.OP_CONNECT {
 		ops = append(ops, "CONNECT")
-	case sfgo.OP_WRITE_SEND:
+	}
+	if opFlags&sfgo.OP_WRITE_SEND == sfgo.OP_WRITE_SEND {
 		ops = append(ops, "WRITE")
 		ops = append(ops, "SEND")
-	case sfgo.OP_READ_RECV:
+	}
+	if opFlags&sfgo.OP_READ_RECV == sfgo.OP_READ_RECV {
 		ops = append(ops, "READ")
 		ops = append(ops, "RECV")
-	case sfgo.OP_SETNS:
+	}
+	if opFlags&sfgo.OP_SETNS == sfgo.OP_SETNS {
 		ops = append(ops, "SETNS")
-	case sfgo.OP_MMAP:
+	}
+	if opFlags&sfgo.OP_MMAP == sfgo.OP_MMAP {
 		ops = append(ops, "MMAP")
-	case sfgo.OP_SHUTDOWN:
+	}
+	if opFlags&sfgo.OP_SHUTDOWN == sfgo.OP_SHUTDOWN {
 		ops = append(ops, "SHUTDOWN")
-	case sfgo.OP_TRUNCATE:
+	}
+	if opFlags&sfgo.OP_TRUNCATE == sfgo.OP_TRUNCATE {
 		ops = append(ops, "TRUNCATE")
-	case sfgo.OP_DIGEST:
+	}
+	if opFlags&sfgo.OP_DIGEST == sfgo.OP_DIGEST {
 		ops = append(ops, "DIGEST")
+	}
+	return ops
+}
+
+// GetOpenFlags converts a sysflow open modes flag bitmap into a slice representation.
+func GetOpenFlags(flag int64) []string {
+	var flags = make([]string, 0)
+	if flag&sfgo.O_RDONLY == sfgo.O_RDONLY {
+		flags = append(flags, "RDONLY")
+	}
+	if flag&sfgo.O_WRONLY == sfgo.O_WRONLY {
+		flags = append(flags, "WRONLY")
+	}
+	if flag&sfgo.O_RDWR == sfgo.O_RDWR {
+		flags = append(flags, "RDWR")
+	}
+	if flag&sfgo.O_ACCMODE == sfgo.O_ACCMODE {
+		flags = append(flags, "ACCMODE")
+	}
+	if flag&sfgo.O_CREAT == sfgo.O_CREAT {
+		flags = append(flags, "CREAT")
+	}
+	if flag&sfgo.O_EXCL == sfgo.O_EXCL {
+		flags = append(flags, "EXCL")
+	}
+	if flag&sfgo.O_NOCTTY == sfgo.O_NOCTTY {
+		flags = append(flags, "NOCTTY")
+	}
+	if flag&sfgo.O_TRUNC == sfgo.O_TRUNC {
+		flags = append(flags, "TRUNC")
+	}
+	if flag&sfgo.O_APPEND == sfgo.O_APPEND {
+		flags = append(flags, "APPEND")
+	}
+	if flag&sfgo.O_NONBLOCK == sfgo.O_NONBLOCK {
+		flags = append(flags, "NONBLOCK")
+	}
+	if flag&sfgo.O_NDELAY == sfgo.O_NDELAY {
+		flags = append(flags, "NDELAY")
+	}
+	if flag&sfgo.O_DSYNC == sfgo.O_DSYNC {
+		flags = append(flags, "DSYNC")
+	}
+	if flag&sfgo.O_FASYNC == sfgo.O_FASYNC {
+		flags = append(flags, "FASYNC")
+	}
+	if flag&sfgo.O_DIRECT == sfgo.O_DIRECT {
+		flags = append(flags, "DIRECT")
+	}
+	if flag&sfgo.O_LARGEFILE == sfgo.O_LARGEFILE {
+		flags = append(flags, "LARGEFILE")
+	}
+	if flag&sfgo.O_DIRECTORY == sfgo.O_DIRECTORY {
+		flags = append(flags, "DIRECTORY")
+	}
+	if flag&sfgo.O_NOFOLLOW == sfgo.O_NOFOLLOW {
+		flags = append(flags, "NOFOLLOW")
+	}
+	if flag&sfgo.O_NOATIME == sfgo.O_NOATIME {
+		flags = append(flags, "NOATIME")
+	}
+	if flag&sfgo.O_CLOEXEC == sfgo.O_CLOEXEC {
+		flags = append(flags, "CLOEXEC")
+	}
+	if flag&sfgo.O_SYNC == sfgo.O_SYNC {
+		flags = append(flags, "SYNC")
+	}
+	if flag&sfgo.O_PATH == sfgo.O_PATH {
+		flags = append(flags, "PATH")
+	}
+	if flag&sfgo.O_TMPFILE == sfgo.O_TMPFILE {
+		flags = append(flags, "TMPFILE")
+	}
+	return flags
+}
+
+// GetProto returns the string representation of a L4 network protocol provided in IANA format.
+func GetProto(iana int64) string {
+	switch iana {
+	case 6:
+		return "tcp"
+	case 17:
+		return "udp"
+	case 1:
+		return "icmp"
+	case 254:
+		return "raw"
 	default:
 		break
 	}
-	return ops
+	return sfgo.Zeros.String
+}
+
+// GetFileType returns the string representation of a ASCII file type.
+func GetFileType(t int64) string {
+	return string(t)
+}
+
+// GetSockFamily returns the sock family of a socket descriptor.
+func GetSockFamily(t int64) string {
+	switch GetFileType(t) {
+	case "4":
+	case "6":
+		return "ip"
+	case "u":
+		return "unix"
+	default:
+		break
+	}
+	return sfgo.Zeros.String
 }
 
 // GetTimeStrLocal creates a formatted timestamp from a unix timestamp.
@@ -213,6 +337,11 @@ func GetTimeStrLocal(unix int64) string {
 func GetTimeStrUTC(unix int64) string {
 	tm := time.Unix(unix/nanoToSecs, 0).UTC()
 	return tm.Format(timeFormat)
+}
+
+// GetTimeUTC creates a UTC timestamp from a unix timestamp.
+func GetTimeUTC(unix int64) time.Time {
+	return time.Unix(unix/nanoToSecs, 0).UTC()
 }
 
 // GetIPStr creates a string representation of an IP address.
