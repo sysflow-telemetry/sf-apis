@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
@@ -289,6 +290,21 @@ func GetOpenFlags(flag int64) []string {
 		flags = append(flags, "TMPFILE")
 	}
 	return flags
+}
+
+// IsOpenRead checks if file flags is open for read.
+func IsOpenRead(flag int64) bool {
+	return flag&sfgo.O_RDWR == sfgo.O_RDWR || flag&sfgo.O_RDONLY == sfgo.O_RDONLY
+}
+
+// IsOpenWrite checks if file flags is open for write.
+func IsOpenWrite(flag int64) bool {
+	return flag&sfgo.O_RDWR == sfgo.O_RDWR || flag&sfgo.O_WRONLY == sfgo.O_WRONLY
+}
+
+// GetContType returns string representing container type.
+func GetContType(t int64) string {
+	return strings.ReplaceAll(sfgo.ContainerType(t).String(), "CT_", "")
 }
 
 // GetProto returns the string representation of a L4 network protocol provided in IANA format.
