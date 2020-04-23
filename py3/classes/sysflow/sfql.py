@@ -21,6 +21,7 @@
 import os, time
 from functools import reduce, partial
 from typing import Callable, Generic, TypeVar
+from frozendict import frozendict
 from antlr4 import CommonTokenStream, FileStream, InputStream, ParseTreeWalker
 from sysflow.grammar.sfqlLexer import sfqlLexer
 from sysflow.grammar.sfqlListener import sfqlListener
@@ -287,7 +288,7 @@ class SfqlMapper(Generic[T]):
             return int(time.time()) - int(proc.oid.createTs)
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
-        elif attr == 'apid':
+        elif attr == 'apid':            
             apid = SfqlMapper._getProcAncestry(proc.oid, 'oid.hpid', [proc.oid.hpid])
             return ','.join([str(i) for i in apid])
         elif attr == 'aname':
@@ -297,8 +298,8 @@ class SfqlMapper(Generic[T]):
             return SfqlMapper._rgetattr(proc, attr)
 
     @staticmethod
-    def _getProcAncestry(oid, attr: str, anc: list):
-        pproc = SfqlMapper._ptree[oid] if oid in SfqlMapper._ptree else None
+    def _getProcAncestry(oid, attr: str, anc: list):        
+        pproc = SfqlMapper._ptree[frozendict(oid)] if frozendict(oid) in SfqlMapper._ptree else None
         return SfqlMapper._getProcAncestry(pproc.oid, attr, anc + [SfqlMapper._rgetattr(pproc, attr)]) if pproc else anc
 
     @staticmethod
@@ -423,8 +424,8 @@ class SfqlMapper(Generic[T]):
         return attr in self._mapper
 
     def getAttr(self, t: T, attr: str):
-        if self.hasAttr(attr):
-            self._ptree[frozenset(t[4].oid)] = t[3]
+        if self.hasAttr(attr):            
+            self._ptree[frozendict(t[4].oid)] = t[3]
             return self._mapper[attr](t)
         else:
             return attr.strip('\"')
