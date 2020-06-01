@@ -285,7 +285,7 @@ class SfqlMapper(Generic[T]):
     def _getProcAttr(t: T, attr: str):
         proc = t[4]
         if attr == 'duration':
-            return int(time.time()) - int(proc.oid.createTs)
+            return int(time.time()) - int(proc.oid.createTS)
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
         elif attr == 'apid':            
@@ -306,7 +306,7 @@ class SfqlMapper(Generic[T]):
     def _getPProcAttr(t: T, attr: str):
         proc = t[3]
         if attr == 'duration':
-            return int(time.time()) - int(proc.oid.createTs)
+            return int(time.time()) - int(proc.oid.createTS)
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
         else:
