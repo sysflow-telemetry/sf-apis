@@ -153,7 +153,7 @@ func GetOpFlagsStr(opFlags int32) string {
 }
 
 // GetOpFlags creates a list representation of opflag strings.
-func GetOpFlags(opFlags int32) []string {
+func GetOpFlags(opFlags int32, rtype string) []string {
 	var ops = make([]string, 0)
 	if opFlags&sfgo.OP_MKDIR == sfgo.OP_MKDIR {
 		ops = append(ops, "MKDIR")
@@ -195,12 +195,18 @@ func GetOpFlags(opFlags int32) []string {
 		ops = append(ops, "CONNECT")
 	}
 	if opFlags&sfgo.OP_WRITE_SEND == sfgo.OP_WRITE_SEND {
-		ops = append(ops, "WRITE")
-		ops = append(ops, "SEND")
+		if rtype == "NF" {
+			ops = append(ops, "SEND")
+		} else {
+			ops = append(ops, "WRITE")
+		}
 	}
 	if opFlags&sfgo.OP_READ_RECV == sfgo.OP_READ_RECV {
-		ops = append(ops, "READ")
-		ops = append(ops, "RECV")
+		if rtype == "NF" {
+			ops = append(ops, "RECV")
+		} else {
+			ops = append(ops, "READ")
+		}
 	}
 	if opFlags&sfgo.OP_SETNS == sfgo.OP_SETNS {
 		ops = append(ops, "SETNS")
