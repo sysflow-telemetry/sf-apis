@@ -119,6 +119,7 @@ def getOpFlags(opFlags):
     if (opFlags & opflags.OP_RENAME):       ops.add("RENAME")
     if (opFlags & opflags.OP_CLONE):        ops.add("CLONE")
     if (opFlags & opflags.OP_EXEC):         ops.add("EXEC")
+    if (opFlags & opflags.OP_EXIT):         ops.add("EXIT")
     if (opFlags & opflags.OP_SETUID):       ops.add("SETUID")
     if (opFlags & opflags.OP_OPEN):         ops.add("OPEN")
     if (opFlags & opflags.OP_ACCEPT):       ops.add("ACCEPT")
