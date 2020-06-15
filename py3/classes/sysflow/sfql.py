@@ -269,6 +269,8 @@ class SfqlMapper(Generic[T]):
     @staticmethod
     def _getContAttr(t: T, attr: str):
         cont = t[2]
+        if not cont:
+            return None
         return SfqlMapper._rgetattr(cont, attr)
 
     @staticmethod
@@ -284,6 +286,8 @@ class SfqlMapper(Generic[T]):
     @staticmethod
     def _getProcAttr(t: T, attr: str):
         proc = t[4]
+        if not proc:
+            return None
         if attr == 'duration':
             return int(time.time()) - int(proc.oid.createTS)
         elif attr == 'cmdline':
@@ -305,6 +309,8 @@ class SfqlMapper(Generic[T]):
     @staticmethod
     def _getPProcAttr(t: T, attr: str):
         proc = t[3]
+        if not proc:
+            return None
         if attr == 'duration':
             return int(time.time()) - int(proc.oid.createTS)
         elif attr == 'cmdline':
@@ -331,7 +337,7 @@ class SfqlMapper(Generic[T]):
     @staticmethod
     def _getFileFlowAttr(t: T, attr: str):
         evflow = t[6] or t[7]
-        if t[0] != ObjectTypes.FILE_FLOW:
+        if t[0] != ObjectTypes.FILE_FLOW or not evflow:
             return None
         if attr == 'openFlags':
             return ','.join(utils.getOpenFlags(SfqlMapper._rgetattr(evflow, attr)))
@@ -347,7 +353,7 @@ class SfqlMapper(Generic[T]):
     @staticmethod
     def _getNetFlowAttr(t: T, attr: str):
         evflow = t[6] or t[7]
-        if t[0] != ObjectTypes.NET_FLOW:
+        if t[0] != ObjectTypes.NET_FLOW or not evflow:
             return None
         if attr == 'ip':
             return ','.join([SfqlMapper._rgetattr(evflow, 'sip'), SfqlMapper._rgetattr(evflow, 'dip')])
@@ -424,8 +430,9 @@ class SfqlMapper(Generic[T]):
         return attr in self._mapper
 
     def getAttr(self, t: T, attr: str):
-        if self.hasAttr(attr):            
-            self._ptree[frozendict(t[4].oid)] = t[3]
+        if self.hasAttr(attr):
+            if t[4]:            
+                self._ptree[frozendict(t[4].oid)] = t[3]
             return self._mapper[attr](t)
         else:
             return attr.strip('\"')
