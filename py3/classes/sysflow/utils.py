@@ -160,28 +160,21 @@ def getOpenFlags(openFlags):
        :return: A set representation of the open modes bitmap.
     """
     ops = set()
+    if (openFlags & openflags.O_NONE):          ops.add("NONE")
     if (openFlags & openflags.O_RDONLY):        ops.add("RDONLY")
     if (openFlags & openflags.O_WRONLY):        ops.add("WRONLY")
     if (openFlags & openflags.O_RDWR):          ops.add("RDWR")
-    if (openFlags & openflags.O_ACCMODE):       ops.add("ACCMODE")
     if (openFlags & openflags.O_CREAT):         ops.add("CREAT")
     if (openFlags & openflags.O_EXCL):          ops.add("EXCL")
-    if (openFlags & openflags.O_NOCTTY):        ops.add("NOCTTY")
     if (openFlags & openflags.O_TRUNC):         ops.add("TRUNC")
     if (openFlags & openflags.O_APPEND):        ops.add("APPEND")
-    if (openFlags & openflags.O_NONBLOCK):      ops.add("NONBLOCK")
-    if (openFlags & openflags.O_NDELAY):        ops.add("NDELAY")
-    if (openFlags & openflags.O_DSYNC):         ops.add("DSYNC")
-    if (openFlags & openflags.O_FASYNC):        ops.add("FASYNC")
+    if (openFlags & openflags.O_NONBLOCK):      ops.add("NONBLOCK")    
     if (openFlags & openflags.O_DIRECT):        ops.add("DIRECT")
     if (openFlags & openflags.O_LARGEFILE):     ops.add("LARGEFILE")
     if (openFlags & openflags.O_DIRECTORY):     ops.add("DIRECTORY")
-    if (openFlags & openflags.O_NOFOLLOW):      ops.add("NOFOLLOW")
-    if (openFlags & openflags.O_NOATIME):       ops.add("NOATIME")
     if (openFlags & openflags.O_CLOEXEC):       ops.add("CLOEXEC")
-    if (openFlags & openflags.O_SYNC):          ops.add("SYNC")
-    if (openFlags & openflags.O_PATH):          ops.add("PATH")
-    if (openFlags & openflags.O_TMPFILE):       ops.add("TMPFILE")
+    if (openFlags & openflags.O_DSYNC):         ops.add("DSYNC")  
+    if (openFlags & openflags.O_SYNC):          ops.add("SYNC")    
     return ops
 
 def getTimeStr(ts):

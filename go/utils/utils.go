@@ -229,6 +229,9 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 // GetOpenFlags converts a sysflow open modes flag bitmap into a slice representation.
 func GetOpenFlags(flag int64) []string {
 	var flags = make([]string, 0)
+	if flag&sfgo.O_NONE == sfgo.O_NONE {
+		flags = append(flags, "NONE")
+	}
 	if flag&sfgo.O_RDONLY == sfgo.O_RDONLY {
 		flags = append(flags, "RDONLY")
 	}
@@ -238,17 +241,11 @@ func GetOpenFlags(flag int64) []string {
 	if flag&sfgo.O_RDWR == sfgo.O_RDWR {
 		flags = append(flags, "RDWR")
 	}
-	if flag&sfgo.O_ACCMODE == sfgo.O_ACCMODE {
-		flags = append(flags, "ACCMODE")
-	}
 	if flag&sfgo.O_CREAT == sfgo.O_CREAT {
 		flags = append(flags, "CREAT")
 	}
 	if flag&sfgo.O_EXCL == sfgo.O_EXCL {
 		flags = append(flags, "EXCL")
-	}
-	if flag&sfgo.O_NOCTTY == sfgo.O_NOCTTY {
-		flags = append(flags, "NOCTTY")
 	}
 	if flag&sfgo.O_TRUNC == sfgo.O_TRUNC {
 		flags = append(flags, "TRUNC")
@@ -259,14 +256,8 @@ func GetOpenFlags(flag int64) []string {
 	if flag&sfgo.O_NONBLOCK == sfgo.O_NONBLOCK {
 		flags = append(flags, "NONBLOCK")
 	}
-	if flag&sfgo.O_NDELAY == sfgo.O_NDELAY {
-		flags = append(flags, "NDELAY")
-	}
 	if flag&sfgo.O_DSYNC == sfgo.O_DSYNC {
 		flags = append(flags, "DSYNC")
-	}
-	if flag&sfgo.O_FASYNC == sfgo.O_FASYNC {
-		flags = append(flags, "FASYNC")
 	}
 	if flag&sfgo.O_DIRECT == sfgo.O_DIRECT {
 		flags = append(flags, "DIRECT")
@@ -277,23 +268,11 @@ func GetOpenFlags(flag int64) []string {
 	if flag&sfgo.O_DIRECTORY == sfgo.O_DIRECTORY {
 		flags = append(flags, "DIRECTORY")
 	}
-	if flag&sfgo.O_NOFOLLOW == sfgo.O_NOFOLLOW {
-		flags = append(flags, "NOFOLLOW")
-	}
-	if flag&sfgo.O_NOATIME == sfgo.O_NOATIME {
-		flags = append(flags, "NOATIME")
-	}
 	if flag&sfgo.O_CLOEXEC == sfgo.O_CLOEXEC {
 		flags = append(flags, "CLOEXEC")
 	}
 	if flag&sfgo.O_SYNC == sfgo.O_SYNC {
 		flags = append(flags, "SYNC")
-	}
-	if flag&sfgo.O_PATH == sfgo.O_PATH {
-		flags = append(flags, "PATH")
-	}
-	if flag&sfgo.O_TMPFILE == sfgo.O_TMPFILE {
-		flags = append(flags, "TMPFILE")
 	}
 	return flags
 }
