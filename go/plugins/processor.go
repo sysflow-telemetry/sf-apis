@@ -1,4 +1,4 @@
-package processor
+package plugins
 
 import (
 	"sync"
@@ -14,7 +14,7 @@ type SFChannel struct {
 // SFProcessor defines the SysFlow processor interface.
 type SFProcessor interface {
 	Process(record interface{}, wg *sync.WaitGroup)
-	SetOutChan(ch interface{})
 	Init(conf map[string]string) error
+	Register(plugins *SFPluginCache)
 	Cleanup()
 }
