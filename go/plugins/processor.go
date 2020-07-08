@@ -15,6 +15,7 @@ type SFChannel struct {
 type SFProcessor interface {
 	Process(record interface{}, wg *sync.WaitGroup)
 	Init(conf map[string]string) error
+	Register(pc SFPluginCache)
 	SetOutChan(ch interface{})
 	Cleanup()
 }
