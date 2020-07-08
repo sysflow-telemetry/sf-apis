@@ -313,6 +313,7 @@ class SchemaClasses(object):
                         self.gid = int()
                         self.groupName = str()
                         self.tty = bool()
+                        self.entry = bool()
                         self.containerId = None
                 
                 
@@ -479,6 +480,21 @@ class SchemaClasses(object):
                     #:param bool value:
                     #"""
                     self._inner_dict['tty'] = value
+                
+                
+                @property
+                def entry(self):
+                    """
+                    :rtype: bool
+                    """
+                    return self._inner_dict.get('entry')
+                
+                @entry.setter
+                def entry(self, value):
+                    #"""
+                    #:param bool value:
+                    #"""
+                    self._inner_dict['entry'] = value
                 
                 
                 @property

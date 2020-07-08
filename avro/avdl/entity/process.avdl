@@ -33,6 +33,7 @@ record Process {
   int gid;
   string groupName;
   boolean tty;
+  boolean entry; 
   //int hostId;
   //int duration;
   //int threadCount;

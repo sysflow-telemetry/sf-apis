@@ -132,6 +132,7 @@ struct Process {
     int32_t gid;
     std::string groupName;
     bool tty;
+    bool entry;
     containerId_t containerId;
     Process() :
         state(SFObjectState()),
@@ -145,6 +146,7 @@ struct Process {
         gid(int32_t()),
         groupName(std::string()),
         tty(bool()),
+        entry(bool()),
         containerId(containerId_t())
         { }
 };
@@ -779,6 +781,7 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.gid);
         avro::encode(e, v.groupName);
         avro::encode(e, v.tty);
+        avro::encode(e, v.entry);
         avro::encode(e, v.containerId);
     }
     static void decode(Decoder& d, sysflow::Process& v) {
@@ -822,6 +825,9 @@ template<> struct codec_traits<sysflow::Process> {
                     avro::decode(d, v.tty);
                     break;
                 case 11:
+                    avro::decode(d, v.entry);
+                    break;
+                case 12:
                     avro::decode(d, v.containerId);
                     break;
                 default:
@@ -840,6 +846,7 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.gid);
             avro::decode(d, v.groupName);
             avro::decode(d, v.tty);
+            avro::decode(d, v.entry);
             avro::decode(d, v.containerId);
         }
     }

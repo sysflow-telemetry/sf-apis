@@ -58,6 +58,9 @@
     "name" : "tty",
     "type" : "boolean"
   }, {
+    "name" : "entry",
+    "type" : "boolean"
+  }, {
     "name" : "containerId",
     "type" : [ "null", "string" ]
   } ]
