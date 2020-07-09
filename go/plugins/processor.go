@@ -17,5 +17,6 @@ type SFProcessor interface {
 	Init(conf map[string]string) error
 	Register(pc SFPluginCache)
 	SetOutChan(ch interface{})
+	GetName() string
 	Cleanup()
 }
