@@ -10,9 +10,13 @@
       "namespace" : "sysflow.entity",
       "fields" : [ {
         "name" : "version",
-        "type" : "long"
+        "type" : "long",
+        "default" : 1001
       }, {
         "name" : "exporter",
+        "type" : "string"
+      }, {
+        "name" : "ip",
         "type" : "string"
       } ]
     }, {
@@ -30,6 +34,9 @@
         "type" : "string"
       }, {
         "name" : "imageid",
+        "type" : "string"
+      }, {
+        "name" : "imagerepo",
         "type" : "string"
       }, {
         "name" : "type",
@@ -338,6 +345,38 @@
       }, {
         "name" : "ret",
         "type" : "int"
+      } ]
+    }, {
+      "type" : "record",
+      "name" : "ProcessFlow",
+      "namespace" : "sysflow.flow",
+      "fields" : [ {
+        "name" : "procOID",
+        "type" : "sysflow.type.OID"
+      }, {
+        "name" : "ts",
+        "type" : {
+          "type" : "long",
+          "logicalType" : "timestamp-millis"
+        }
+      }, {
+        "name" : "numThreadsCloned",
+        "type" : "long"
+      }, {
+        "name" : "opFlags",
+        "type" : "int"
+      }, {
+        "name" : "endTs",
+        "type" : {
+          "type" : "long",
+          "logicalType" : "timestamp-millis"
+        }
+      }, {
+        "name" : "numThreadsExited",
+        "type" : "long"
+      }, {
+        "name" : "numCloneErrors",
+        "type" : "long"
       } ]
     } ]
   } ]

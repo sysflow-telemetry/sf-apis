@@ -50,7 +50,7 @@
         "logicalType" : "timestamp-millis"
       }
     }, {
-      "name" : "tid",
+      "name" : "numThreadsCloned",
       "type" : "long"
     }, {
       "name" : "opFlags",
@@ -62,14 +62,11 @@
         "logicalType" : "timestamp-millis"
       }
     }, {
-      "name" : "args",
-      "type" : {
-        "type" : "array",
-        "items" : "string"
-      }
+      "name" : "numThreadsExited",
+      "type" : "long"
     }, {
-      "name" : "ret",
-      "type" : "int"
+      "name" : "numCloneErrors",
+      "type" : "long"
     } ]
   }, {
     "type" : "record",
@@ -287,6 +284,9 @@
       "name" : "imageid",
       "type" : "string"
     }, {
+      "name" : "imagerepo",
+      "type" : "string"
+    }, {
       "name" : "type",
       "type" : "sysflow.type.ContainerType"
     }, {
@@ -346,9 +346,13 @@
     "namespace" : "sysflow.entity",
     "fields" : [ {
       "name" : "version",
-      "type" : "long"
+      "type" : "long",
+      "default" : 1001
     }, {
       "name" : "exporter",
+      "type" : "string"
+    }, {
+      "name" : "ip",
       "type" : "string"
     } ]
   }, {
@@ -382,7 +386,7 @@
     "name" : "SysFlow",
     "fields" : [ {
       "name" : "rec",
-      "type" : [ "sysflow.entity.SFHeader", "sysflow.entity.Container", "sysflow.entity.Process", "sysflow.entity.File", "sysflow.event.ProcessEvent", "sysflow.flow.NetworkFlow", "sysflow.flow.FileFlow", "sysflow.event.FileEvent", "sysflow.event.NetworkEvent" ]
+      "type" : [ "sysflow.entity.SFHeader", "sysflow.entity.Container", "sysflow.entity.Process", "sysflow.entity.File", "sysflow.event.ProcessEvent", "sysflow.flow.NetworkFlow", "sysflow.flow.FileFlow", "sysflow.event.FileEvent", "sysflow.event.NetworkEvent", "sysflow.flow.ProcessFlow" ]
     } ]
   } ],
   "messages" : { }

@@ -16,9 +16,11 @@ type SFHeader struct {
 	Version int64 `json:"version"`
 
 	Exporter string `json:"exporter"`
+
+	Ip string `json:"ip"`
 }
 
-const SFHeaderAvroCRC64Fingerprint = "\x88Y\x1c\xc9Ҟ:\x15"
+const SFHeaderAvroCRC64Fingerprint = "\xbfY\xaa\xd9;\x1b@%"
 
 func NewSFHeader() *SFHeader {
 	return &SFHeader{}
@@ -63,6 +65,10 @@ func writeSFHeader(r *SFHeader, w io.Writer) error {
 	if err != nil {
 		return err
 	}
+	err = vm.WriteString(r.Ip, w)
+	if err != nil {
+		return err
+	}
 	return err
 }
 
@@ -71,7 +77,7 @@ func (r *SFHeader) Serialize(w io.Writer) error {
 }
 
 func (r *SFHeader) Schema() string {
-	return "{\"fields\":[{\"name\":\"version\",\"type\":\"long\"},{\"name\":\"exporter\",\"type\":\"string\"}],\"name\":\"sysflow.entity.SFHeader\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"default\":1001,\"name\":\"version\",\"type\":\"long\"},{\"name\":\"exporter\",\"type\":\"string\"},{\"name\":\"ip\",\"type\":\"string\"}],\"name\":\"sysflow.entity.SFHeader\",\"type\":\"record\"}"
 }
 
 func (r *SFHeader) SchemaName() string {
@@ -93,12 +99,17 @@ func (r *SFHeader) Get(i int) types.Field {
 		return &types.Long{Target: &r.Version}
 	case 1:
 		return &types.String{Target: &r.Exporter}
+	case 2:
+		return &types.String{Target: &r.Ip}
 	}
 	panic("Unknown field index")
 }
 
 func (r *SFHeader) SetDefault(i int) {
 	switch i {
+	case 0:
+		r.Version = 1001
+		return
 	}
 	panic("Unknown field index")
 }

@@ -21,12 +21,14 @@ type Container struct {
 
 	Imageid string `json:"imageid"`
 
+	Imagerepo string `json:"imagerepo"`
+
 	Type ContainerType `json:"type"`
 
 	Privileged bool `json:"privileged"`
 }
 
-const ContainerAvroCRC64Fingerprint = "B.\x90'A\xdd\u007f>"
+const ContainerAvroCRC64Fingerprint = "5O\x12\xd4\xc53\xb1z"
 
 func NewContainer() *Container {
 	return &Container{}
@@ -79,6 +81,10 @@ func writeContainer(r *Container, w io.Writer) error {
 	if err != nil {
 		return err
 	}
+	err = vm.WriteString(r.Imagerepo, w)
+	if err != nil {
+		return err
+	}
 	err = writeContainerType(r.Type, w)
 	if err != nil {
 		return err
@@ -95,7 +101,7 @@ func (r *Container) Serialize(w io.Writer) error {
 }
 
 func (r *Container) Schema() string {
-	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"image\",\"type\":\"string\"},{\"name\":\"imageid\",\"type\":\"string\"},{\"name\":\"type\",\"type\":{\"name\":\"ContainerType\",\"namespace\":\"sysflow.type\",\"symbols\":[\"CT_DOCKER\",\"CT_LXC\",\"CT_LIBVIRT_LXC\",\"CT_MESOS\",\"CT_RKT\",\"CT_CUSTOM\",\"CT_CRI\",\"CT_CONTAINERD\",\"CT_CRIO\",\"CT_BPM\"],\"type\":\"enum\"}},{\"name\":\"privileged\",\"type\":\"boolean\"}],\"name\":\"sysflow.entity.Container\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"image\",\"type\":\"string\"},{\"name\":\"imageid\",\"type\":\"string\"},{\"name\":\"imagerepo\",\"type\":\"string\"},{\"name\":\"type\",\"type\":{\"name\":\"ContainerType\",\"namespace\":\"sysflow.type\",\"symbols\":[\"CT_DOCKER\",\"CT_LXC\",\"CT_LIBVIRT_LXC\",\"CT_MESOS\",\"CT_RKT\",\"CT_CUSTOM\",\"CT_CRI\",\"CT_CONTAINERD\",\"CT_CRIO\",\"CT_BPM\"],\"type\":\"enum\"}},{\"name\":\"privileged\",\"type\":\"boolean\"}],\"name\":\"sysflow.entity.Container\",\"type\":\"record\"}"
 }
 
 func (r *Container) SchemaName() string {
@@ -122,8 +128,10 @@ func (r *Container) Get(i int) types.Field {
 	case 3:
 		return &types.String{Target: &r.Imageid}
 	case 4:
-		return &ContainerTypeWrapper{Target: &r.Type}
+		return &types.String{Target: &r.Imagerepo}
 	case 5:
+		return &ContainerTypeWrapper{Target: &r.Type}
+	case 6:
 		return &types.Boolean{Target: &r.Privileged}
 	}
 	panic("Unknown field index")

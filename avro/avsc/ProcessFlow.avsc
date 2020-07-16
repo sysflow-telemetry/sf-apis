@@ -26,7 +26,7 @@
       "logicalType" : "timestamp-millis"
     }
   }, {
-    "name" : "tid",
+    "name" : "numThreadsCloned",
     "type" : "long"
   }, {
     "name" : "opFlags",
@@ -38,13 +38,10 @@
       "logicalType" : "timestamp-millis"
     }
   }, {
-    "name" : "args",
-    "type" : {
-      "type" : "array",
-      "items" : "string"
-    }
+    "name" : "numThreadsExited",
+    "type" : "long"
   }, {
-    "name" : "ret",
-    "type" : "int"
+    "name" : "numCloneErrors",
+    "type" : "long"
   } ]
 }
