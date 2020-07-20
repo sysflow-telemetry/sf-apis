@@ -57,17 +57,17 @@ struct Container {
     std::string name;
     std::string image;
     std::string imageid;
-    std::string imagerepo;
     ContainerType type;
     bool privileged;
+    std::string imagerepo;
     Container() :
         id(std::string()),
         name(std::string()),
         image(std::string()),
         imageid(std::string()),
-        imagerepo(std::string()),
         type(ContainerType()),
-        privileged(bool())
+        privileged(bool()),
+        imagerepo(std::string())
         { }
 };
 
@@ -136,8 +136,8 @@ struct Process {
     int32_t gid;
     std::string groupName;
     bool tty;
-    bool entry;
     containerId_t containerId;
+    bool entry;
     Process() :
         state(SFObjectState()),
         oid(OID()),
@@ -150,8 +150,8 @@ struct Process {
         gid(int32_t()),
         groupName(std::string()),
         tty(bool()),
-        entry(bool()),
-        containerId(containerId_t())
+        containerId(containerId_t()),
+        entry(bool())
         { }
 };
 
@@ -656,9 +656,9 @@ template<> struct codec_traits<sysflow::Container> {
         avro::encode(e, v.name);
         avro::encode(e, v.image);
         avro::encode(e, v.imageid);
-        avro::encode(e, v.imagerepo);
         avro::encode(e, v.type);
         avro::encode(e, v.privileged);
+        avro::encode(e, v.imagerepo);
     }
     static void decode(Decoder& d, sysflow::Container& v) {
         if (avro::ResolvingDecoder *rd =
@@ -680,13 +680,13 @@ template<> struct codec_traits<sysflow::Container> {
                     avro::decode(d, v.imageid);
                     break;
                 case 4:
-                    avro::decode(d, v.imagerepo);
-                    break;
-                case 5:
                     avro::decode(d, v.type);
                     break;
-                case 6:
+                case 5:
                     avro::decode(d, v.privileged);
+                    break;
+                case 6:
+                    avro::decode(d, v.imagerepo);
                     break;
                 default:
                     break;
@@ -697,9 +697,9 @@ template<> struct codec_traits<sysflow::Container> {
             avro::decode(d, v.name);
             avro::decode(d, v.image);
             avro::decode(d, v.imageid);
-            avro::decode(d, v.imagerepo);
             avro::decode(d, v.type);
             avro::decode(d, v.privileged);
+            avro::decode(d, v.imagerepo);
         }
     }
 };
@@ -830,8 +830,8 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.gid);
         avro::encode(e, v.groupName);
         avro::encode(e, v.tty);
-        avro::encode(e, v.entry);
         avro::encode(e, v.containerId);
+        avro::encode(e, v.entry);
     }
     static void decode(Decoder& d, sysflow::Process& v) {
         if (avro::ResolvingDecoder *rd =
@@ -874,10 +874,10 @@ template<> struct codec_traits<sysflow::Process> {
                     avro::decode(d, v.tty);
                     break;
                 case 11:
-                    avro::decode(d, v.entry);
+                    avro::decode(d, v.containerId);
                     break;
                 case 12:
-                    avro::decode(d, v.containerId);
+                    avro::decode(d, v.entry);
                     break;
                 default:
                     break;
@@ -895,8 +895,8 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.gid);
             avro::decode(d, v.groupName);
             avro::decode(d, v.tty);
-            avro::decode(d, v.entry);
             avro::decode(d, v.containerId);
+            avro::decode(d, v.entry);
         }
     }
 };
