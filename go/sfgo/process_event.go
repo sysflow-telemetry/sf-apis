@@ -95,7 +95,7 @@ func (r *ProcessEvent) Serialize(w io.Writer) error {
 }
 
 func (r *ProcessEvent) Schema() string {
-	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"tid\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"args\",\"type\":{\"items\":\"string\",\"type\":\"array\"}},{\"name\":\"ret\",\"type\":\"int\"}],\"name\":\"sysflow.event.ProcessEvent\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":\"long\"},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":\"long\"},{\"name\":\"tid\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"args\",\"type\":{\"items\":\"string\",\"type\":\"array\"}},{\"name\":\"ret\",\"type\":\"int\"}],\"name\":\"sysflow.event.ProcessEvent\",\"type\":\"record\"}"
 }
 
 func (r *ProcessEvent) SchemaName() string {

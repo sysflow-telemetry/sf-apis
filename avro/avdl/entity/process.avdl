@@ -24,7 +24,7 @@ record Process {
   sysflow.type.SFObjectState state; //sysflow process object state.. created, modified, reupped
   sysflow.type.OID oid; // monotonic process creation time + host PID
   union{null, sysflow.type.OID} poid;
-  timestamp_ms ts;
+  long ts;
   //int hpid;
   string exe;
   string exeArgs;
@@ -33,11 +33,11 @@ record Process {
   int gid;
   string groupName;
   boolean tty;
-  boolean entry; 
   //int hostId;
   //int duration;
   //int threadCount;
   //int childCount;
   union{null, string} containerId;
+  boolean entry = false; 
 }
 }

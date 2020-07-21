@@ -5,12 +5,13 @@
   "fields" : [ {
     "name" : "version",
     "type" : "long",
-    "default" : 1001
+    "default" : 2
   }, {
     "name" : "exporter",
     "type" : "string"
   }, {
     "name" : "ip",
-    "type" : "string"
+    "type" : "string",
+    "default" : "NA"
   } ]
 }

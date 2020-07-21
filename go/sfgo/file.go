@@ -95,7 +95,7 @@ func (r *File) Serialize(w io.Writer) error {
 }
 
 func (r *File) Schema() string {
-	return "{\"fields\":[{\"name\":\"state\",\"type\":{\"name\":\"SFObjectState\",\"namespace\":\"sysflow.type\",\"symbols\":[\"CREATED\",\"MODIFIED\",\"REUP\"],\"type\":\"enum\"}},{\"name\":\"oid\",\"type\":{\"name\":\"FOID\",\"namespace\":\"sysflow.type\",\"size\":20,\"type\":\"fixed\"}},{\"name\":\"ts\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"restype\",\"type\":\"int\"},{\"name\":\"path\",\"type\":\"string\"},{\"name\":\"containerId\",\"type\":[\"null\",\"string\"]}],\"name\":\"sysflow.entity.File\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"state\",\"type\":{\"name\":\"SFObjectState\",\"namespace\":\"sysflow.type\",\"symbols\":[\"CREATED\",\"MODIFIED\",\"REUP\"],\"type\":\"enum\"}},{\"name\":\"oid\",\"type\":{\"name\":\"FOID\",\"namespace\":\"sysflow.type\",\"size\":20,\"type\":\"fixed\"}},{\"name\":\"ts\",\"type\":\"long\"},{\"name\":\"restype\",\"type\":\"int\"},{\"name\":\"path\",\"type\":\"string\"},{\"name\":\"containerId\",\"type\":[\"null\",\"string\"]}],\"name\":\"sysflow.entity.File\",\"type\":\"record\"}"
 }
 
 func (r *File) SchemaName() string {

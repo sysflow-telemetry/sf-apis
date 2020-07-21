@@ -10,10 +10,7 @@
       "namespace" : "sysflow.type",
       "fields" : [ {
         "name" : "createTS",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "hpid",
         "type" : "long"
@@ -21,10 +18,7 @@
     }
   }, {
     "name" : "ts",
-    "type" : {
-      "type" : "long",
-      "logicalType" : "timestamp-millis"
-    }
+    "type" : "long"
   }, {
     "name" : "numThreadsCloned",
     "type" : "long"
@@ -33,10 +27,7 @@
     "type" : "int"
   }, {
     "name" : "endTs",
-    "type" : {
-      "type" : "long",
-      "logicalType" : "timestamp-millis"
-    }
+    "type" : "long"
   }, {
     "name" : "numThreadsExited",
     "type" : "long"

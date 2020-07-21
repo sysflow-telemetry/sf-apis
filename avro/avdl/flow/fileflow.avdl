@@ -21,11 +21,11 @@ protocol SysFlow {
 import idl "../type/datatypes.avdl";
 record FileFlow {
   sysflow.type.OID procOID; // host ID + monotonic process creation time + host PID
-  timestamp_ms ts;
+  long ts;
   long tid;
   int opFlags;
   int openFlags;
-  timestamp_ms endTs;
+  long endTs;
   sysflow.type.FOID fileOID;
   int fd;
   long numRRecvOps;

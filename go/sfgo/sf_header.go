@@ -77,7 +77,7 @@ func (r *SFHeader) Serialize(w io.Writer) error {
 }
 
 func (r *SFHeader) Schema() string {
-	return "{\"fields\":[{\"default\":1001,\"name\":\"version\",\"type\":\"long\"},{\"name\":\"exporter\",\"type\":\"string\"},{\"name\":\"ip\",\"type\":\"string\"}],\"name\":\"sysflow.entity.SFHeader\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"default\":2,\"name\":\"version\",\"type\":\"long\"},{\"name\":\"exporter\",\"type\":\"string\"},{\"default\":\"NA\",\"name\":\"ip\",\"type\":\"string\"}],\"name\":\"sysflow.entity.SFHeader\",\"type\":\"record\"}"
 }
 
 func (r *SFHeader) SchemaName() string {
@@ -108,7 +108,10 @@ func (r *SFHeader) Get(i int) types.Field {
 func (r *SFHeader) SetDefault(i int) {
 	switch i {
 	case 0:
-		r.Version = 1001
+		r.Version = 2
+		return
+	case 2:
+		r.Ip = "NA"
 		return
 	}
 	panic("Unknown field index")

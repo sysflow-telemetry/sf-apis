@@ -26,8 +26,8 @@ record Container {
   string name;
   string image;
   string imageid;
-  string imagerepo;
   sysflow.type.ContainerType type; 
   boolean privileged;
+  string imagerepo = "NA";
 }
 }

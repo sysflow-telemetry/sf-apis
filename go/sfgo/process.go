@@ -35,12 +35,12 @@ type Process struct {
 
 	Tty bool `json:"tty"`
 
-	Entry bool `json:"entry"`
-
 	ContainerId *UnionNullString `json:"containerId"`
+
+	Entry bool `json:"entry"`
 }
 
-const ProcessAvroCRC64Fingerprint = "\xd5\x03\xa5\xbam\xbcĸ"
+const ProcessAvroCRC64Fingerprint = "\x12~\xc3ίqO|"
 
 func NewProcess() *Process {
 	return &Process{}
@@ -121,11 +121,11 @@ func writeProcess(r *Process, w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	err = vm.WriteBool(r.Entry, w)
+	err = writeUnionNullString(r.ContainerId, w)
 	if err != nil {
 		return err
 	}
-	err = writeUnionNullString(r.ContainerId, w)
+	err = vm.WriteBool(r.Entry, w)
 	if err != nil {
 		return err
 	}
@@ -137,7 +137,7 @@ func (r *Process) Serialize(w io.Writer) error {
 }
 
 func (r *Process) Schema() string {
-	return "{\"fields\":[{\"name\":\"state\",\"type\":{\"name\":\"SFObjectState\",\"namespace\":\"sysflow.type\",\"symbols\":[\"CREATED\",\"MODIFIED\",\"REUP\"],\"type\":\"enum\"}},{\"name\":\"oid\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"poid\",\"type\":[\"null\",\"sysflow.type.OID\"]},{\"name\":\"ts\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"exe\",\"type\":\"string\"},{\"name\":\"exeArgs\",\"type\":\"string\"},{\"name\":\"uid\",\"type\":\"int\"},{\"name\":\"userName\",\"type\":\"string\"},{\"name\":\"gid\",\"type\":\"int\"},{\"name\":\"groupName\",\"type\":\"string\"},{\"name\":\"tty\",\"type\":\"boolean\"},{\"name\":\"entry\",\"type\":\"boolean\"},{\"name\":\"containerId\",\"type\":[\"null\",\"string\"]}],\"name\":\"sysflow.entity.Process\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"state\",\"type\":{\"name\":\"SFObjectState\",\"namespace\":\"sysflow.type\",\"symbols\":[\"CREATED\",\"MODIFIED\",\"REUP\"],\"type\":\"enum\"}},{\"name\":\"oid\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":\"long\"},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"poid\",\"type\":[\"null\",\"sysflow.type.OID\"]},{\"name\":\"ts\",\"type\":\"long\"},{\"name\":\"exe\",\"type\":\"string\"},{\"name\":\"exeArgs\",\"type\":\"string\"},{\"name\":\"uid\",\"type\":\"int\"},{\"name\":\"userName\",\"type\":\"string\"},{\"name\":\"gid\",\"type\":\"int\"},{\"name\":\"groupName\",\"type\":\"string\"},{\"name\":\"tty\",\"type\":\"boolean\"},{\"name\":\"containerId\",\"type\":[\"null\",\"string\"]},{\"default\":false,\"name\":\"entry\",\"type\":\"boolean\"}],\"name\":\"sysflow.entity.Process\",\"type\":\"record\"}"
 }
 
 func (r *Process) SchemaName() string {
@@ -182,17 +182,20 @@ func (r *Process) Get(i int) types.Field {
 	case 10:
 		return &types.Boolean{Target: &r.Tty}
 	case 11:
-		return &types.Boolean{Target: &r.Entry}
-	case 12:
 		r.ContainerId = NewUnionNullString()
 
 		return r.ContainerId
+	case 12:
+		return &types.Boolean{Target: &r.Entry}
 	}
 	panic("Unknown field index")
 }
 
 func (r *Process) SetDefault(i int) {
 	switch i {
+	case 12:
+		r.Entry = false
+		return
 	}
 	panic("Unknown field index")
 }
@@ -202,7 +205,7 @@ func (r *Process) NullField(i int) {
 	case 2:
 		r.Poid = nil
 		return
-	case 12:
+	case 11:
 		r.ContainerId = nil
 		return
 	}

@@ -8,10 +8,7 @@
     "namespace" : "sysflow.type",
     "fields" : [ {
       "name" : "createTS",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "hpid",
       "type" : "long"
@@ -45,10 +42,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "numThreadsCloned",
       "type" : "long"
@@ -57,10 +51,7 @@
       "type" : "int"
     }, {
       "name" : "endTs",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "numThreadsExited",
       "type" : "long"
@@ -77,10 +68,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -89,10 +77,7 @@
       "type" : "int"
     }, {
       "name" : "endTs",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "sip",
       "type" : "int"
@@ -133,10 +118,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -148,10 +130,7 @@
       "type" : "int"
     }, {
       "name" : "endTs",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "fileOID",
       "type" : "sysflow.type.FOID"
@@ -180,10 +159,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -209,10 +185,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -247,10 +220,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -284,14 +254,15 @@
       "name" : "imageid",
       "type" : "string"
     }, {
-      "name" : "imagerepo",
-      "type" : "string"
-    }, {
       "name" : "type",
       "type" : "sysflow.type.ContainerType"
     }, {
       "name" : "privileged",
       "type" : "boolean"
+    }, {
+      "name" : "imagerepo",
+      "type" : "string",
+      "default" : "NA"
     } ]
   }, {
     "type" : "record",
@@ -308,10 +279,7 @@
       "type" : [ "null", "sysflow.type.OID" ]
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "exe",
       "type" : "string"
@@ -334,11 +302,12 @@
       "name" : "tty",
       "type" : "boolean"
     }, {
-      "name" : "entry",
-      "type" : "boolean"
-    }, {
       "name" : "containerId",
       "type" : [ "null", "string" ]
+    }, {
+      "name" : "entry",
+      "type" : "boolean",
+      "default" : false
     } ]
   }, {
     "type" : "record",
@@ -347,13 +316,14 @@
     "fields" : [ {
       "name" : "version",
       "type" : "long",
-      "default" : 1001
+      "default" : 2
     }, {
       "name" : "exporter",
       "type" : "string"
     }, {
       "name" : "ip",
-      "type" : "string"
+      "type" : "string",
+      "default" : "NA"
     } ]
   }, {
     "type" : "record",
@@ -367,10 +337,7 @@
       "type" : "sysflow.type.FOID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "restype",
       "type" : "int"

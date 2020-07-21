@@ -71,7 +71,7 @@ func (r *OID) Serialize(w io.Writer) error {
 }
 
 func (r *OID) Schema() string {
-	return "{\"fields\":[{\"name\":\"createTS\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"sysflow.type.OID\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"createTS\",\"type\":\"long\"},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"sysflow.type.OID\",\"type\":\"record\"}"
 }
 
 func (r *OID) SchemaName() string {

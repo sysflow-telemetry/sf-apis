@@ -101,7 +101,7 @@ func (r *FileEvent) Serialize(w io.Writer) error {
 }
 
 func (r *FileEvent) Schema() string {
-	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"tid\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"fileOID\",\"type\":{\"name\":\"FOID\",\"namespace\":\"sysflow.type\",\"size\":20,\"type\":\"fixed\"}},{\"name\":\"ret\",\"type\":\"int\"},{\"name\":\"newFileOID\",\"type\":[\"null\",\"sysflow.type.FOID\"]}],\"name\":\"sysflow.event.FileEvent\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":\"long\"},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":\"long\"},{\"name\":\"tid\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"fileOID\",\"type\":{\"name\":\"FOID\",\"namespace\":\"sysflow.type\",\"size\":20,\"type\":\"fixed\"}},{\"name\":\"ret\",\"type\":\"int\"},{\"name\":\"newFileOID\",\"type\":[\"null\",\"sysflow.type.FOID\"]}],\"name\":\"sysflow.event.FileEvent\",\"type\":\"record\"}"
 }
 
 func (r *FileEvent) SchemaName() string {

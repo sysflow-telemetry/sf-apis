@@ -119,7 +119,7 @@ func (r *NetworkEvent) Serialize(w io.Writer) error {
 }
 
 func (r *NetworkEvent) Schema() string {
-	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"tid\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"sip\",\"type\":\"int\"},{\"name\":\"sport\",\"type\":\"int\"},{\"name\":\"dip\",\"type\":\"int\"},{\"name\":\"dport\",\"type\":\"int\"},{\"name\":\"proto\",\"type\":\"int\"},{\"name\":\"ret\",\"type\":\"int\"}],\"name\":\"sysflow.event.NetworkEvent\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":\"long\"},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":\"long\"},{\"name\":\"tid\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"sip\",\"type\":\"int\"},{\"name\":\"sport\",\"type\":\"int\"},{\"name\":\"dip\",\"type\":\"int\"},{\"name\":\"dport\",\"type\":\"int\"},{\"name\":\"proto\",\"type\":\"int\"},{\"name\":\"ret\",\"type\":\"int\"}],\"name\":\"sysflow.event.NetworkEvent\",\"type\":\"record\"}"
 }
 
 func (r *NetworkEvent) SchemaName() string {

@@ -346,14 +346,14 @@ class SFFormatter(object):
         _flat_map['proc.exe'] = proc.exe if proc else ''
         _flat_map['proc.args'] = proc.exeArgs if proc else ''
         _flat_map['proc.tty'] = proc.tty if proc else ''
-        _flat_map['proc.entry'] = proc.entry if proc else ''
+        _flat_map['proc.entry'] = proc.entry if proc and hasattr(proc, 'entry') else ''
         _flat_map['proc.createts'] = int(proc.oid.createTS) if proc else None        
         _flat_map['pproc.pid'] = int(pproc.oid.hpid) if pproc else None
         _flat_map['pproc.gid'] = int(pproc.gid) if pproc else None
         _flat_map['pproc.uid'] = int(pproc.uid) if pproc else None
         _flat_map['pproc.group'] = pproc.groupName if pproc else ''
         _flat_map['pproc.tty'] = pproc.tty if pproc else ''
-        _flat_map['pproc.entry'] = pproc.entry if pproc else ''
+        _flat_map['pproc.entry'] = pproc.entry if pproc and hasattr(pproc, 'entry') else ''
         _flat_map['pproc.user'] = pproc.userName if pproc else ''
         _flat_map['pproc.exe'] = pproc.exe if pproc else ''
         _flat_map['pproc.args'] = pproc.exeArgs if pproc else ''
@@ -384,7 +384,7 @@ class SFFormatter(object):
         _flat_map['container.id'] = cont.id if cont else ''
         _flat_map['container.name'] = cont.name if cont else ''
         _flat_map['container.imageid'] = cont.imageid if cont else ''
-        _flat_map['container.image.repository'] = cont.imagerepo if cont else ''
+        _flat_map['container.image.repository'] = cont.imagerepo if cont and hasattr(cont, 'imagerepo') else ''
         _flat_map['container.image'] = cont.image if cont else ''
         _flat_map['container.type'] = cont.type if cont else ''
         _flat_map['container.privileged'] = cont.privileged if cont else ''

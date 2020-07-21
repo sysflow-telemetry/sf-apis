@@ -86,9 +86,9 @@ class SchemaClasses(object):
                         self.name = str()
                         self.image = str()
                         self.imageid = str()
-                        self.imagerepo = str()
                         self.type = SchemaClasses.sysflow.type.ContainerTypeClass.CT_DOCKER
                         self.privileged = bool()
+                        self.imagerepo = SchemaClasses.sysflow.entity.ContainerClass.RECORD_SCHEMA.fields[6].default
                 
                 
                 @property
@@ -152,21 +152,6 @@ class SchemaClasses(object):
                 
                 
                 @property
-                def imagerepo(self):
-                    """
-                    :rtype: str
-                    """
-                    return self._inner_dict.get('imagerepo')
-                
-                @imagerepo.setter
-                def imagerepo(self, value):
-                    #"""
-                    #:param str value:
-                    #"""
-                    self._inner_dict['imagerepo'] = value
-                
-                
-                @property
                 def type(self):
                     """
                     :rtype: SchemaClasses.sysflow.type.ContainerTypeClass
@@ -196,6 +181,21 @@ class SchemaClasses(object):
                     self._inner_dict['privileged'] = value
                 
                 
+                @property
+                def imagerepo(self):
+                    """
+                    :rtype: str
+                    """
+                    return self._inner_dict.get('imagerepo')
+                
+                @imagerepo.setter
+                def imagerepo(self, value):
+                    #"""
+                    #:param str value:
+                    #"""
+                    self._inner_dict['imagerepo'] = value
+                
+                
             class FileClass(DictWrapper):
                 
                 """
@@ -211,6 +211,7 @@ class SchemaClasses(object):
                     if inner_dict is None:
                         self.state = SchemaClasses.sysflow.type.SFObjectStateClass.CREATED
                         self.oid = str()
+                        self.ts = int()
                         self.restype = int()
                         self.path = str()
                         self.containerId = None
@@ -322,6 +323,7 @@ class SchemaClasses(object):
                         self.state = SchemaClasses.sysflow.type.SFObjectStateClass.CREATED
                         self.oid = SchemaClasses.sysflow.type.OIDClass()
                         self.poid = None
+                        self.ts = int()
                         self.exe = str()
                         self.exeArgs = str()
                         self.uid = int()
@@ -329,8 +331,8 @@ class SchemaClasses(object):
                         self.gid = int()
                         self.groupName = str()
                         self.tty = bool()
-                        self.entry = bool()
                         self.containerId = None
+                        self.entry = SchemaClasses.sysflow.entity.ProcessClass.RECORD_SCHEMA.fields[12].default
                 
                 
                 @property
@@ -499,21 +501,6 @@ class SchemaClasses(object):
                 
                 
                 @property
-                def entry(self):
-                    """
-                    :rtype: bool
-                    """
-                    return self._inner_dict.get('entry')
-                
-                @entry.setter
-                def entry(self, value):
-                    #"""
-                    #:param bool value:
-                    #"""
-                    self._inner_dict['entry'] = value
-                
-                
-                @property
                 def containerId(self):
                     """
                     :rtype: str
@@ -526,6 +513,21 @@ class SchemaClasses(object):
                     #:param str value:
                     #"""
                     self._inner_dict['containerId'] = value
+                
+                
+                @property
+                def entry(self):
+                    """
+                    :rtype: bool
+                    """
+                    return self._inner_dict.get('entry')
+                
+                @entry.setter
+                def entry(self, value):
+                    #"""
+                    #:param bool value:
+                    #"""
+                    self._inner_dict['entry'] = value
                 
                 
             class SFHeaderClass(DictWrapper):
@@ -543,7 +545,7 @@ class SchemaClasses(object):
                     if inner_dict is None:
                         self.version = SchemaClasses.sysflow.entity.SFHeaderClass.RECORD_SCHEMA.fields[0].default
                         self.exporter = str()
-                        self.ip = str()
+                        self.ip = SchemaClasses.sysflow.entity.SFHeaderClass.RECORD_SCHEMA.fields[2].default
                 
                 
                 @property
@@ -608,6 +610,7 @@ class SchemaClasses(object):
                     super(SchemaClasses.sysflow.event.FileEventClass, self).__init__(inner_dict)
                     if inner_dict is None:
                         self.procOID = SchemaClasses.sysflow.type.OIDClass()
+                        self.ts = int()
                         self.tid = int()
                         self.opFlags = int()
                         self.fileOID = str()
@@ -734,6 +737,7 @@ class SchemaClasses(object):
                     super(SchemaClasses.sysflow.event.NetworkEventClass, self).__init__(inner_dict)
                     if inner_dict is None:
                         self.procOID = SchemaClasses.sysflow.type.OIDClass()
+                        self.ts = int()
                         self.tid = int()
                         self.opFlags = int()
                         self.sip = int()
@@ -908,6 +912,7 @@ class SchemaClasses(object):
                     super(SchemaClasses.sysflow.event.ProcessEventClass, self).__init__(inner_dict)
                     if inner_dict is None:
                         self.procOID = SchemaClasses.sysflow.type.OIDClass()
+                        self.ts = int()
                         self.tid = int()
                         self.opFlags = int()
                         self.args = list()
@@ -1021,9 +1026,11 @@ class SchemaClasses(object):
                     super(SchemaClasses.sysflow.flow.FileFlowClass, self).__init__(inner_dict)
                     if inner_dict is None:
                         self.procOID = SchemaClasses.sysflow.type.OIDClass()
+                        self.ts = int()
                         self.tid = int()
                         self.opFlags = int()
                         self.openFlags = int()
+                        self.endTs = int()
                         self.fileOID = str()
                         self.fd = int()
                         self.numRRecvOps = int()
@@ -1226,8 +1233,10 @@ class SchemaClasses(object):
                     super(SchemaClasses.sysflow.flow.NetworkFlowClass, self).__init__(inner_dict)
                     if inner_dict is None:
                         self.procOID = SchemaClasses.sysflow.type.OIDClass()
+                        self.ts = int()
                         self.tid = int()
                         self.opFlags = int()
+                        self.endTs = int()
                         self.sip = int()
                         self.sport = int()
                         self.dip = int()
@@ -1479,8 +1488,10 @@ class SchemaClasses(object):
                     super(SchemaClasses.sysflow.flow.ProcessFlowClass, self).__init__(inner_dict)
                     if inner_dict is None:
                         self.procOID = SchemaClasses.sysflow.type.OIDClass()
+                        self.ts = int()
                         self.numThreadsCloned = int()
                         self.opFlags = int()
+                        self.endTs = int()
                         self.numThreadsExited = int()
                         self.numCloneErrors = int()
                 
@@ -1623,6 +1634,7 @@ class SchemaClasses(object):
                 def __init__(self, inner_dict=None):
                     super(SchemaClasses.sysflow.type.OIDClass, self).__init__(inner_dict)
                     if inner_dict is None:
+                        self.createTS = int()
                         self.hpid = int()
                 
                 

@@ -101,7 +101,7 @@ func (r *ProcessFlow) Serialize(w io.Writer) error {
 }
 
 func (r *ProcessFlow) Schema() string {
-	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"numThreadsCloned\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"endTs\",\"type\":{\"logicalType\":\"timestamp-millis\",\"type\":\"long\"}},{\"name\":\"numThreadsExited\",\"type\":\"long\"},{\"name\":\"numCloneErrors\",\"type\":\"long\"}],\"name\":\"sysflow.flow.ProcessFlow\",\"type\":\"record\"}"
+	return "{\"fields\":[{\"name\":\"procOID\",\"type\":{\"fields\":[{\"name\":\"createTS\",\"type\":\"long\"},{\"name\":\"hpid\",\"type\":\"long\"}],\"name\":\"OID\",\"namespace\":\"sysflow.type\",\"type\":\"record\"}},{\"name\":\"ts\",\"type\":\"long\"},{\"name\":\"numThreadsCloned\",\"type\":\"long\"},{\"name\":\"opFlags\",\"type\":\"int\"},{\"name\":\"endTs\",\"type\":\"long\"},{\"name\":\"numThreadsExited\",\"type\":\"long\"},{\"name\":\"numCloneErrors\",\"type\":\"long\"}],\"name\":\"sysflow.flow.ProcessFlow\",\"type\":\"record\"}"
 }
 
 func (r *ProcessFlow) SchemaName() string {
