@@ -64,13 +64,15 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'proc.name': ('Proc. Name', 20, 'Process name (query only)', True),
                 'proc.cmdline': ('Cmd Line', 20, 'Process command line (query only)', True),
                 'proc.tty': ('TTY', 5, 'Process TTY status', False),
+                'proc.entry': ('Entry', 5, 'Process container entrypoint', False),
                 'proc.createts': ('Proc. Creation Time', 21, 'Process creation timestamp', False),
                 'proc.duration': ('Proc. Duration', 8, 'Process duration/time from creation (query only)', True),                
                 'pproc.pid': ('PPID', 8, 'Parent process ID', False),
                 'pproc.gid': ('PGID', 5, 'Parent process group ID', False),
                 'pproc.uid': ('PUID', 5, 'Parent process user ID', False),
                 'pproc.group': ('PGroup', 8, 'Parent process group name', False),
-                'pproc.tty': ('PTTY', 5, 'Parent process TTY status', False),
+		'pproc.tty': ('PTTY', 5, 'Parent process TTY status', False),
+                'pproc.entry': ('PEntry', 5, 'Parent process container entry', False),
                 'pproc.user': ('PUser', 8, 'Parent process user name', False),
                 'pproc.exe': ('PCmd', 20, 'Parent process command/filename', False),
                 'pproc.args': ('PArgs', 20, 'Parent process command arguments', False),
@@ -102,6 +104,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'container.id': ('Cont ID', 12, 'Container ID', False),
                 'container.name': ('Cont Name', 12, 'Container name', False),
                 'container.imageid': ('Image ID', 12, 'Container image ID', False),
+                'container.image.repository': ('Image Repo', 12, 'Container image repo', False),
                 'container.image': ('Image Name', 12, 'Container image name', False),
                 'container.type': ('Cont Type', 8, 'Container type', False),
                 'container.privileged': ('Privileged', 5, 'Container privilege status', False)
@@ -343,12 +346,14 @@ class SFFormatter(object):
         _flat_map['proc.exe'] = proc.exe if proc else ''
         _flat_map['proc.args'] = proc.exeArgs if proc else ''
         _flat_map['proc.tty'] = proc.tty if proc else ''
+        _flat_map['proc.entry'] = proc.entry if proc and hasattr(proc, 'entry') else ''
         _flat_map['proc.createts'] = int(proc.oid.createTS) if proc else None        
         _flat_map['pproc.pid'] = int(pproc.oid.hpid) if pproc else None
         _flat_map['pproc.gid'] = int(pproc.gid) if pproc else None
         _flat_map['pproc.uid'] = int(pproc.uid) if pproc else None
         _flat_map['pproc.group'] = pproc.groupName if pproc else ''
         _flat_map['pproc.tty'] = pproc.tty if pproc else ''
+        _flat_map['pproc.entry'] = pproc.entry if pproc and hasattr(pproc, 'entry') else ''
         _flat_map['pproc.user'] = pproc.userName if pproc else ''
         _flat_map['pproc.exe'] = pproc.exe if pproc else ''
         _flat_map['pproc.args'] = pproc.exeArgs if pproc else ''
@@ -379,6 +384,7 @@ class SFFormatter(object):
         _flat_map['container.id'] = cont.id if cont else ''
         _flat_map['container.name'] = cont.name if cont else ''
         _flat_map['container.imageid'] = cont.imageid if cont else ''
+        _flat_map['container.image.repository'] = cont.imagerepo if cont and hasattr(cont, 'imagerepo') else ''
         _flat_map['container.image'] = cont.image if cont else ''
         _flat_map['container.type'] = cont.type if cont else ''
         _flat_map['container.privileged'] = cont.privileged if cont else ''

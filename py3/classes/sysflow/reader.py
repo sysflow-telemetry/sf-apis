@@ -21,18 +21,58 @@
 import avro.io
 import io
 import sysflow
-from sysflow.objtypes import ObjectTypes
-from sysflow import SpecificDatumReader as SysFlowReader
-from avro import datafile, io
-from sysflow.schema_classes import SCHEMA as SysFlowSchema
-from avro import datafile, io
+from sysflow.objtypes import ObjectTypes, OBJ_NAME_MAP
+#from sysflow import SpecificDatumReader as SysFlowReader
+#from avro import datafile, io
+#from sysflow.schema_classes import SCHEMA as SysFlowSchema
+#from avro import datafile, io
 from uuid import UUID
+from fastavro import reader
+from types import SimpleNamespace
 
 """
 .. module:: sysflow.reader
    :synopsis: All readers for reading sysflow are defined here.
 .. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
+
+
+class NestedNamespace(SimpleNamespace):
+
+    @staticmethod
+    def mapEntry(entry):
+        if isinstance(entry, dict):
+            return NestedNamespace(**entry)
+        return entry
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for key, val in kwargs.items():
+            if isinstance(val, dict):
+                setattr(self, key, NestedNamespace(**val))
+            elif isinstance(val, list):
+                setattr(self, key, list(map(self.mapEntry, val)))
+            elif isinstance(val, tuple):
+                if len(val) == 2:
+                    obj = val[1]
+                    setattr(self, key, NestedNamespace(**obj))
+                else:
+                    setattr(self, key, tuple(map(self.mapEntry, val)))
+
+def modifySchema(schema):
+    union = schema['fields'][0]['type']
+    for obj in union:
+        removeLogicalTypes(obj)
+
+def removeLogicalTypes(obj):
+    objFields = obj['fields']
+    for t in objFields:
+        if isinstance(t['type'],dict):
+            if 'logicalType' in t['type']:
+                t['type'].pop('logicalType')
+            elif 'fields' in t['type']:
+                removeLogicalTypes(t['type'])	
+          
 
 class SFReader(object):
     """
@@ -44,13 +84,12 @@ class SFReader(object):
        Example Usage::
 
               reader = SFReader("./sysflowfile.sf")
-              for sf in reader:
-                  rec = sf.rec
-                  if isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.SFHeaderClass):
+              for name, sf in reader:
+                  if name == "sysflow.entity.SFHeader":
                      //do something with the header object
-                  elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.ContainerClass):
+                  elif name == "sysflow.entity.Container":
                      //do something with the container object
-                  elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.ProcessClass):
+                  elif name == "sysflow.entity.Process":
                      //do something with the Process object
                   ....
 
@@ -60,21 +99,23 @@ class SFReader(object):
     def __init__(self, filename):
         self.filename = filename
         self.fh = open(filename, "rb")
-        self.reader = datafile.DataFileReader(self.fh, SysFlowReader(readers_schema=SysFlowSchema))
+        self.rdr = reader(self.fh, return_record_name=True)
+        modifySchema(self.rdr.writer_schema)
 
     def __iter__(self):
         return self
 
     def next(self):
-        return next(self.reader)
-
+        record = next(self.rdr)
+        name, obj = record['rec']
+        o = NestedNamespace(**obj)
+        return OBJ_NAME_MAP[name], o
+        
     def __next__(self):
         return self.next()
 
     def close(self):
-        self.reader.close()
-
-
+        self.rdr.close()
 
 class FlattenedSFReader(SFReader):
     """
@@ -162,18 +203,17 @@ class FlattenedSFReader(SFReader):
 
     def __next__(self):
         while True:
-            sf = super().next()
-            rec = sf.rec
-            if isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.SFHeaderClass):
+            objtype, rec = super().next()
+            if objtype == ObjectTypes.HEADER:
                 self.header = rec
                 if self.retEntities:
                     return (ObjectTypes.HEADER, rec, None, None, None, None, None, None)
-            elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.ContainerClass):
+            elif objtype == ObjectTypes.CONT:
                 key = rec.id
                 self.conts[key] = rec
                 if self.retEntities:
                     return (ObjectTypes.CONT, self.header, rec, None,  None, None, None, None)
-            elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.ProcessClass):
+            elif objtype == ObjectTypes.PROC:
                 key = self.getProcessKey(rec.oid)
                 self.processes[key] = rec
                 if self.retEntities:
@@ -184,7 +224,7 @@ class FlattenedSFReader(SFReader):
                         else:
                             container = self.conts[rec.containerId]
                     return (ObjectTypes.PROC, self.header, container, None, rec, None, None, None)
-            elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.entity.FileClass):
+            elif objtype == ObjectTypes.FILE:
                 key = rec.oid
                 self.files[key] = rec
                 if self.retEntities:
@@ -204,7 +244,6 @@ class FlattenedSFReader(SFReader):
                 file2 = None
                 evt = None
                 flow = None
-                objType = ObjectTypes.NET_FLOW
                 if not procOID in self.processes:
                     print("ERROR: Cannot find process object for record. This should not happen.")
                 else:
@@ -216,10 +255,9 @@ class FlattenedSFReader(SFReader):
                             print("ERROR: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[proc.containerId]
-                if isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.event.FileEventClass):
+                if objtype == ObjectTypes.FILE_EVT:
                     fileOID = rec.fileOID
                     evt = rec
-                    objType = ObjectTypes.FILE_EVT
                     if not fileOID in self.files:
                         print("ERROR: Cannot find file object for record. This should not happen.")
                     else:
@@ -231,18 +269,16 @@ class FlattenedSFReader(SFReader):
                         else:
                            file2 = self.files[fileOID2]
 
-                elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.flow.FileFlowClass):
-                    objType = ObjectTypes.FILE_FLOW
+                elif objtype == ObjectTypes.FILE_FLOW:
                     fileOID = rec.fileOID
                     flow = rec
                     if not fileOID in self.files:
                         print("ERROR: Cannot find file object for record. This should not happen.")
                     else:
                         file1 = self.files[fileOID]
-                elif isinstance(rec, sysflow.schema_classes.SchemaClasses.sysflow.event.ProcessEventClass):
-                    objType = ObjectTypes.PROC_EVT
+                elif objtype == ObjectTypes.PROC_EVT:
                     evt = rec
                 else:
                     flow = rec
                 files = (file1, file2) if file1 is not None or file2 is not None else None
-                return (objType, self.header, container, pproc, proc, files, evt, flow)
+                return (objtype, self.header, container, pproc, proc, files, evt, flow)

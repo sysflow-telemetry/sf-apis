@@ -18,10 +18,7 @@
       "namespace" : "sysflow.type",
       "fields" : [ {
         "name" : "createTS",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "hpid",
         "type" : "long"
@@ -32,10 +29,7 @@
     "type" : [ "null", "sysflow.type.OID" ]
   }, {
     "name" : "ts",
-    "type" : {
-      "type" : "long",
-      "logicalType" : "timestamp-millis"
-    }
+    "type" : "long"
   }, {
     "name" : "exe",
     "type" : "string"
@@ -60,5 +54,9 @@
   }, {
     "name" : "containerId",
     "type" : [ "null", "string" ]
+  }, {
+    "name" : "entry",
+    "type" : "boolean",
+    "default" : false
   } ]
 }

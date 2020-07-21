@@ -4,9 +4,14 @@
   "namespace" : "sysflow.entity",
   "fields" : [ {
     "name" : "version",
-    "type" : "long"
+    "type" : "long",
+    "default" : 2
   }, {
     "name" : "exporter",
     "type" : "string"
+  }, {
+    "name" : "ip",
+    "type" : "string",
+    "default" : "NA"
   } ]
 }
