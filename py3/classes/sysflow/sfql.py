@@ -302,8 +302,9 @@ class SfqlMapper(Generic[T]):
             return SfqlMapper._rgetattr(proc, attr)
 
     @staticmethod
-    def _getProcAncestry(oid, attr: str, anc: list):        
-        pproc = SfqlMapper._ptree[frozendict(oid)] if frozendict(oid) in SfqlMapper._ptree else None
+    def _getProcAncestry(oid, attr: str, anc: list):
+        _oid = frozendict(vars(oid))        
+        pproc = SfqlMapper._ptree[_oid] if _oid in SfqlMapper._ptree else None
         return SfqlMapper._getProcAncestry(pproc.oid, attr, anc + [SfqlMapper._rgetattr(pproc, attr)]) if pproc else anc
 
     @staticmethod
@@ -380,6 +381,7 @@ class SfqlMapper(Generic[T]):
         'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
         'proc.duration': partial(_getProcAttr.__func__, attr='duration'),
         'proc.tty': partial(_getProcAttr.__func__, attr='tty'),
+        'proc.entry': partial(_getProcAttr.__func__, attr='entry'),
         'proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
         'proc.aname': partial(_getProcAttr.__func__, attr='aname'),
         'proc.apid': partial(_getProcAttr.__func__, attr='apid'),
@@ -394,6 +396,7 @@ class SfqlMapper(Generic[T]):
         'pproc.createts': partial(_getPProcAttr.__func__, attr='oid.createTS'),
         'pproc.duration': partial(_getPProcAttr.__func__, attr='duration'),
         'pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),
+        'pproc.entry': partial(_getPProcAttr.__func__, attr='entry'),
         'pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
         'file.name': partial(_getFileAttr.__func__, attr='name'),
         'file.path': partial(_getFileAttr.__func__, attr='path'),
@@ -417,8 +420,9 @@ class SfqlMapper(Generic[T]):
         'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'),
         'container.id': partial(_getContAttr.__func__, attr='id'),
         'container.name': partial(_getContAttr.__func__, attr='name'),
-        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),
+        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),        
         'container.image': partial(_getContAttr.__func__, attr='image'),
+        'container.repo': partial(_getContAttr.__func__, attr='imagerepo'),
         'container.type': partial(_getContAttr.__func__, attr='type'),
         'container.privileged': partial(_getContAttr.__func__, attr='privileged')
     }
@@ -432,7 +436,7 @@ class SfqlMapper(Generic[T]):
     def getAttr(self, t: T, attr: str):
         if self.hasAttr(attr):
             if t[4]:            
-                self._ptree[frozendict(t[4].oid)] = t[3]
+                self._ptree[frozendict(vars(t[4].oid))] = t[3]
             return self._mapper[attr](t)
         else:
             return attr.strip('\"')

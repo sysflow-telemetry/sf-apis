@@ -1,8 +1,8 @@
 FROM jupyter/minimal-notebook
 
 # Install pandas, numpy, and graphviz python bindings
-RUN pip install graphviz pandas numpy matplotlib
-RUN conda install -y graphviz
+#RUN pip install graphviz pandas numpy #matplotlib
+RUN conda install -y graphviz pandas numpy matplotlib
 
 # Change user to root
 USER root
@@ -12,14 +12,16 @@ RUN apt-get update -yqq && \
     apt-get install -yqq \
         graphviz && \
     apt-get clean -yqq && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/apt/archive/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/apt/archive/* && \
+    chmod -R 1777 /tmp
 
-# Install sysflow API
-COPY py3 /build
-RUN cd /build && python setup.py install && rm -r /build
+# Copy sources
+COPY --chown=$NB_UID:$NB_UID py3 /tmp/build
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_UID
 
-# Copy example scripts into container
-#COPY pynb /home/$NB_USER/work
+# Install sysflow API
+RUN cd /tmp/build && pip install . && rm -r /tmp/build
+
+

@@ -71,7 +71,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'pproc.gid': ('PGID', 5, 'Parent process group ID', False),
                 'pproc.uid': ('PUID', 5, 'Parent process user ID', False),
                 'pproc.group': ('PGroup', 8, 'Parent process group name', False),
-		'pproc.tty': ('PTTY', 5, 'Parent process TTY status', False),
+		        'pproc.tty': ('PTTY', 5, 'Parent process TTY status', False),
                 'pproc.entry': ('PEntry', 5, 'Parent process container entry', False),
                 'pproc.user': ('PUser', 8, 'Parent process user name', False),
                 'pproc.exe': ('PCmd', 20, 'Parent process command/filename', False),
@@ -103,9 +103,9 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'flow.wops': ('NoOpsWrite', 8, 'Flow bytes written/sent', False),
                 'container.id': ('Cont ID', 12, 'Container ID', False),
                 'container.name': ('Cont Name', 12, 'Container name', False),
-                'container.imageid': ('Image ID', 12, 'Container image ID', False),
-                'container.image.repository': ('Image Repo', 12, 'Container image repo', False),
+                'container.imageid': ('Image ID', 12, 'Container image ID', False),                
                 'container.image': ('Image Name', 12, 'Container image name', False),
+                'container.repo': ('Image Repo', 12, 'Container image repo', False),
                 'container.type': ('Cont Type', 8, 'Container type', False),
                 'container.privileged': ('Privileged', 5, 'Container privilege status', False)
           }

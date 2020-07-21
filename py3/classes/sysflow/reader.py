@@ -55,7 +55,10 @@ class NestedNamespace(SimpleNamespace):
             elif isinstance(val, tuple):
                 if len(val) == 2:
                     obj = val[1]
-                    setattr(self, key, NestedNamespace(**obj))
+                    if isinstance(obj, dict):
+                        setattr(self, key, NestedNamespace(**obj))
+                    else:
+                        setattr(self, key, obj)  
                 else:
                     setattr(self, key, tuple(map(self.mapEntry, val)))
 
@@ -108,6 +111,7 @@ class SFReader(object):
     def next(self):
         record = next(self.rdr)
         name, obj = record['rec']
+        print('{0}, {1}'.format(name, obj))
         o = NestedNamespace(**obj)
         return OBJ_NAME_MAP[name], o
         
