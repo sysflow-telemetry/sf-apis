@@ -1,7 +1,5 @@
 package sfgo
 
-import "sync"
-
 const (
 	TS_INT      Attribute = EV_FILE_TS_INT
 	TID_INT     Attribute = EV_FILE_TID_INT
@@ -40,24 +38,24 @@ type FlatRecord struct {
 	Strs [STR_ARRAY_SIZE]string
 }
 
-type FlatRecordPool struct {
-	pool *sync.Pool
-}
+// type FlatRecordPool struct {
+// 	pool *sync.Pool
+// }
 
-func NewFlatRecordPool() *FlatRecordPool {
-	p := new(FlatRecordPool)
-	p.pool = &sync.Pool{
-		New: func() interface{} {
-			return new(FlatRecord)
-		},
-	}
-	return p
-}
+// func NewFlatRecordPool() *FlatRecordPool {
+// 	p := new(FlatRecordPool)
+// 	p.pool = &sync.Pool{
+// 		New: func() interface{} {
+// 			return new(FlatRecord)
+// 		},
+// 	}
+// 	return p
+// }
 
-func (f *FlatRecordPool) Get() *FlatRecord {
-	return f.pool.Get().(*FlatRecord)
-}
+// func (f *FlatRecordPool) Get() *FlatRecord {
+// 	return f.pool.Get().(*FlatRecord)
+// }
 
-func (f *FlatRecordPool) Put(fr *FlatRecord) {
-	f.pool.Put(fr)
-}
+// func (f *FlatRecordPool) Put(fr *FlatRecord) {
+// 	f.pool.Put(fr)
+// }
