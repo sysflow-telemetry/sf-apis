@@ -18,14 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import avro.io
-import io
-import sysflow
 from sysflow.objtypes import ObjectTypes, OBJ_NAME_MAP
-#from sysflow import SpecificDatumReader as SysFlowReader
-#from avro import datafile, io
-#from sysflow.schema_classes import SCHEMA as SysFlowSchema
-#from avro import datafile, io
 from uuid import UUID
 from fastavro import reader
 from types import SimpleNamespace
@@ -129,27 +122,29 @@ class FlattenedSFReader(SFReader):
        This class supports the python iterator design pattern.
        Example Usage::
 
-              reader = FlattenedSFReader("./sysflowfile.sf", False)
-              for objtype, header, cont, proc, files, evt, flow  in reader:
-                  exe = proc.exe + ' ' + proc.exeArgs if proc is not None else ''
-                  pid = proc.oid.hpid if proc is not None else ''
-                  evflow = evt or flow
-                  tid = evflow.tid if evflow is not None else ''
-                  opFlags = utils.getOpFlagsStr(evflow.opFlags) if evflow is not None else ''
-                  sTime = utils.getTimeStr(evflow.ts) if evflow is not None else ''
-                  eTime = utils.getTimeStr(evflow.endTs) if flow is not None else ''
-                  ret = evflow.ret if evt is not None else ''
-                  res1 = ''
-                  if objtype == ObjectTypes.FILE_FLOW or objtype == ObjectTypes.FILE_EVT:
-                      res1 = files[0].path
-                  elif objtype == ObjectTypes.NET_FLOW:
-                      res1 = utils.getNetFlowStr(flow)
-                  numBReads = evflow.numRRecvBytes if flow is not None else ''
-                  numBWrites = evflow.numWSendBytes if flow is not None else ''
-
-                  res2 = files[1].path if files is not None and files[1] is not None else ''
-                  cont = cont.id if cont is not None else ''
-                  print("|{0:30}|{1:9}|{2:26}|{3:26}|{4:30}|{5:8}|{6:8}|".format(exe, opFlags, sTime, eTime, res1, numBReads, numBWrites))
+            reader = FlattenedSFReader(trace)
+            head = 20 # max number of records to print
+            for i, (objtype, header, cont, pproc, proc, files, evt, flow) in enumerate(reader):
+                exe = proc.exe
+                pid = proc.oid.hpid if proc else ''
+                evflow = evt or flow
+                tid = evflow.tid if evflow else ''
+                opFlags = utils.getOpFlagsStr(evflow.opFlags) if evflow else '' 
+                sTime = utils.getTimeStr(evflow.ts) if evflow else ''
+                eTime = utils.getTimeStr(evflow.endTs) if flow else ''
+                ret = evflow.ret if evt else ''
+                res1 = ''
+                if objtype == ObjectTypes.FILE_FLOW or objtype == ObjectTypes.FILE_EVT:
+                    res1 = files[0].path
+                elif objtype == ObjectTypes.NET_FLOW:
+                    res1 = utils.getNetFlowStr(flow) 
+                numBReads = evflow.numRRecvBytes if flow else ''
+                numBWrites = evflow.numWSendBytes if flow else ''
+                res2 = files[1].path if files and files[1] else ''
+                cont = cont.id if cont else '' 
+                print("|{0:30}|{1:9}|{2:26}|{3:26}|{4:30}|{5:8}|{6:8}|".format(exe, opFlags, sTime, eTime, res1, numBReads, numBWrites))
+                if i == head:
+                    break
 
        :param filename: the name of the sysflow file to be read.
        :type filename: str
@@ -166,6 +161,8 @@ class FlattenedSFReader(SFReader):
 
         **cont** (:class:`sysflow.entity.Container`) The container associated with the flow/evt, or None if no container.
 
+        **pproc** (:class:`sysflow.entity.Process`) The parent process associated with the flow/evt.
+        
         **proc** (:class:`sysflow.entity.Process`) The process associated with the flow/evt.
 
         **files** (tuple of :class:`sysflow.entity.File`) Any files associated with the flow/evt.
@@ -223,7 +220,7 @@ class FlattenedSFReader(SFReader):
                     container = None
                     if rec.containerId is not None:
                         if not rec.containerId in self.conts:
-                            print("ERROR: Cannot find container object for record.  This should not happen.")
+                            print("ERROR: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[rec.containerId]
                     return (ObjectTypes.PROC, self.header, container, None, rec, None, None, None)
@@ -234,7 +231,7 @@ class FlattenedSFReader(SFReader):
                     container = None
                     if rec.containerId is not None:
                         if not rec.containerId in self.conts:
-                            print("ERROR: Cannot find container object for record.  This should not happen.")
+                            print("ERROR: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[rec.containerId]
                     return (ObjectTypes.FILE, self.header, container, None, None, (rec, None), None, None)

@@ -1,8 +1,7 @@
-FROM jupyter/minimal-notebook
+FROM jupyter/scipy-notebook
 
-# Install pandas, numpy, and graphviz python bindings
-#RUN pip install graphviz pandas numpy #matplotlib
-RUN conda install -y graphviz pandas numpy matplotlib
+# Install  graphviz python bindings
+RUN conda install -y graphviz
 
 # Change user to root
 USER root
@@ -12,8 +11,7 @@ RUN apt-get update -yqq && \
     apt-get install -yqq \
         graphviz && \
     apt-get clean -yqq && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/apt/archive/* && \
-    chmod -R 1777 /tmp
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/apt/archive/*
 
 # Copy sources
 COPY --chown=$NB_UID:$NB_UID py3 /tmp/build
