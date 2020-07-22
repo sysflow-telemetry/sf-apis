@@ -110,8 +110,7 @@ class SFReader(object):
 
     def next(self):
         record = next(self.rdr)
-        name, obj = record['rec']
-        print('{0}, {1}'.format(name, obj))
+        name, obj = record['rec']        
         o = NestedNamespace(**obj)
         return OBJ_NAME_MAP[name], o
         
