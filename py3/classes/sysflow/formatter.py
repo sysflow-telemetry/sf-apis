@@ -333,9 +333,9 @@ class SFFormatter(object):
         _flat_map['opflags'] = utils.getOpFlagsStr(evflow.opFlags) if evflow else ''
         _flat_map['opflags_bitmap'] = evflow.opFlags if evflow else ''
         _flat_map['ret'] = int(evflow.ret) if evt else None
-        _flat_map['ts'] = utils.getTimeStr(evflow.ts) if evflow else ''
+        _flat_map['ts'] = utils.getTimeStrIso8601(evflow.ts) if evflow else ''
         _flat_map['ts_uts'] = int(evflow.ts) if evflow else None
-        _flat_map['endts'] = utils.getTimeStr(evflow.endTs) if flow else ''
+        _flat_map['endts'] = utils.getTimeStrIso8601(evflow.endTs) if flow else ''
         _flat_map['endts_uts'] = int(evflow.endTs) if flow else None
         _flat_map['proc.pid'] = int(proc.oid.hpid) if proc else None
         _flat_map['proc.tid'] = int(evflow.tid) if evflow else None
