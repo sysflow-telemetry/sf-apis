@@ -8,13 +8,13 @@ const (
 	ARRAY_STR Attribute = 0
 
 	SF_REC_TYPE Attribute = ARRAY_INT
-
 	//Type name:  SFHeader
 	SFHE_VERSION_INT  Attribute = SF_REC_TYPE + 1
 	SFHE_EXPORTER_STR Attribute = ARRAY_STR
+	SFHE_IP_STR       Attribute = SFHE_EXPORTER_STR + 1
 
 	//Type name:  Container
-	CONT_ID_STR         Attribute = SFHE_EXPORTER_STR + 1
+	CONT_ID_STR         Attribute = SFHE_IP_STR + 1
 	CONT_NAME_STR       Attribute = CONT_ID_STR + 1
 	CONT_IMAGE_STR      Attribute = CONT_NAME_STR + 1
 	CONT_IMAGEID_STR    Attribute = CONT_IMAGE_STR + 1
@@ -36,9 +36,10 @@ const (
 	PROC_GROUPNAME_STR          Attribute = PROC_USERNAME_STR + 1
 	PROC_TTY_INT                Attribute = PROC_GID_INT + 1
 	PROC_CONTAINERID_STRING_STR Attribute = PROC_GROUPNAME_STR + 1
+	PROC_ENTRY_INT              Attribute = PROC_TTY_INT + 1
 
 	//Type name:  File
-	FILE_STATE_INT              Attribute = PROC_TTY_INT + 1
+	FILE_STATE_INT              Attribute = PROC_ENTRY_INT + 1
 	FILE_TS_INT                 Attribute = FILE_STATE_INT + 1
 	FILE_RESTYPE_INT            Attribute = FILE_TS_INT + 1
 	FILE_PATH_STR               Attribute = PROC_CONTAINERID_STRING_STR + 1
@@ -91,6 +92,6 @@ const (
 	EV_PROC_OPFLAGS_INT Attribute = EV_PROC_TID_INT + 1
 	EV_PROC_RET_INT     Attribute = EV_PROC_OPFLAGS_INT + 1
 
-	INT_ARRAY_SIZE Attribute = 29 + 1
-	STR_ARRAY_SIZE Attribute = 13 + 1
+	INT_ARRAY_SIZE Attribute = 30 + 1
+	STR_ARRAY_SIZE Attribute = 14 + 1
 )
