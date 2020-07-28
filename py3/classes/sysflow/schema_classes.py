@@ -88,7 +88,6 @@ class SchemaClasses(object):
                         self.imageid = str()
                         self.type = SchemaClasses.sysflow.type.ContainerTypeClass.CT_DOCKER
                         self.privileged = bool()
-                        self.imagerepo = SchemaClasses.sysflow.entity.ContainerClass.RECORD_SCHEMA.fields[6].default
                 
                 
                 @property
@@ -179,21 +178,6 @@ class SchemaClasses(object):
                     #:param bool value:
                     #"""
                     self._inner_dict['privileged'] = value
-                
-                
-                @property
-                def imagerepo(self):
-                    """
-                    :rtype: str
-                    """
-                    return self._inner_dict.get('imagerepo')
-                
-                @imagerepo.setter
-                def imagerepo(self, value):
-                    #"""
-                    #:param str value:
-                    #"""
-                    self._inner_dict['imagerepo'] = value
                 
                 
             class FileClass(DictWrapper):

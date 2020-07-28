@@ -47,10 +47,6 @@
       }, {
         "name" : "privileged",
         "type" : "boolean"
-      }, {
-        "name" : "imagerepo",
-        "type" : "string",
-        "default" : "NA"
       } ]
     }, {
       "type" : "record",

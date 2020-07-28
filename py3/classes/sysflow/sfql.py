@@ -424,7 +424,6 @@ class SfqlMapper(Generic[T]):
         'container.name': partial(_getContAttr.__func__, attr='name'),
         'container.image.id': partial(_getContAttr.__func__, attr='imageid'),        
         'container.image': partial(_getContAttr.__func__, attr='image'),
-        'container.image.repository': partial(_getContAttr.__func__, attr='imagerepo'),
         'container.type': partial(_getContAttr.__func__, attr='type'),
         'container.privileged': partial(_getContAttr.__func__, attr='privileged'),
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),

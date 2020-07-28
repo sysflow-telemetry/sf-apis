@@ -1,5 +1,4 @@
 
-# Note: the commented code below is useful if using avro (as opposed to fastavro).
 
 #from .schema_classes import SchemaClasses, SCHEMA as my_schema, get_schema_type
 #from avro.io import DatumReader
@@ -27,10 +26,10 @@
 #        writers_schema = kwargs.pop("writer_schema", writers_schema)
 #        super(SpecificDatumReader, self).__init__(writers_schema, readers_schema, **kwargs)
 #    def read_record(self, writers_schema, readers_schema, decoder):
-#        
+        
 #        result = super(SpecificDatumReader, self).read_record(writers_schema, readers_schema, decoder)
-#        
+        
 #        if readers_schema.fullname in SpecificDatumReader.SCHEMA_TYPES:
 #            result = SpecificDatumReader.SCHEMA_TYPES[readers_schema.fullname](result)
-#        
+        
 #        return result

@@ -34,7 +34,6 @@ const (
 	cContImageID   = "imageid"
 	cContType      = "type"
 	cContPriv      = "privileged"
-	cContImageRepo = "imagerepo"
 
 	cFile        = "sysflow.entity.File"
 	cFileResType = "restype"

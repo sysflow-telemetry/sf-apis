@@ -38,11 +38,6 @@ func (s *SFObjectConverter) createContainer(cont map[string]interface{}) *sfgo.C
 		Imageid:    cont[cContImageID].(string),
 		Privileged: cont[cContPriv].(bool),
 	}
-	if val, ok := cont[cContImageRepo]; ok {
-		sfcont.Imagerepo = val.(string)
-	} else {
-		sfcont.SetDefault(cContImageRepoIdx)
-	}
 	ct, err := sfgo.NewContainerTypeValue(cont[cContType].(string))
 	if err != nil {
 		logger.Warn.Println("unable to extract container type mapping from: " + cont[cContType].(string))

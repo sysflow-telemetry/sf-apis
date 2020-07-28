@@ -103,7 +103,6 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'container.name': ('Cont Name', 12, 'Container name', False),
                 'container.image.id': ('Image ID', 12, 'Container image ID', False),                
                 'container.image': ('Image Name', 12, 'Container image name', False),
-                'container.image.repository': ('Image Repo', 12, 'Container image repo', False),
                 'container.type': ('Cont Type', 8, 'Container type', False),
                 'container.privileged': ('Privileged', 5, 'Container privilege status', False),
                 'node.id': ('Node ID', 12, 'Node identifier', False),
@@ -386,7 +385,6 @@ class SFFormatter(object):
         _flat_map['container.id'] = cont.id if cont else ''
         _flat_map['container.name'] = cont.name if cont else ''
         _flat_map['container.image.id'] = cont.imageid if cont else ''
-        _flat_map['container.image.repository'] = cont.imagerepo if cont and hasattr(cont, 'imagerepo') else ''
         _flat_map['container.image'] = cont.image if cont else ''
         _flat_map['container.type'] = cont.type if cont else ''
         _flat_map['container.privileged'] = cont.privileged if cont else ''
