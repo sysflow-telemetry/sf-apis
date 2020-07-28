@@ -36,12 +36,12 @@ import pandas as pd
 .. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
-_version = '0.1-rc3'
+_version = '0.1.0-rc4'
 
 _default_fields = ['ts_uts', 'type', 'proc.exe', 'proc.args', 'pproc.pid', 'proc.pid', 'proc.tid', 'opflags', 'res', 'flow.rbytes', 'flow.wbytes', 'container.id']
 
 _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_only>)
-                'idx': ('Rec #', 6, 'Record number', False),
+                'idx': ('Rec #', 6, 'Record number', False),                                
                 'type': ('T', 2, 'Record type', False), 
                 'state': ('State', 12, 'Entity state', False),               
                 'opflags': ('Op Flags', 14, 'Operation flags', False),
@@ -65,8 +65,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'proc.cmdline': ('Cmd Line', 20, 'Process command line (query only)', True),
                 'proc.tty': ('TTY', 5, 'Process TTY status', False),
                 'proc.entry': ('Entry', 5, 'Process container entrypoint', False),
-                'proc.createts': ('Proc. Creation Time', 21, 'Process creation timestamp', False),
-                'proc.duration': ('Proc. Duration', 8, 'Process duration/time from creation (query only)', True),                
+                'proc.createts': ('Proc. Creation Time', 21, 'Process creation timestamp', False),                
                 'pproc.pid': ('PPID', 8, 'Parent process ID', False),
                 'pproc.gid': ('PGID', 5, 'Parent process group ID', False),
                 'pproc.uid': ('PUID', 5, 'Parent process user ID', False),
@@ -78,8 +77,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'pproc.args': ('PArgs', 20, 'Parent process command arguments', False),
                 'pproc.name': ('PProc. Name', 20, 'Parent process name (query only)', True),
                 'pproc.cmdline': ('PProc. Cmd Line', 20, 'Parent process command line (query only)', True),
-                'pproc.createts': ('PProc. Creation Time', 21, 'Parent process creation timestamp', False),
-                'pproc.duration': ('PProc. Duration', 8, 'Process duration/time from creation (query only)', True),
+                'pproc.createts': ('PProc. Creation Time', 21, 'Parent process creation timestamp', False),                
                 'file.fd': ('FD', 5, 'File descriptor number', False),
                 'file.path': ('Path', 30, 'File path', False),
                 'file.newpath': ('New Path', 30, 'New file path', False),
@@ -103,11 +101,15 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'flow.wops': ('NoOpsWrite', 8, 'Flow bytes written/sent', False),
                 'container.id': ('Cont ID', 12, 'Container ID', False),
                 'container.name': ('Cont Name', 12, 'Container name', False),
-                'container.imageid': ('Image ID', 12, 'Container image ID', False),                
+                'container.image.id': ('Image ID', 12, 'Container image ID', False),                
                 'container.image': ('Image Name', 12, 'Container image name', False),
-                'container.repo': ('Image Repo', 12, 'Container image repo', False),
+                'container.image.repository': ('Image Repo', 12, 'Container image repo', False),
                 'container.type': ('Cont Type', 8, 'Container type', False),
-                'container.privileged': ('Privileged', 5, 'Container privilege status', False)
+                'container.privileged': ('Privileged', 5, 'Container privilege status', False),
+                'node.id': ('Node ID', 12, 'Node identifier', False),
+                'node.ip': ('Node IP', 16, 'Node IP address', False),
+                'schema.version': ('SF Schema', 8, 'SysFlow schema version', False),
+                'version': ('API version', 8, 'SysFlow JSON schema version', False),                
           }
 
 class SFFormatter(object):
@@ -327,7 +329,7 @@ class SFFormatter(object):
     def _flatten(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
         _flat_map = OrderedDict()
         evflow = evt or flow
-        _flat_map['v'] = _version
+        _flat_map['version'] = _version
         _flat_map['type'] = OBJECT_MAP.get(objtype,'?')
         _flat_map['state'] = proc.state if proc else files[0].state if files and files[0] else ''
         _flat_map['opflags'] = utils.getOpFlagsStr(evflow.opFlags) if evflow else ''
@@ -383,11 +385,14 @@ class SFFormatter(object):
         _flat_map['flow.wops'] = int(flow.numWSendOps) if flow else None
         _flat_map['container.id'] = cont.id if cont else ''
         _flat_map['container.name'] = cont.name if cont else ''
-        _flat_map['container.imageid'] = cont.imageid if cont else ''
+        _flat_map['container.image.id'] = cont.imageid if cont else ''
         _flat_map['container.image.repository'] = cont.imagerepo if cont and hasattr(cont, 'imagerepo') else ''
         _flat_map['container.image'] = cont.image if cont else ''
         _flat_map['container.type'] = cont.type if cont else ''
         _flat_map['container.privileged'] = cont.privileged if cont else ''
+        _flat_map['node.id'] = header.exporter if header else ''
+        _flat_map['node.ip'] = header.ip if header and hasattr(header, 'ip') else ''
+        _flat_map['schema.version'] = header.version if header else ''
 
         if fields:
             od = OrderedDict()

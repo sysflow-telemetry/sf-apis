@@ -266,6 +266,14 @@ class SfqlMapper(Generic[T]):
     def _getObjType(t: T, attr: str = None):
         return OBJECT_MAP.get(t[0],'?')
 
+   
+    @staticmethod
+    def _getHeaderAttr(t: T, attr: str):
+        hd = t[1]
+        if not hd:
+            return None
+        return SfqlMapper._rgetattr(hd, attr)
+
     @staticmethod
     def _getContAttr(t: T, attr: str):
         cont = t[2]
@@ -287,9 +295,7 @@ class SfqlMapper(Generic[T]):
     def _getProcAttr(t: T, attr: str):
         proc = t[4]
         if not proc:
-            return None
-        if attr == 'duration':
-            return int(time.time()) - int(proc.oid.createTS)
+            return None        
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
         elif attr == 'apid':            
@@ -311,9 +317,7 @@ class SfqlMapper(Generic[T]):
     def _getPProcAttr(t: T, attr: str):
         proc = t[3]
         if not proc:
-            return None
-        if attr == 'duration':
-            return int(time.time()) - int(proc.oid.createTS)
+            return None        
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
         else:
@@ -378,8 +382,7 @@ class SfqlMapper(Generic[T]):
         'proc.tid': partial(_getEvtFlowAttr.__func__, attr='tid'),
         'proc.gid': partial(_getProcAttr.__func__, attr='gid'),
         'proc.group': partial(_getProcAttr.__func__, attr='groupName'),
-        'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
-        'proc.duration': partial(_getProcAttr.__func__, attr='duration'),
+        'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),        
         'proc.tty': partial(_getProcAttr.__func__, attr='tty'),
         'proc.entry': partial(_getProcAttr.__func__, attr='entry'),
         'proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
@@ -394,7 +397,6 @@ class SfqlMapper(Generic[T]):
         'pproc.gid': partial(_getPProcAttr.__func__, attr='gid'),
         'pproc.group': partial(_getPProcAttr.__func__, attr='groupName'),
         'pproc.createts': partial(_getPProcAttr.__func__, attr='oid.createTS'),
-        'pproc.duration': partial(_getPProcAttr.__func__, attr='duration'),
         'pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),
         'pproc.entry': partial(_getPProcAttr.__func__, attr='entry'),
         'pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
@@ -420,11 +422,14 @@ class SfqlMapper(Generic[T]):
         'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'),
         'container.id': partial(_getContAttr.__func__, attr='id'),
         'container.name': partial(_getContAttr.__func__, attr='name'),
-        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),        
+        'container.image.id': partial(_getContAttr.__func__, attr='imageid'),        
         'container.image': partial(_getContAttr.__func__, attr='image'),
-        'container.repo': partial(_getContAttr.__func__, attr='imagerepo'),
+        'container.image.repository': partial(_getContAttr.__func__, attr='imagerepo'),
         'container.type': partial(_getContAttr.__func__, attr='type'),
-        'container.privileged': partial(_getContAttr.__func__, attr='privileged')
+        'container.privileged': partial(_getContAttr.__func__, attr='privileged'),
+        'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
+        'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
+        'schema.version': partial(_getHeaderAttr.__func__, attr='version')
     }
 
     def __init__(self):
