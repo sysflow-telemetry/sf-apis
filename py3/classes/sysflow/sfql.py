@@ -422,7 +422,7 @@ class SfqlMapper(Generic[T]):
         'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'),
         'container.id': partial(_getContAttr.__func__, attr='id'),
         'container.name': partial(_getContAttr.__func__, attr='name'),
-        'container.image.id': partial(_getContAttr.__func__, attr='imageid'),        
+        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),        
         'container.image': partial(_getContAttr.__func__, attr='image'),
         'container.type': partial(_getContAttr.__func__, attr='type'),
         'container.privileged': partial(_getContAttr.__func__, attr='privileged'),

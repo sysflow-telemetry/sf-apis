@@ -101,7 +101,7 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'flow.wops': ('NoOpsWrite', 8, 'Flow bytes written/sent', False),
                 'container.id': ('Cont ID', 12, 'Container ID', False),
                 'container.name': ('Cont Name', 12, 'Container name', False),
-                'container.image.id': ('Image ID', 12, 'Container image ID', False),                
+                'container.imageid': ('Image ID', 12, 'Container image ID', False),                
                 'container.image': ('Image Name', 12, 'Container image name', False),
                 'container.type': ('Cont Type', 8, 'Container type', False),
                 'container.privileged': ('Privileged', 5, 'Container privilege status', False),
@@ -384,7 +384,7 @@ class SFFormatter(object):
         _flat_map['flow.wops'] = int(flow.numWSendOps) if flow else None
         _flat_map['container.id'] = cont.id if cont else ''
         _flat_map['container.name'] = cont.name if cont else ''
-        _flat_map['container.image.id'] = cont.imageid if cont else ''
+        _flat_map['container.imageid'] = cont.imageid if cont else ''
         _flat_map['container.image'] = cont.image if cont else ''
         _flat_map['container.type'] = cont.type if cont else ''
         _flat_map['container.privileged'] = cont.privileged if cont else ''
