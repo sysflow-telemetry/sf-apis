@@ -13,17 +13,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 > - **Fixed**: for any bug fixes.
 > - **Security**: in case of vulnerabilities.
 
-## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc4...HEAD)]
+## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc4...HEAD)]
 
-## [[0.1-rc4](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1-rc4)] - 2020-07-20
+## [[0.1.0-rc4](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0-rc4)] - 2020-07-30
 
 ### Added
 
+- Added `node.id`, `node.ip`, `proc.entry`, and `schema` attributes to query language and export APIs.
 - Added golang APIs.
 
 ### Changed
 
 - Added missing EXIT opflag to Python APIs.
+- Adding patch level to comply with semnatic versioning.
 
 ### Fixed
 

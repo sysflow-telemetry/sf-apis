@@ -428,7 +428,7 @@ class SfqlMapper(Generic[T]):
         'container.privileged': partial(_getContAttr.__func__, attr='privileged'),
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
         'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
-        'schema.version': partial(_getHeaderAttr.__func__, attr='version')
+        'schema': partial(_getHeaderAttr.__func__, attr='version')
     }
 
     def __init__(self):
