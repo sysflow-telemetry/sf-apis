@@ -179,11 +179,14 @@ func (s *SFObjectConverter) createFileEvent(fileEvt map[string]interface{}) *sfg
 	copy(sffileEvt.FileOID[:], fileEvt[cFileEvtFileOID].([]byte))
 	sffileEvt.Ret = fileEvt[cRet].(int32)
 	if val, ok := fileEvt[cFileEvtNewFileOID]; ok && val != nil {
-		newFOID := &sfgo.UnionNullFOID{
-			FOID:      val.(sfgo.FOID),
-			UnionType: sfgo.UnionNullFOIDTypeEnumFOID,
+		foid := val.(map[string]interface{})
+		if o, ok := foid[cFileObjectID].([]byte); ok {
+			newFOID := &sfgo.UnionNullFOID{
+				UnionType: sfgo.UnionNullFOIDTypeEnumFOID,
+			}
+			copy(newFOID.FOID[:], o)
+			sffileEvt.NewFileOID = newFOID
 		}
-		sffileEvt.NewFileOID = newFOID
 	} else {
 		sffileEvt.NewFileOID = sfgo.NewUnionNullFOID()
 	}

@@ -28,12 +28,12 @@ const (
 	cHdrExporter = "exporter"
 	cHdrIP       = "ip"
 
-	cContainer     = "sysflow.entity.Container"
-	cContName      = "name"
-	cContImage     = "image"
-	cContImageID   = "imageid"
-	cContType      = "type"
-	cContPriv      = "privileged"
+	cContainer   = "sysflow.entity.Container"
+	cContName    = "name"
+	cContImage   = "image"
+	cContImageID = "imageid"
+	cContType    = "type"
+	cContPriv    = "privileged"
 
 	cFile        = "sysflow.entity.File"
 	cFileResType = "restype"
@@ -71,7 +71,8 @@ const (
 	cNumThreadsExited = "numThreadsExited"
 	cNumCloneErrors   = "numCloneErrors"
 
-	cObjectID = "sysflow.type.OID"
+	cObjectID     = "sysflow.type.OID"
+	cFileObjectID = "sysflow.type.FOID"
 
 	cIPIdx            = 2
 	cContImageRepoIdx = 6
