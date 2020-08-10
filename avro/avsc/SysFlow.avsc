@@ -10,10 +10,15 @@
       "namespace" : "sysflow.entity",
       "fields" : [ {
         "name" : "version",
-        "type" : "long"
+        "type" : "long",
+        "default" : 2
       }, {
         "name" : "exporter",
         "type" : "string"
+      }, {
+        "name" : "ip",
+        "type" : "string",
+        "default" : "NA"
       } ]
     }, {
       "type" : "record",
@@ -63,10 +68,7 @@
           "namespace" : "sysflow.type",
           "fields" : [ {
             "name" : "createTS",
-            "type" : {
-              "type" : "long",
-              "logicalType" : "timestamp-millis"
-            }
+            "type" : "long"
           }, {
             "name" : "hpid",
             "type" : "long"
@@ -77,10 +79,7 @@
         "type" : [ "null", "sysflow.type.OID" ]
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "exe",
         "type" : "string"
@@ -105,6 +104,10 @@
       }, {
         "name" : "containerId",
         "type" : [ "null", "string" ]
+      }, {
+        "name" : "entry",
+        "type" : "boolean",
+        "default" : false
       } ]
     }, {
       "type" : "record",
@@ -123,10 +126,7 @@
         }
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "restype",
         "type" : "int"
@@ -146,10 +146,7 @@
         "type" : "sysflow.type.OID"
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "tid",
         "type" : "long"
@@ -175,10 +172,7 @@
         "type" : "sysflow.type.OID"
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "tid",
         "type" : "long"
@@ -187,10 +181,7 @@
         "type" : "int"
       }, {
         "name" : "endTs",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "sip",
         "type" : "int"
@@ -231,10 +222,7 @@
         "type" : "sysflow.type.OID"
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "tid",
         "type" : "long"
@@ -246,10 +234,7 @@
         "type" : "int"
       }, {
         "name" : "endTs",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "fileOID",
         "type" : "sysflow.type.FOID"
@@ -278,10 +263,7 @@
         "type" : "sysflow.type.OID"
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "tid",
         "type" : "long"
@@ -307,10 +289,7 @@
         "type" : "sysflow.type.OID"
       }, {
         "name" : "ts",
-        "type" : {
-          "type" : "long",
-          "logicalType" : "timestamp-millis"
-        }
+        "type" : "long"
       }, {
         "name" : "tid",
         "type" : "long"
@@ -335,6 +314,32 @@
       }, {
         "name" : "ret",
         "type" : "int"
+      } ]
+    }, {
+      "type" : "record",
+      "name" : "ProcessFlow",
+      "namespace" : "sysflow.flow",
+      "fields" : [ {
+        "name" : "procOID",
+        "type" : "sysflow.type.OID"
+      }, {
+        "name" : "ts",
+        "type" : "long"
+      }, {
+        "name" : "numThreadsCloned",
+        "type" : "long"
+      }, {
+        "name" : "opFlags",
+        "type" : "int"
+      }, {
+        "name" : "endTs",
+        "type" : "long"
+      }, {
+        "name" : "numThreadsExited",
+        "type" : "long"
+      }, {
+        "name" : "numCloneErrors",
+        "type" : "long"
       } ]
     } ]
   } ]

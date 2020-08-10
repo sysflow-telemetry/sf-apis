@@ -37,3 +37,5 @@ build
 dist
 *.egg-info
 *.antlr
+.vscode
+*.ipynb_checkpoints/

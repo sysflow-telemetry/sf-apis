@@ -19,41 +19,22 @@
 @namespace ("sysflow.type")
 
 protocol SysFlow {
-//fixed OID(16);
 
 record OID {
-  timestamp_ms createTS;
+  long createTS;
   long hpid;
 }
-
-/*record FOID {
-  long bits0;
-  long bits8;
-  long bits16;
-}*/
 
 fixed FOID(20);
 
 
 fixed ContainerID(6);
 
-/*enum EventType {
-                 CLONE, 
-                 EXEC, 
-                 EXIT 
-               }*/
 enum SFObjectState {
           CREATED, 
           MODIFIED, 
           REUP
-         }
-/*
-enum ResourceType {
-          SF_FILE,
-          SF_DIRECTORY,
-          SF_PIPE,
-          SF_UNIX
-        }*/
+}
 
 enum ContainerType {
     CT_DOCKER,
@@ -63,9 +44,9 @@ enum ContainerType {
     CT_RKT,
     CT_CUSTOM,
     CT_CRI,
-	CT_CONTAINERD,
-	CT_CRIO,
-	CT_BPM
+    CT_CONTAINERD,
+    CT_CRIO,
+    CT_BPM
 }
 
 

@@ -20,10 +20,7 @@
     }
   }, {
     "name" : "ts",
-    "type" : {
-      "type" : "long",
-      "logicalType" : "timestamp-millis"
-    }
+    "type" : "long"
   }, {
     "name" : "restype",
     "type" : "int"

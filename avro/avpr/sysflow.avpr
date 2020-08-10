@@ -8,10 +8,7 @@
     "namespace" : "sysflow.type",
     "fields" : [ {
       "name" : "createTS",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "hpid",
       "type" : "long"
@@ -45,31 +42,22 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
-      "name" : "tid",
+      "name" : "numThreadsCloned",
       "type" : "long"
     }, {
       "name" : "opFlags",
       "type" : "int"
     }, {
       "name" : "endTs",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
-      "name" : "args",
-      "type" : {
-        "type" : "array",
-        "items" : "string"
-      }
+      "name" : "numThreadsExited",
+      "type" : "long"
     }, {
-      "name" : "ret",
-      "type" : "int"
+      "name" : "numCloneErrors",
+      "type" : "long"
     } ]
   }, {
     "type" : "record",
@@ -80,10 +68,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -92,10 +77,7 @@
       "type" : "int"
     }, {
       "name" : "endTs",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "sip",
       "type" : "int"
@@ -136,10 +118,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -151,10 +130,7 @@
       "type" : "int"
     }, {
       "name" : "endTs",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "fileOID",
       "type" : "sysflow.type.FOID"
@@ -183,10 +159,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -212,10 +185,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -250,10 +220,7 @@
       "type" : "sysflow.type.OID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "tid",
       "type" : "long"
@@ -308,10 +275,7 @@
       "type" : [ "null", "sysflow.type.OID" ]
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "exe",
       "type" : "string"
@@ -336,6 +300,10 @@
     }, {
       "name" : "containerId",
       "type" : [ "null", "string" ]
+    }, {
+      "name" : "entry",
+      "type" : "boolean",
+      "default" : false
     } ]
   }, {
     "type" : "record",
@@ -343,10 +311,15 @@
     "namespace" : "sysflow.entity",
     "fields" : [ {
       "name" : "version",
-      "type" : "long"
+      "type" : "long",
+      "default" : 2
     }, {
       "name" : "exporter",
       "type" : "string"
+    }, {
+      "name" : "ip",
+      "type" : "string",
+      "default" : "NA"
     } ]
   }, {
     "type" : "record",
@@ -360,10 +333,7 @@
       "type" : "sysflow.type.FOID"
     }, {
       "name" : "ts",
-      "type" : {
-        "type" : "long",
-        "logicalType" : "timestamp-millis"
-      }
+      "type" : "long"
     }, {
       "name" : "restype",
       "type" : "int"
@@ -379,7 +349,7 @@
     "name" : "SysFlow",
     "fields" : [ {
       "name" : "rec",
-      "type" : [ "sysflow.entity.SFHeader", "sysflow.entity.Container", "sysflow.entity.Process", "sysflow.entity.File", "sysflow.event.ProcessEvent", "sysflow.flow.NetworkFlow", "sysflow.flow.FileFlow", "sysflow.event.FileEvent", "sysflow.event.NetworkEvent" ]
+      "type" : [ "sysflow.entity.SFHeader", "sysflow.entity.Container", "sysflow.entity.Process", "sysflow.entity.File", "sysflow.event.ProcessEvent", "sysflow.flow.NetworkFlow", "sysflow.flow.FileFlow", "sysflow.event.FileEvent", "sysflow.event.NetworkEvent", "sysflow.flow.ProcessFlow" ]
     } ]
   } ],
   "messages" : { }

@@ -48,6 +48,7 @@ class ObjectTypes(Enum):
     NET_FLOW = 5
     FILE_FLOW = 6
     FILE_EVT = 7
+    PROC_FLOW = 8
 
 OBJECT_MAP = {
     ObjectTypes.HEADER: "H",
@@ -57,5 +58,18 @@ OBJECT_MAP = {
     ObjectTypes.PROC_EVT : "PE",
     ObjectTypes.NET_FLOW : "NF",
     ObjectTypes.FILE_FLOW : "FF",
-    ObjectTypes.FILE_EVT : "FE"
+    ObjectTypes.FILE_EVT : "FE",
+    ObjectTypes.PROC_FLOW : "PF"
     }
+
+OBJ_NAME_MAP = {
+    "sysflow.entity.SFHeader": ObjectTypes.HEADER,
+    "sysflow.entity.Container": ObjectTypes.CONT,
+    "sysflow.entity.Process": ObjectTypes.PROC,
+    "sysflow.entity.File": ObjectTypes.FILE,
+    "sysflow.event.ProcessEvent": ObjectTypes.PROC_EVT,
+    "sysflow.event.FileEvent": ObjectTypes.FILE_EVT,
+    "sysflow.flow.NetworkFlow": ObjectTypes.NET_FLOW,
+    "sysflow.flow.FileFlow": ObjectTypes.FILE_FLOW,
+    "sysflow.flow.ProcessFlow": ObjectTypes.PROC_FLOW
+}

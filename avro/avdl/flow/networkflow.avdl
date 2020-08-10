@@ -21,10 +21,10 @@ protocol SysFlow {
 import idl "../type/datatypes.avdl";
 record NetworkFlow {
   sysflow.type.OID procOID; // host ID + monotonic process creation time + host PID
-  timestamp_ms ts;
+  long ts;
   long tid;
   int opFlags;
-  timestamp_ms endTs;
+  long endTs;
   int sip;
   int sport;
   int dip;

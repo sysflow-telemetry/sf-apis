@@ -13,7 +13,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 > - **Fixed**: for any bug fixes.
 > - **Security**: in case of vulnerabilities.
 
-## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...HEAD)]
+## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc4...HEAD)]
+
+## [[0.1.0-rc4](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0-rc4)] - 2020-08-10
+
+### Added
+
+- Added `node.id`, `node.ip`, `proc.entry`, and `schema` attributes to query language and export APIs.
+- Added golang APIs.
+
+### Changed
+
+- Support for new Avro schema (version 2).
+- Added missing EXIT opflag to Python APIs.
+- Adding patch level to comply with semnatic versioning.
+
+### Fixed
+
+- Fixed open flags bitmaps.
+- Fixed attribute name typo when computing proc and pproc duration.
+- Fixed bug in provenance queries.
 
 ## [[0.1-rc3](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc2...0.1-rc3)] - 2020-03-17
 
