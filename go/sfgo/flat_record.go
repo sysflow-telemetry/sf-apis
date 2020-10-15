@@ -32,30 +32,12 @@ type sftypes struct {
 // Zeros is a zero-initialized struct used to obtain zero values for types used during flattening.
 var Zeros = sftypes{}
 
-// FlatRecord represents a flattened SysFlow record
+// Source denotes a data source type
+type Source uint32
+
+// FlatRecord is a multi-source flat record
 type FlatRecord struct {
-	Ints [INT_ARRAY_SIZE]int64
-	Strs [STR_ARRAY_SIZE]string
+	Sources []Source
+	Ints    [][]int64
+	Strs    [][]string
 }
-
-// type FlatRecordPool struct {
-// 	pool *sync.Pool
-// }
-
-// func NewFlatRecordPool() *FlatRecordPool {
-// 	p := new(FlatRecordPool)
-// 	p.pool = &sync.Pool{
-// 		New: func() interface{} {
-// 			return new(FlatRecord)
-// 		},
-// 	}
-// 	return p
-// }
-
-// func (f *FlatRecordPool) Get() *FlatRecord {
-// 	return f.pool.Get().(*FlatRecord)
-// }
-
-// func (f *FlatRecordPool) Put(fr *FlatRecord) {
-// 	f.pool.Put(fr)
-// }
