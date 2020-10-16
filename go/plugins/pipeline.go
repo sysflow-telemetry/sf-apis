@@ -21,7 +21,9 @@ package plugins
 
 // SFPipeline is an interface representing a telemetry pipeline.
 type SFPipeline interface {
-	Load(driverName string) (SFDriver, error)
+	Load(driverName string) error
+	Init(path string) error
+	Shutdown() error
 	GetRootChannel() interface{}
 	AddChannel(channelName string, channel interface{})
 	Wait()
@@ -29,4 +31,5 @@ type SFPipeline interface {
 	GetNumProcessors() int
 	GetNumHandlers() int
 	GetPluginCache() SFPluginCache
+	Print()
 }

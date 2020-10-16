@@ -25,4 +25,5 @@ type SFDriver interface {
 	Run(path string, running *bool) error
 	GetName() string
 	Register(pc SFPluginCache)
+	Cleanup()
 }
