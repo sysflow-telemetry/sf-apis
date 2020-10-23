@@ -266,7 +266,7 @@ func GetOpenFlags(flag int64) []string {
 	if v, ok := cache.openFlags[flag]; ok {
 		return v
 	}
-	if flag&O_NONE == O_NONE {
+	if flag == O_NONE {
 		flags = append(flags, openFlagNone)
 	}
 	if flag&O_RDONLY == O_RDONLY {
