@@ -41,39 +41,39 @@ func GetOpFlagsStr(opFlags int32) string {
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_MKDIR == OP_MKDIR {
-			return "MKDIR"
+			return opFlagMkdir
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_RMDIR == OP_RMDIR {
-			return "RMDIR"
+			return opFlagRmdir
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_LINK == OP_LINK {
-			return "LINK"
+			return opFlagLink
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SYMLINK == OP_SYMLINK {
-			return "SYMLINK"
+			return opFlagSymlink
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_UNLINK == OP_UNLINK {
-			return "UNLINK"
+			return opFlagUnlink
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_RENAME == OP_RENAME {
-			return "RENAME"
+			return opFlagRename
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	if b.Len() > 0 {
 		str := b.String()
@@ -82,27 +82,27 @@ func GetOpFlagsStr(opFlags int32) string {
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_CLONE == OP_CLONE {
-			return "CLONE"
+			return opFlagClone
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_EXEC == OP_EXEC {
-			return "EXEC"
+			return opFlagExec
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_EXIT == OP_EXIT {
-			return "EXIT"
+			return opFlagExit
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SETUID == OP_SETUID {
-			return "SETUID"
+			return opFlagSetuid
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	if b.Len() > 0 {
 		str := b.String()
@@ -111,69 +111,69 @@ func GetOpFlagsStr(opFlags int32) string {
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_OPEN == OP_OPEN {
-			return "O"
+			return opFlagOpenChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_ACCEPT == OP_ACCEPT {
-			return "A"
+			return opFlagAcceptChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_CONNECT == OP_CONNECT {
-			return "C"
+			return opFlagConnectChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
-			return "W"
+			return opFlagWSendChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_READ_RECV == OP_READ_RECV {
-			return "R"
+			return opFlagRReceiveChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SETNS == OP_SETNS {
-			return "N"
+			return opFlagSetnsChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_MMAP == OP_MMAP {
-			return "M"
+			return opFlagMmapChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
-			return "S"
+			return opFlagShutdownChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_CLOSE == OP_CLOSE {
-			return "C"
+			return opFlagCloseChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_TRUNCATE == OP_TRUNCATE {
-			return "T"
+			return opFlagTruncateChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_DIGEST == OP_DIGEST {
-			return "D"
+			return opFlagDigestChar
 		}
-		return ""
+		return opFlagEmpty
 	}())
 	str := b.String()
 	cache.opFlagsStr[opFlags] = str
@@ -188,72 +188,72 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 		return v
 	}
 	if opFlags&OP_MKDIR == OP_MKDIR {
-		ops = append(ops, "MKDIR")
+		ops = append(ops, opFlagMkdir)
 	}
 	if opFlags&OP_RMDIR == OP_RMDIR {
-		ops = append(ops, "RMDIR")
+		ops = append(ops, opFlagRmdir)
 	}
 	if opFlags&OP_LINK == OP_LINK {
-		ops = append(ops, "LINK")
+		ops = append(ops, opFlagLink)
 	}
 	if opFlags&OP_SYMLINK == OP_SYMLINK {
-		ops = append(ops, "SYMLINK")
+		ops = append(ops, opFlagSymlink)
 	}
 	if opFlags&OP_UNLINK == OP_UNLINK {
-		ops = append(ops, "UNLINK")
+		ops = append(ops, opFlagUnlink)
 	}
 	if opFlags&OP_RENAME == OP_RENAME {
-		ops = append(ops, "RENAME")
+		ops = append(ops, opFlagRename)
 	}
 	if opFlags&OP_CLONE == OP_CLONE {
-		ops = append(ops, "CLONE")
+		ops = append(ops, opFlagClone)
 	}
 	if opFlags&OP_EXEC == OP_EXEC {
-		ops = append(ops, "EXEC")
+		ops = append(ops, opFlagExec)
 	}
 	if opFlags&OP_EXIT == OP_EXIT {
-		ops = append(ops, "EXIT")
+		ops = append(ops, opFlagExit)
 	}
 	if opFlags&OP_SETUID == OP_SETUID {
-		ops = append(ops, "SETUID")
+		ops = append(ops, opFlagSetuid)
 	}
 	if opFlags&OP_OPEN == OP_OPEN {
-		ops = append(ops, "OPEN")
+		ops = append(ops, opFlagOpen)
 	}
 	if opFlags&OP_ACCEPT == OP_ACCEPT {
-		ops = append(ops, "ACCEPT")
+		ops = append(ops, opFlagAccept)
 	}
 	if opFlags&OP_CONNECT == OP_CONNECT {
-		ops = append(ops, "CONNECT")
+		ops = append(ops, opFlagConnect)
 	}
 	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
 		if rtype == "NF" {
-			ops = append(ops, "SEND")
+			ops = append(ops, opFlagSend)
 		} else {
-			ops = append(ops, "WRITE")
+			ops = append(ops, opFlagWrite)
 		}
 	}
 	if opFlags&OP_READ_RECV == OP_READ_RECV {
 		if rtype == "NF" {
-			ops = append(ops, "RECV")
+			ops = append(ops, opFlagReceive)
 		} else {
-			ops = append(ops, "READ")
+			ops = append(ops, opFlagRead)
 		}
 	}
 	if opFlags&OP_SETNS == OP_SETNS {
-		ops = append(ops, "SETNS")
+		ops = append(ops, opFlagSetns)
 	}
 	if opFlags&OP_MMAP == OP_MMAP {
-		ops = append(ops, "MMAP")
+		ops = append(ops, opFlagMmap)
 	}
 	if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
-		ops = append(ops, "SHUTDOWN")
+		ops = append(ops, opFlagShutdown)
 	}
 	if opFlags&OP_TRUNCATE == OP_TRUNCATE {
-		ops = append(ops, "TRUNCATE")
+		ops = append(ops, opFlagTruncate)
 	}
 	if opFlags&OP_DIGEST == OP_DIGEST {
-		ops = append(ops, "DIGEST")
+		ops = append(ops, opFlagDigest)
 	}
 	cache.opFlags[opFlags] = ops
 	return ops
@@ -267,49 +267,49 @@ func GetOpenFlags(flag int64) []string {
 		return v
 	}
 	if flag&O_NONE == O_NONE {
-		flags = append(flags, "NONE")
+		flags = append(flags, openFlagNone)
 	}
 	if flag&O_RDONLY == O_RDONLY {
-		flags = append(flags, "RDONLY")
+		flags = append(flags, openFlagRdonly)
 	}
 	if flag&O_WRONLY == O_WRONLY {
-		flags = append(flags, "WRONLY")
+		flags = append(flags, openFlagWronly)
 	}
 	if flag&O_RDWR == O_RDWR {
-		flags = append(flags, "RDWR")
+		flags = append(flags, openFlagRdwr)
 	}
 	if flag&O_CREAT == O_CREAT {
-		flags = append(flags, "CREAT")
+		flags = append(flags, openFlagCreat)
 	}
 	if flag&O_EXCL == O_EXCL {
-		flags = append(flags, "EXCL")
+		flags = append(flags, openFlagExcl)
 	}
 	if flag&O_TRUNC == O_TRUNC {
-		flags = append(flags, "TRUNC")
+		flags = append(flags, openFlagTrunc)
 	}
 	if flag&O_APPEND == O_APPEND {
-		flags = append(flags, "APPEND")
+		flags = append(flags, openFlagAppend)
 	}
 	if flag&O_NONBLOCK == O_NONBLOCK {
-		flags = append(flags, "NONBLOCK")
+		flags = append(flags, openFlagNonBlock)
 	}
 	if flag&O_DSYNC == O_DSYNC {
-		flags = append(flags, "DSYNC")
+		flags = append(flags, openFlagDsync)
 	}
 	if flag&O_DIRECT == O_DIRECT {
-		flags = append(flags, "DIRECT")
+		flags = append(flags, openFlagDirect)
 	}
 	if flag&O_LARGEFILE == O_LARGEFILE {
-		flags = append(flags, "LARGEFILE")
+		flags = append(flags, openFlagLargefile)
 	}
 	if flag&O_DIRECTORY == O_DIRECTORY {
-		flags = append(flags, "DIRECTORY")
+		flags = append(flags, openFlagDir)
 	}
 	if flag&O_CLOEXEC == O_CLOEXEC {
-		flags = append(flags, "CLOEXEC")
+		flags = append(flags, openFlagCloexec)
 	}
 	if flag&O_SYNC == O_SYNC {
-		flags = append(flags, "SYNC")
+		flags = append(flags, openFlagSync)
 	}
 	cache.openFlags[flag] = flags
 	return flags
@@ -334,13 +334,13 @@ func GetContType(t int64) string {
 func GetProto(iana int64) string {
 	switch iana {
 	case 6:
-		return "tcp"
+		return tcp
 	case 17:
-		return "udp"
+		return udp
 	case 1:
-		return "icmp"
+		return icmp
 	case 254:
-		return "raw"
+		return raw
 	default:
 		break
 	}
@@ -357,9 +357,9 @@ func GetSockFamily(t int64) string {
 	switch GetFileType(t) {
 	case "4":
 	case "6":
-		return "ip"
+		return ip
 	case "u":
-		return "unix"
+		return unix
 	default:
 		break
 	}

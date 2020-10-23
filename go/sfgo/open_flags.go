@@ -18,3 +18,21 @@ const (
 	O_LARGEFILE = (1 << 11)
 	O_CLOEXEC   = (1 << 12)
 )
+
+const (
+	openFlagNone      = "NONE"
+	openFlagRdonly    = "RDONLY"
+	openFlagWronly    = "WRONLY"
+	openFlagRdwr      = "RDWR"
+	openFlagCreat     = "CREAT"
+	openFlagExcl      = "EXCL"
+	openFlagTrunc     = "TRUNC"
+	openFlagAppend    = "APPEND"
+	openFlagNonBlock  = "NONBLOCK"
+	openFlagDsync     = "DSYNC"
+	openFlagDirect    = "DIRECT"
+	openFlagLargefile = "LARGEFILE"
+	openFlagDir       = "DIRECTORY"
+	openFlagCloexec   = "CLOEXEC"
+	openFlagSync      = "SYNC"
+)
