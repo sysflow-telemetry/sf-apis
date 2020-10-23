@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -12,9 +13,32 @@ const (
 	timeFormat = "2006-01-02T15:04:05-0700"
 )
 
+var c *cache
+var once sync.Once
+
+type cache struct {
+	opFlags    map[int32][]string
+	opFlagsStr map[int32]string
+	openFlags  map[int64][]string
+}
+
+func getCache() *cache {
+	once.Do(func() {
+		c = new(cache)
+		c.opFlags = make(map[int32][]string)
+		c.opFlagsStr = make(map[int32]string)
+		c.openFlags = make(map[int64][]string)
+	})
+	return c
+}
+
 // GetOpFlagsStr creates a string representation of opflags.
 func GetOpFlagsStr(opFlags int32) string {
 	var b bytes.Buffer
+	cache := getCache()
+	if v, ok := cache.opFlagsStr[opFlags]; ok {
+		return v
+	}
 	b.WriteString(func() string {
 		if opFlags&OP_MKDIR == OP_MKDIR {
 			return "MKDIR"
@@ -52,7 +76,9 @@ func GetOpFlagsStr(opFlags int32) string {
 		return ""
 	}())
 	if b.Len() > 0 {
-		return b.String()
+		str := b.String()
+		cache.opFlagsStr[opFlags] = str
+		return str
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_CLONE == OP_CLONE {
@@ -79,7 +105,9 @@ func GetOpFlagsStr(opFlags int32) string {
 		return ""
 	}())
 	if b.Len() > 0 {
-		return b.String()
+		str := b.String()
+		cache.opFlagsStr[opFlags] = str
+		return str
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_OPEN == OP_OPEN {
@@ -147,12 +175,18 @@ func GetOpFlagsStr(opFlags int32) string {
 		}
 		return ""
 	}())
-	return b.String()
+	str := b.String()
+	cache.opFlagsStr[opFlags] = str
+	return str
 }
 
 // GetOpFlags creates a list representation of opflag strings.
 func GetOpFlags(opFlags int32, rtype string) []string {
 	var ops = make([]string, 0)
+	cache := getCache()
+	if v, ok := cache.opFlags[opFlags]; ok {
+		return v
+	}
 	if opFlags&OP_MKDIR == OP_MKDIR {
 		ops = append(ops, "MKDIR")
 	}
@@ -221,12 +255,17 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 	if opFlags&OP_DIGEST == OP_DIGEST {
 		ops = append(ops, "DIGEST")
 	}
+	cache.opFlags[opFlags] = ops
 	return ops
 }
 
 // GetOpenFlags converts a sysflow open modes flag bitmap into a slice representation.
 func GetOpenFlags(flag int64) []string {
 	var flags = make([]string, 0)
+	cache := getCache()
+	if v, ok := cache.openFlags[flag]; ok {
+		return v
+	}
 	if flag&O_NONE == O_NONE {
 		flags = append(flags, "NONE")
 	}
@@ -272,6 +311,7 @@ func GetOpenFlags(flag int64) []string {
 	if flag&O_SYNC == O_SYNC {
 		flags = append(flags, "SYNC")
 	}
+	cache.openFlags[flag] = flags
 	return flags
 }
 
