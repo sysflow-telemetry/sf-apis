@@ -6,6 +6,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	cmap "github.com/orcaman/concurrent-map"
 )
 
 const (
@@ -17,17 +19,17 @@ var c *cache
 var once sync.Once
 
 type cache struct {
-	opFlags    map[int32][]string
-	opFlagsStr map[int32]string
-	openFlags  map[int64][]string
+	opFlags    cmap.ConcurrentMap
+	opFlagsStr cmap.ConcurrentMap
+	openFlags  cmap.ConcurrentMap
 }
 
 func getCache() *cache {
 	once.Do(func() {
 		c = new(cache)
-		c.opFlags = make(map[int32][]string)
-		c.opFlagsStr = make(map[int32]string)
-		c.openFlags = make(map[int64][]string)
+		c.opFlags = cmap.New()
+		c.opFlagsStr = cmap.New()
+		c.openFlags = cmap.New()
 	})
 	return c
 }
@@ -36,8 +38,8 @@ func getCache() *cache {
 func GetOpFlagsStr(opFlags int32) string {
 	var b bytes.Buffer
 	cache := getCache()
-	if v, ok := cache.opFlagsStr[opFlags]; ok {
-		return v
+	if v, ok := cache.opFlagsStr.Get(string(opFlags)); ok {
+		return v.(string)
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_MKDIR == OP_MKDIR {
@@ -77,7 +79,7 @@ func GetOpFlagsStr(opFlags int32) string {
 	}())
 	if b.Len() > 0 {
 		str := b.String()
-		cache.opFlagsStr[opFlags] = str
+		cache.opFlagsStr.Set(string(opFlags), str)
 		return str
 	}
 	b.WriteString(func() string {
@@ -106,7 +108,7 @@ func GetOpFlagsStr(opFlags int32) string {
 	}())
 	if b.Len() > 0 {
 		str := b.String()
-		cache.opFlagsStr[opFlags] = str
+		cache.opFlagsStr.Set(string(opFlags), str)
 		return str
 	}
 	b.WriteString(func() string {
@@ -176,7 +178,7 @@ func GetOpFlagsStr(opFlags int32) string {
 		return opFlagEmpty
 	}())
 	str := b.String()
-	cache.opFlagsStr[opFlags] = str
+	cache.opFlagsStr.Set(string(opFlags), str)
 	return str
 }
 
@@ -184,8 +186,8 @@ func GetOpFlagsStr(opFlags int32) string {
 func GetOpFlags(opFlags int32, rtype string) []string {
 	var ops = make([]string, 0)
 	cache := getCache()
-	if v, ok := cache.opFlags[opFlags]; ok {
-		return v
+	if v, ok := cache.opFlags.Get(string(opFlags)); ok {
+		return v.([]string)
 	}
 	if opFlags&OP_MKDIR == OP_MKDIR {
 		ops = append(ops, opFlagMkdir)
@@ -255,7 +257,7 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 	if opFlags&OP_DIGEST == OP_DIGEST {
 		ops = append(ops, opFlagDigest)
 	}
-	cache.opFlags[opFlags] = ops
+	cache.opFlags.Set(string(opFlags), ops)
 	return ops
 }
 
@@ -263,8 +265,8 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 func GetOpenFlags(flag int64) []string {
 	var flags = make([]string, 0)
 	cache := getCache()
-	if v, ok := cache.openFlags[flag]; ok {
-		return v
+	if v, ok := cache.openFlags.Get(string(flag)); ok {
+		return v.([]string)
 	}
 	if flag == O_NONE {
 		flags = append(flags, openFlagNone)
@@ -311,7 +313,7 @@ func GetOpenFlags(flag int64) []string {
 	if flag&O_SYNC == O_SYNC {
 		flags = append(flags, openFlagSync)
 	}
-	cache.openFlags[flag] = flags
+	cache.openFlags.Set(string(flag), flags)
 	return flags
 }
 
