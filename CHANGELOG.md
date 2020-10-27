@@ -13,7 +13,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 > - **Fixed**: for any bug fixes.
 > - **Security**: in case of vulnerabilities.
 
-## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc4...HEAD)]
+## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0...HEAD)]
+
+## [[0.1.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0)] - 2020-10-30
+
+### Added
+
+- Implemented caching for opflags and openflags in golang APIs.
+
+### Changed
+
+- Refactored driver and plugin interface
+- Refactored golang libraries to use constants for flags.
 
 ## [[0.1.0-rc4](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0-rc4)] - 2020-08-10
 
