@@ -4,11 +4,6 @@ import (
 	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
 )
 
-// FlatChannel defines a channel for flat records.
-type FlatChannel struct {
-	In chan *sfgo.FlatRecord
-}
-
 // SFHandler defines the SysFlow handler interface.
 type SFHandler interface {
 	IsEntityEnabled() bool

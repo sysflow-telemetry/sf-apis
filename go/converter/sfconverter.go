@@ -3,8 +3,8 @@ package converter
 import (
 	"time"
 
+	"github.com/sysflow-telemetry/sf-apis/go/logger"
 	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
-	"github.ibm.com/sysflow/goutils/logger"
 )
 
 // SFObjectConverter converts goavro schema objects into gogen objects.

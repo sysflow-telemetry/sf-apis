@@ -1,0 +1,7 @@
+{
+   "mountRoot": "true",	
+   "rootDir": "/host/root/",
+   "cacheExpire": 5,
+   "cachePurge": 8,
+   "numHashThreads" : 3
+}
