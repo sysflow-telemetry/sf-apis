@@ -130,6 +130,12 @@ func GetOpFlagsStr(opFlags int32) string {
 		return opFlagEmpty
 	}())
 	b.WriteString(func() string {
+		if opFlags&OP_CLOSE == OP_CLOSE {
+			return opFlagCloseChar
+		}
+		return opFlagEmpty
+	}())
+	b.WriteString(func() string {
 		if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
 			return opFlagWSendChar
 		}
@@ -227,6 +233,9 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 	}
 	if opFlags&OP_CONNECT == OP_CONNECT {
 		ops = append(ops, opFlagConnect)
+	}
+	if opFlags&OP_CLOSE == OP_CLOSE {
+		ops = append(ops, opFlagClose)
 	}
 	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
 		if rtype == "NF" {
