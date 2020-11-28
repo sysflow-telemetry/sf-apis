@@ -426,9 +426,6 @@ class SfqlMapper(Generic[T]):
         'container.image': partial(_getContAttr.__func__, attr='image'),
         'container.type': partial(_getContAttr.__func__, attr='type'),
         'container.privileged': partial(_getContAttr.__func__, attr='privileged'),
-        'pf.nthreads': partial(_getEvtFlowAttr.__func__, attr='numThreadsCloned'),
-        'pf.nexits': partial(_getEvtFlowAttr.__func__, attr='numThreadsExited'),
-        'pf.nerrors':  partial(_getEvtFlowAttr.__func__, attr='numCloneErrors'),
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
         'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
         'schema': partial(_getHeaderAttr.__func__, attr='version')

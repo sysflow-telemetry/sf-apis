@@ -105,9 +105,6 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'container.image': ('Image Name', 12, 'Container image name', False),
                 'container.type': ('Cont Type', 8, 'Container type', False),
                 'container.privileged': ('Privileged', 5, 'Container privilege status', False),
-                'pf.nthreads': ('NoThreads', 8, 'Threads created', False),
-                'pf.nexits': ('NoThrExits', 8, 'Threads exited', False),
-                'pf.nerrors': ('NoThrErrs', 8, 'Clone errors', False),
                 'node.id': ('Node ID', 12, 'Node identifier', False),
                 'node.ip': ('Node IP', 16, 'Node IP address', False),
                 'schema': ('SF Schema', 8, 'SysFlow schema version', False),
@@ -342,7 +339,7 @@ class SFFormatter(object):
         _flat_map['endts'] = utils.getTimeStrIso8601(evflow.endTs) if flow else ''
         _flat_map['endts_uts'] = int(evflow.endTs) if flow else None
         _flat_map['proc.pid'] = int(proc.oid.hpid) if proc else None
-        _flat_map['proc.tid'] = int(evflow.tid) if evflow and objtype != ObjectTypes.PROC_FLOW else None
+        _flat_map['proc.tid'] = int(evflow.tid) if evflow else None
         _flat_map['proc.uid'] = int(proc.uid) if proc else None
         _flat_map['proc.user'] = proc.userName if proc else ''
         _flat_map['proc.gid'] = int(proc.gid) if proc else None
@@ -362,7 +359,7 @@ class SFFormatter(object):
         _flat_map['pproc.exe'] = pproc.exe if pproc else ''
         _flat_map['pproc.args'] = pproc.exeArgs if pproc else ''
         _flat_map['pproc.createts'] = pproc.oid.createTS if pproc else ''
-        _flat_map['file.fd'] = flow.fd if flow and objtype != ObjectTypes.PROC_FLOW else ''
+        _flat_map['file.fd'] = flow.fd if flow else ''
         _flat_map['file.path'] = files[0].path if files and files[0] else ''
         _flat_map['file.newpath'] = files[1].path if files and files[1] else ''
         _flat_map['file.type'] = chr(files[0].restype) if files and files[0] else ''
@@ -381,13 +378,10 @@ class SFFormatter(object):
         else:
             _flat_map['res'] = ''
 
-        _flat_map['flow.rbytes'] = int(flow.numRRecvBytes) if flow and objtype != ObjectTypes.PROC_FLOW else None
-        _flat_map['flow.rops'] = int(flow.numRRecvOps) if flow and objtype != ObjectTypes.PROC_FLOW else None
-        _flat_map['flow.wbytes'] = int(flow.numWSendBytes) if flow and objtype != ObjectTypes.PROC_FLOW else None
-        _flat_map['flow.wops'] = int(flow.numWSendOps) if flow and objtype != ObjectTypes.PROC_FLOW else None
-        _flat_map['pf.nthreads'] = int(flow.numThreadsCloned) if flow and objtype == ObjectTypes.PROC_FLOW else None
-        _flat_map['pf.nexits'] = int(flow.numThreadsExited) if flow and objtype == ObjectTypes.PROC_FLOW else None
-        _flat_map['pf.nerrors'] = int(flow.numCloneErrors) if flow and objtype == ObjectTypes.PROC_FLOW else None
+        _flat_map['flow.rbytes'] = int(flow.numRRecvBytes) if flow else None
+        _flat_map['flow.rops'] = int(flow.numRRecvOps) if flow else None
+        _flat_map['flow.wbytes'] = int(flow.numWSendBytes) if flow else None
+        _flat_map['flow.wops'] = int(flow.numWSendOps) if flow else None
         _flat_map['container.id'] = cont.id if cont else ''
         _flat_map['container.name'] = cont.name if cont else ''
         _flat_map['container.imageid'] = cont.imageid if cont else ''
