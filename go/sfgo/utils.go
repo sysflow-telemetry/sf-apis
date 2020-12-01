@@ -344,7 +344,7 @@ func GetEvtTypes(opFlags int32, rtype string) []string {
 	if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
 		ops = append(ops, evTypeShutdown)
 	}
-	cache.opFlags.Set(string(opFlags), ops)
+	cache.evtTypes.Set(string(opFlags), ops)
 	return ops
 }
 
