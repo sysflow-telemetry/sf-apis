@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Implemented ProcessFlow support for sysprint.
 - Added mappings for sysdig system calls to support the Falco policy language.
 
-## [[0.1.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0)] - 2020-10-30
+## [[0.1.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc4...0.1.0)] - 2020-10-30
 
 ### Added
 
