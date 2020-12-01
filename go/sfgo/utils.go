@@ -22,6 +22,7 @@ type cache struct {
 	opFlags    cmap.ConcurrentMap
 	opFlagsStr cmap.ConcurrentMap
 	openFlags  cmap.ConcurrentMap
+	evtTypes   cmap.ConcurrentMap
 }
 
 func getCache() *cache {
@@ -30,6 +31,7 @@ func getCache() *cache {
 		c.opFlags = cmap.New()
 		c.opFlagsStr = cmap.New()
 		c.openFlags = cmap.New()
+		c.evtTypes = cmap.New()
 	})
 	return c
 }
@@ -267,6 +269,82 @@ func GetOpFlags(opFlags int32, rtype string) []string {
 		ops = append(ops, opFlagDigest)
 	}
 	cache.opFlags.Set(string(opFlags), ops)
+	return ops
+}
+
+// GetEvtTypes creates a list representation of event types.
+func GetEvtTypes(opFlags int32, rtype string) []string {
+	var ops = make([]string, 0)
+	cache := getCache()
+	if v, ok := cache.evtTypes.Get(string(opFlags)); ok {
+		return v.([]string)
+	}
+	if opFlags&OP_MKDIR == OP_MKDIR {
+		ops = append(ops, evTypeMkdir)
+	}
+	if opFlags&OP_RMDIR == OP_RMDIR {
+		ops = append(ops, evTypeRmdir)
+	}
+	if opFlags&OP_LINK == OP_LINK {
+		ops = append(ops, evTypeLink)
+	}
+	if opFlags&OP_SYMLINK == OP_SYMLINK {
+		ops = append(ops, evTypeSymlink)
+	}
+	if opFlags&OP_UNLINK == OP_UNLINK {
+		ops = append(ops, evTypeUnlink)
+	}
+	if opFlags&OP_RENAME == OP_RENAME {
+		ops = append(ops, evTypeRename)
+	}
+	if opFlags&OP_CLONE == OP_CLONE {
+		ops = append(ops, evTypeClone)
+	}
+	if opFlags&OP_EXEC == OP_EXEC {
+		ops = append(ops, evTypeExec)
+	}
+	if opFlags&OP_EXIT == OP_EXIT {
+		ops = append(ops, evTypeExit)
+	}
+	if opFlags&OP_SETUID == OP_SETUID {
+		ops = append(ops, evTypeSetuid)
+	}
+	if opFlags&OP_OPEN == OP_OPEN {
+		ops = append(ops, evTypeOpen)
+	}
+	if opFlags&OP_ACCEPT == OP_ACCEPT {
+		ops = append(ops, evTypeAccept)
+	}
+	if opFlags&OP_CONNECT == OP_CONNECT {
+		ops = append(ops, evTypeConnect)
+	}
+	if opFlags&OP_CLOSE == OP_CLOSE {
+		ops = append(ops, evTypeClose)
+	}
+	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
+		if rtype == "NF" {
+			ops = append(ops, evTypeSend)
+		} else {
+			ops = append(ops, evTypeWrite)
+		}
+	}
+	if opFlags&OP_READ_RECV == OP_READ_RECV {
+		if rtype == "NF" {
+			ops = append(ops, evTypeReceive)
+		} else {
+			ops = append(ops, evTypeRead)
+		}
+	}
+	if opFlags&OP_SETNS == OP_SETNS {
+		ops = append(ops, evTypeSetns)
+	}
+	if opFlags&OP_MMAP == OP_MMAP {
+		ops = append(ops, evTypeMmap)
+	}
+	if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
+		ops = append(ops, evTypeShutdown)
+	}
+	cache.evtTypes.Set(string(opFlags), ops)
 	return ops
 }
 

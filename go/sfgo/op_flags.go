@@ -61,3 +61,27 @@ const (
 	opFlagDigestChar   = "D"
 	opFlagEmpty        = ""
 )
+
+const (
+	evTypeMkdir    = "mkdir"
+	evTypeRmdir    = "rmdir"
+	evTypeLink     = "link"
+	evTypeSymlink  = "symlink"
+	evTypeUnlink   = "unlink"
+	evTypeRename   = "rename"
+	evTypeClone    = "clone"
+	evTypeExec     = "execve"
+	evTypeExit     = "exit"
+	evTypeSetuid   = "setuid"
+	evTypeOpen     = "open"
+	evTypeAccept   = "accept"
+	evTypeConnect  = "connect"
+	evTypeWrite    = "write"
+	evTypeSend     = "send"
+	evTypeRead     = "read"
+	evTypeReceive  = "recv"
+	evTypeSetns    = "setns"
+	evTypeMmap     = "mmap"
+	evTypeShutdown = "shutdown"
+	evTypeClose    = "close"
+)
