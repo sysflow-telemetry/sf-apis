@@ -24,7 +24,7 @@ from setuptools import setup
 
 setup(
     name = 'sysflow',
-    version = '0.1',    
+    version = '0.2.0',    
     description = ('Install SysFlow python API and utilities'),    
     packages=['sysflow', 'sysflow.grammar'],
     package_data={'sysflow': ['schema.avsc']},

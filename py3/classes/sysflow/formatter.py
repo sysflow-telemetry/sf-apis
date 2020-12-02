@@ -36,7 +36,7 @@ import pandas as pd
 .. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
-_version = '0.1.0-rc4'
+_version = '3'
 
 _default_fields = ['ts_uts', 'type', 'proc.exe', 'proc.args', 'pproc.pid', 'proc.pid', 'proc.tid', 'opflags', 'res', 'flow.rbytes', 'flow.wbytes', 'container.id']
 
