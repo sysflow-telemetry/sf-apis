@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.0...HEAD)]
 
+### Added
+
+- Adds flattened indices for file OID attributes in go API.
+
 ## [[0.2.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0...0.2.0)] - 2020-12-01
 
 ### Added
