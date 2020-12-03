@@ -40,9 +40,10 @@ const (
 
 	//Type name:  File
 	FILE_STATE_INT              Attribute = PROC_ENTRY_INT + 1
+	FILE_OID_STR                Attribute = PROC_CONTAINERID_STRING_STR + 1
 	FILE_TS_INT                 Attribute = FILE_STATE_INT + 1
 	FILE_RESTYPE_INT            Attribute = FILE_TS_INT + 1
-	FILE_PATH_STR               Attribute = PROC_CONTAINERID_STRING_STR + 1
+	FILE_PATH_STR               Attribute = FILE_OID_STR + 1
 	FILE_CONTAINERID_STRING_STR Attribute = FILE_PATH_STR + 1
 
 	//Type name:  FileEvent
@@ -53,9 +54,10 @@ const (
 
 	//Type name:  File  number 2
 	SEC_FILE_STATE_INT              Attribute = EV_FILE_RET_INT + 1
+	SEC_FILE_OID_STR                Attribute = FILE_CONTAINERID_STRING_STR + 1
 	SEC_FILE_TS_INT                 Attribute = SEC_FILE_STATE_INT + 1
 	SEC_FILE_RESTYPE_INT            Attribute = SEC_FILE_TS_INT + 1
-	SEC_FILE_PATH_STR               Attribute = FILE_CONTAINERID_STRING_STR + 1
+	SEC_FILE_PATH_STR               Attribute = SEC_FILE_OID_STR + 1
 	SEC_FILE_CONTAINERID_STRING_STR Attribute = SEC_FILE_PATH_STR + 1
 
 	//Type name:  FileFlow
@@ -93,5 +95,5 @@ const (
 	EV_PROC_RET_INT     Attribute = EV_PROC_OPFLAGS_INT + 1
 
 	INT_ARRAY_SIZE Attribute = 30 + 1
-	STR_ARRAY_SIZE Attribute = 14 + 1
+	STR_ARRAY_SIZE Attribute = 16 + 1
 )
