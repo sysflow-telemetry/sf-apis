@@ -8,15 +8,16 @@ import (
 
 // SFChannel defines a SysFlow channel for data transfer.
 type SFChannel struct {
-	In chan *sfgo.SysFlow
+	In   chan *sfgo.SysFlow
+	once sync.Once
 }
 
 // SFProcessor defines the SysFlow processor interface.
 type SFProcessor interface {
-	Process(record interface{}, wg *sync.WaitGroup)
-	Init(conf map[string]string) error
 	Register(pc SFPluginCache)
-	SetOutChan(ch interface{})
+	Init(conf map[string]string) error
+	Process(record interface{}, wg *sync.WaitGroup)
 	GetName() string
+	SetOutChan(ch interface{})
 	Cleanup()
 }
