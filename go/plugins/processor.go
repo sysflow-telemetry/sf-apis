@@ -13,10 +13,10 @@ type SFChannel struct {
 
 // SFProcessor defines the SysFlow processor interface.
 type SFProcessor interface {
-	Process(record interface{}, wg *sync.WaitGroup)
-	Init(conf map[string]interface{}) error
 	Register(pc SFPluginCache)
-	SetOutChan(ch []interface{})
+	Init(conf map[string]interface{}) error
+	Process(record interface{}, wg *sync.WaitGroup)
 	GetName() string
+	SetOutChan(ch []interface{})
 	Cleanup()
 }
