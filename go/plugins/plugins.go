@@ -11,8 +11,12 @@ const (
 type SFPluginCache interface {
 	AddDriver(name string, factory interface{})
 	AddProcessor(name string, factory interface{})
-	AddHandler(name string, factory interface{})
 	AddChannel(name string, factory interface{})
+}
+
+// SFHandlerCache defines an interface for a plugin cache.
+type SFHandlerCache interface {
+	AddHandler(name string, factory interface{})
 }
 
 // SFPluginFactory defines an abstract factory for plugins.
