@@ -45,39 +45,39 @@ func GetOpFlagsStr(opFlags int32) string {
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_MKDIR == OP_MKDIR {
-			return opFlagMkdir
+			return OpFlagMkdir
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_RMDIR == OP_RMDIR {
-			return opFlagRmdir
+			return OpFlagRmdir
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_LINK == OP_LINK {
-			return opFlagLink
+			return OpFlagLink
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SYMLINK == OP_SYMLINK {
-			return opFlagSymlink
+			return OpFlagSymlink
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_UNLINK == OP_UNLINK {
-			return opFlagUnlink
+			return OpFlagUnlink
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_RENAME == OP_RENAME {
-			return opFlagRename
+			return OpFlagRename
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	if b.Len() > 0 {
 		str := b.String()
@@ -86,27 +86,27 @@ func GetOpFlagsStr(opFlags int32) string {
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_CLONE == OP_CLONE {
-			return opFlagClone
+			return OpFlagClone
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_EXEC == OP_EXEC {
-			return opFlagExec
+			return OpFlagExec
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_EXIT == OP_EXIT {
-			return opFlagExit
+			return OpFlagExit
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SETUID == OP_SETUID {
-			return opFlagSetuid
+			return OpFlagSetuid
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	if b.Len() > 0 {
 		str := b.String()
@@ -115,75 +115,75 @@ func GetOpFlagsStr(opFlags int32) string {
 	}
 	b.WriteString(func() string {
 		if opFlags&OP_OPEN == OP_OPEN {
-			return opFlagOpenChar
+			return OpFlagOpenChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_ACCEPT == OP_ACCEPT {
-			return opFlagAcceptChar
+			return OpFlagAcceptChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_CONNECT == OP_CONNECT {
-			return opFlagConnectChar
+			return OpFlagConnectChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_CLOSE == OP_CLOSE {
-			return opFlagCloseChar
+			return OpFlagCloseChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
-			return opFlagWSendChar
+			return OpFlagWSendChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_READ_RECV == OP_READ_RECV {
-			return opFlagRReceiveChar
+			return OpFlagRReceiveChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SETNS == OP_SETNS {
-			return opFlagSetnsChar
+			return OpFlagSetnsChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_MMAP == OP_MMAP {
-			return opFlagMmapChar
+			return OpFlagMmapChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
-			return opFlagShutdownChar
+			return OpFlagShutdownChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_CLOSE == OP_CLOSE {
-			return opFlagCloseChar
+			return OpFlagCloseChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_TRUNCATE == OP_TRUNCATE {
-			return opFlagTruncateChar
+			return OpFlagTruncateChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	b.WriteString(func() string {
 		if opFlags&OP_DIGEST == OP_DIGEST {
-			return opFlagDigestChar
+			return OpFlagDigestChar
 		}
-		return opFlagEmpty
+		return OpFlagEmpty
 	}())
 	str := b.String()
 	cache.opFlagsStr.Set(string(opFlags), str)
@@ -198,75 +198,75 @@ func GetOpFlags(opFlags int32, rtype RecordType) []string {
 		return v.([]string)
 	}
 	if opFlags&OP_MKDIR == OP_MKDIR {
-		ops = append(ops, opFlagMkdir)
+		ops = append(ops, OpFlagMkdir)
 	}
 	if opFlags&OP_RMDIR == OP_RMDIR {
-		ops = append(ops, opFlagRmdir)
+		ops = append(ops, OpFlagRmdir)
 	}
 	if opFlags&OP_LINK == OP_LINK {
-		ops = append(ops, opFlagLink)
+		ops = append(ops, OpFlagLink)
 	}
 	if opFlags&OP_SYMLINK == OP_SYMLINK {
-		ops = append(ops, opFlagSymlink)
+		ops = append(ops, OpFlagSymlink)
 	}
 	if opFlags&OP_UNLINK == OP_UNLINK {
-		ops = append(ops, opFlagUnlink)
+		ops = append(ops, OpFlagUnlink)
 	}
 	if opFlags&OP_RENAME == OP_RENAME {
-		ops = append(ops, opFlagRename)
+		ops = append(ops, OpFlagRename)
 	}
 	if opFlags&OP_CLONE == OP_CLONE {
-		ops = append(ops, opFlagClone)
+		ops = append(ops, OpFlagClone)
 	}
 	if opFlags&OP_EXEC == OP_EXEC {
-		ops = append(ops, opFlagExec)
+		ops = append(ops, OpFlagExec)
 	}
 	if opFlags&OP_EXIT == OP_EXIT {
-		ops = append(ops, opFlagExit)
+		ops = append(ops, OpFlagExit)
 	}
 	if opFlags&OP_SETUID == OP_SETUID {
-		ops = append(ops, opFlagSetuid)
+		ops = append(ops, OpFlagSetuid)
 	}
 	if opFlags&OP_OPEN == OP_OPEN {
-		ops = append(ops, opFlagOpen)
+		ops = append(ops, OpFlagOpen)
 	}
 	if opFlags&OP_ACCEPT == OP_ACCEPT {
-		ops = append(ops, opFlagAccept)
+		ops = append(ops, OpFlagAccept)
 	}
 	if opFlags&OP_CONNECT == OP_CONNECT {
-		ops = append(ops, opFlagConnect)
+		ops = append(ops, OpFlagConnect)
 	}
 	if opFlags&OP_CLOSE == OP_CLOSE {
-		ops = append(ops, opFlagClose)
+		ops = append(ops, OpFlagClose)
 	}
 	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
 		if rtype == TyNF {
-			ops = append(ops, opFlagSend)
+			ops = append(ops, OpFlagSend)
 		} else {
-			ops = append(ops, opFlagWrite)
+			ops = append(ops, OpFlagWrite)
 		}
 	}
 	if opFlags&OP_READ_RECV == OP_READ_RECV {
 		if rtype == TyNF {
-			ops = append(ops, opFlagReceive)
+			ops = append(ops, OpFlagReceive)
 		} else {
-			ops = append(ops, opFlagRead)
+			ops = append(ops, OpFlagRead)
 		}
 	}
 	if opFlags&OP_SETNS == OP_SETNS {
-		ops = append(ops, opFlagSetns)
+		ops = append(ops, OpFlagSetns)
 	}
 	if opFlags&OP_MMAP == OP_MMAP {
-		ops = append(ops, opFlagMmap)
+		ops = append(ops, OpFlagMmap)
 	}
 	if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
-		ops = append(ops, opFlagShutdown)
+		ops = append(ops, OpFlagShutdown)
 	}
 	if opFlags&OP_TRUNCATE == OP_TRUNCATE {
-		ops = append(ops, opFlagTruncate)
+		ops = append(ops, OpFlagTruncate)
 	}
 	if opFlags&OP_DIGEST == OP_DIGEST {
-		ops = append(ops, opFlagDigest)
+		ops = append(ops, OpFlagDigest)
 	}
 	cache.opFlags.Set(string(opFlags), ops)
 	return ops
@@ -280,69 +280,69 @@ func GetEvtTypes(opFlags int32, rtype RecordType) []string {
 		return v.([]string)
 	}
 	if opFlags&OP_MKDIR == OP_MKDIR {
-		ops = append(ops, evTypeMkdir)
+		ops = append(ops, EvTypeMkdir)
 	}
 	if opFlags&OP_RMDIR == OP_RMDIR {
-		ops = append(ops, evTypeRmdir)
+		ops = append(ops, EvTypeRmdir)
 	}
 	if opFlags&OP_LINK == OP_LINK {
-		ops = append(ops, evTypeLink)
+		ops = append(ops, EvTypeLink)
 	}
 	if opFlags&OP_SYMLINK == OP_SYMLINK {
-		ops = append(ops, evTypeSymlink)
+		ops = append(ops, EvTypeSymlink)
 	}
 	if opFlags&OP_UNLINK == OP_UNLINK {
-		ops = append(ops, evTypeUnlink)
+		ops = append(ops, EvTypeUnlink)
 	}
 	if opFlags&OP_RENAME == OP_RENAME {
-		ops = append(ops, evTypeRename)
+		ops = append(ops, EvTypeRename)
 	}
 	if opFlags&OP_CLONE == OP_CLONE {
-		ops = append(ops, evTypeClone)
+		ops = append(ops, EvTypeClone)
 	}
 	if opFlags&OP_EXEC == OP_EXEC {
-		ops = append(ops, evTypeExec)
+		ops = append(ops, EvTypeExec)
 	}
 	if opFlags&OP_EXIT == OP_EXIT {
-		ops = append(ops, evTypeExit)
+		ops = append(ops, EvTypeExit)
 	}
 	if opFlags&OP_SETUID == OP_SETUID {
-		ops = append(ops, evTypeSetuid)
+		ops = append(ops, EvTypeSetuid)
 	}
 	if opFlags&OP_OPEN == OP_OPEN {
-		ops = append(ops, evTypeOpen)
+		ops = append(ops, EvTypeOpen)
 	}
 	if opFlags&OP_ACCEPT == OP_ACCEPT {
-		ops = append(ops, evTypeAccept)
+		ops = append(ops, EvTypeAccept)
 	}
 	if opFlags&OP_CONNECT == OP_CONNECT {
-		ops = append(ops, evTypeConnect)
+		ops = append(ops, EvTypeConnect)
 	}
 	if opFlags&OP_CLOSE == OP_CLOSE {
-		ops = append(ops, evTypeClose)
+		ops = append(ops, EvTypeClose)
 	}
 	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
 		if rtype == TyNF {
-			ops = append(ops, evTypeSend)
+			ops = append(ops, EvTypeSend)
 		} else {
-			ops = append(ops, evTypeWrite)
+			ops = append(ops, EvTypeWrite)
 		}
 	}
 	if opFlags&OP_READ_RECV == OP_READ_RECV {
 		if rtype == TyNF {
-			ops = append(ops, evTypeReceive)
+			ops = append(ops, EvTypeReceive)
 		} else {
-			ops = append(ops, evTypeRead)
+			ops = append(ops, EvTypeRead)
 		}
 	}
 	if opFlags&OP_SETNS == OP_SETNS {
-		ops = append(ops, evTypeSetns)
+		ops = append(ops, EvTypeSetns)
 	}
 	if opFlags&OP_MMAP == OP_MMAP {
-		ops = append(ops, evTypeMmap)
+		ops = append(ops, EvTypeMmap)
 	}
 	if opFlags&OP_SHUTDOWN == OP_SHUTDOWN {
-		ops = append(ops, evTypeShutdown)
+		ops = append(ops, EvTypeShutdown)
 	}
 	cache.evtTypes.Set(string(opFlags), ops)
 	return ops
@@ -356,49 +356,49 @@ func GetOpenFlags(flag int64) []string {
 		return v.([]string)
 	}
 	if flag == O_NONE {
-		flags = append(flags, openFlagNone)
+		flags = append(flags, OpenFlagNone)
 	}
 	if flag&O_RDONLY == O_RDONLY {
-		flags = append(flags, openFlagRdonly)
+		flags = append(flags, OpenFlagRdonly)
 	}
 	if flag&O_WRONLY == O_WRONLY {
-		flags = append(flags, openFlagWronly)
+		flags = append(flags, OpenFlagWronly)
 	}
 	if flag&O_RDWR == O_RDWR {
-		flags = append(flags, openFlagRdwr)
+		flags = append(flags, OpenFlagRdwr)
 	}
 	if flag&O_CREAT == O_CREAT {
-		flags = append(flags, openFlagCreat)
+		flags = append(flags, OpenFlagCreat)
 	}
 	if flag&O_EXCL == O_EXCL {
-		flags = append(flags, openFlagExcl)
+		flags = append(flags, OpenFlagExcl)
 	}
 	if flag&O_TRUNC == O_TRUNC {
-		flags = append(flags, openFlagTrunc)
+		flags = append(flags, OpenFlagTrunc)
 	}
 	if flag&O_APPEND == O_APPEND {
-		flags = append(flags, openFlagAppend)
+		flags = append(flags, OpenFlagAppend)
 	}
 	if flag&O_NONBLOCK == O_NONBLOCK {
-		flags = append(flags, openFlagNonBlock)
+		flags = append(flags, OpenFlagNonBlock)
 	}
 	if flag&O_DSYNC == O_DSYNC {
-		flags = append(flags, openFlagDsync)
+		flags = append(flags, OpenFlagDsync)
 	}
 	if flag&O_DIRECT == O_DIRECT {
-		flags = append(flags, openFlagDirect)
+		flags = append(flags, OpenFlagDirect)
 	}
 	if flag&O_LARGEFILE == O_LARGEFILE {
-		flags = append(flags, openFlagLargefile)
+		flags = append(flags, OpenFlagLargefile)
 	}
 	if flag&O_DIRECTORY == O_DIRECTORY {
-		flags = append(flags, openFlagDir)
+		flags = append(flags, OpenFlagDir)
 	}
 	if flag&O_CLOEXEC == O_CLOEXEC {
-		flags = append(flags, openFlagCloexec)
+		flags = append(flags, OpenFlagCloexec)
 	}
 	if flag&O_SYNC == O_SYNC {
-		flags = append(flags, openFlagSync)
+		flags = append(flags, OpenFlagSync)
 	}
 	cache.openFlags.Set(string(flag), flags)
 	return flags
