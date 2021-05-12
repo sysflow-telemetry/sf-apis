@@ -69,7 +69,7 @@ def sysprint(trace, args):
         if args.file is not None:
             formatter.toJsonFile(args.file, fields=fields, expr=args.filter)
         else:
-            formatter.toJsonStdOut(fields=fields)
+            formatter.toJsonStdOut(fields=fields, expr=args.filter)
     elif args.output == 'flatjson':
         if args.file is not None:
             formatter.toJsonFile(args.file, fields=fields, expr=args.filter, flat=True)
