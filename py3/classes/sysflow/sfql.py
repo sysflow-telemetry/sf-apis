@@ -431,7 +431,8 @@ class SfqlMapper(Generic[T]):
         'pf.nerrors':  partial(_getEvtFlowAttr.__func__, attr='numCloneErrors'),
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
         'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
-        'schema': partial(_getHeaderAttr.__func__, attr='version')
+        'schema': partial(_getHeaderAttr.__func__, attr='version'),
+        'filename': partial(_getHeaderAttr.__func__, attr='filename')
     }
 
     def __init__(self):

@@ -27,6 +27,9 @@ func (s *SFObjectConverter) createHeader(hdr map[string]interface{}) *sfgo.SFHea
 	} else {
 		sfhdr.SetDefault(cIPIdx)
 	}
+        if val, ok := hdr[cHdrFilename]; ok {
+		sfhdr.Filename = val.(string)
+	}
 	return sfhdr
 }
 

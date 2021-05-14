@@ -27,6 +27,7 @@ const (
 	cHdrVersion  = "version"
 	cHdrExporter = "exporter"
 	cHdrIP       = "ip"
+	cHdrFilename = "filename"
 
 	cContainer   = "sysflow.entity.Container"
 	cContName    = "name"

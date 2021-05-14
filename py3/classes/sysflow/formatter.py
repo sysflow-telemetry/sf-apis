@@ -111,7 +111,8 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'node.id': ('Node ID', 12, 'Node identifier', False),
                 'node.ip': ('Node IP', 16, 'Node IP address', False),
                 'schema': ('SF Schema', 8, 'SysFlow schema version', False),
-                'version': ('API version', 8, 'SysFlow JSON schema version', False),                
+                'version': ('API version', 8, 'SysFlow JSON schema version', False),
+                'filename': ('File name', 15, 'SysFlow trace file name', False),
           }
 
 class SFFormatter(object):
@@ -396,6 +397,7 @@ class SFFormatter(object):
         _flat_map['container.privileged'] = cont.privileged if cont else ''
         _flat_map['node.id'] = header.exporter if header else ''
         _flat_map['node.ip'] = header.ip if header and hasattr(header, 'ip') else ''
+        _flat_map['filename'] = header.filename if header and hasattr(header, 'filename') else ''
         _flat_map['schema'] = header.version if header else ''
 
         if fields:
