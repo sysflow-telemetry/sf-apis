@@ -39,12 +39,16 @@ func (s *Secrets) Get(key string) (secret string, err error) {
 }
 
 // GetDecoded reads and decode the base64 secret value corresponding to key.
-func (s *Secrets) GetDecoded(key string) ([]byte, error) {
+func (s *Secrets) GetDecoded(key string) (string, error) {
 	secret, err := s.read(key)
 	if err != nil {
-		return nil, err
+		return secret, err
 	}
-	return base64.StdEncoding.DecodeString(secret)
+	decoded, err := base64.StdEncoding.DecodeString(secret)
+	if err != nil {
+		return sfgo.Zeros.String, err
+	}
+	return string(decoded), nil
 }
 
 // Reads a secret.
