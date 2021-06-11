@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
 )
 
 // Secrets stores a container secrets.
@@ -21,59 +23,42 @@ func NewSecrets() (*Secrets, error) {
 
 // NewSecretsWithCustomPath creates an instance of Secrets with a custom secrets mount path.
 func NewSecretsWithCustomPath(secretsDir string) (*Secrets, error) {
-	secrets := &Secrets{secretsDir: secretsDir, secrets: map[string]string{}}
-	err := secrets.readAll()
-	return secrets, err
+	if err := isDir(secretsDir); err != nil {
+		return nil, err
+	}
+	return &Secrets{secretsDir: secretsDir, secrets: map[string]string{}}, nil
 }
 
 // Get reads secret value corresponding to key.
-func (s *Secrets) Get(key string) (string, error) {
-	if _, ok := s.secrets[key]; !ok {
-		return "", fmt.Errorf("secret %s does not exist", key)
+func (s *Secrets) Get(key string) (secret string, err error) {
+	secret, err = s.read(key)
+	if err != nil {
+		return
 	}
-	return s.secrets[key], nil
+	return secret, nil
 }
 
 // GetDecoded reads and decode the base64 secret value corresponding to key.
 func (s *Secrets) GetDecoded(key string) ([]byte, error) {
-	if _, ok := s.secrets[key]; !ok {
-		return nil, fmt.Errorf("secret %s does not exist", key)
-	}
-	return base64.StdEncoding.DecodeString(s.secrets[key])
-}
-
-// GetAll returns all container secrets.
-func (s *Secrets) GetAll() map[string]string {
-	return s.secrets
-}
-
-// Reads all secrets from the secrets mount path.
-func (s *Secrets) readAll() error {
-	err := isDir(s.secretsDir)
+	secret, err := s.read(key)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	secrets, err := ioutil.ReadDir(s.secretsDir)
-	if err != nil {
-		return err
-	}
-	for _, secret := range secrets {
-		err := s.read(secret.Name())
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	return base64.StdEncoding.DecodeString(secret)
 }
 
 // Reads a secret.
-func (s *Secrets) read(secret string) error {
+func (s *Secrets) read(secret string) (string, error) {
+	if v, ok := s.secrets[secret]; ok {
+		return v, nil
+	}
 	buf, err := ioutil.ReadFile(s.secretsDir + "/" + secret)
 	if err != nil {
-		return err
+		return sfgo.Zeros.String, fmt.Errorf("secret %s does not exist or cannot be read: %v", secret, err)
 	}
-	s.secrets[secret] = strings.TrimSpace(string(buf))
-	return nil
+	v := strings.TrimSpace(string(buf))
+	s.secrets[secret] = v
+	return v, nil
 }
 
 // Checks if the given path is a directory. Returns nil if directory.
