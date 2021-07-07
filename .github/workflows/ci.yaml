@@ -62,11 +62,11 @@ jobs:
       - name: Check style
         run: |
           black --check -S -l 120 py3/classes/sysflow
-          black --check -S -l 120 py3/utils
+          black --check -S -l 120 py3/utils/sysprint
       - name: Check imports
         run: |
           unimport --check --exclude __init__.py py3/classes/sysflow
-          unimport --check --exclude __init__.py py3/utils
+          unimport --check --exclude __init__.py py3/utils/sysprint
   docker-sfnb:
     needs: lint-python-apis
     runs-on: ubuntu-latest

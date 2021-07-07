@@ -5,7 +5,6 @@ from typing.io import TextIO
 import sys
 
 
-
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2&")
@@ -171,7 +170,7 @@ class sfqlLexer(Lexer):
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 
     QUERY = 1
     MACRO = 2
@@ -210,37 +209,126 @@ class sfqlLexer(Lexer):
     COMMENT = 35
     ANY = 36
 
-    channelNames = [ u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN" ]
+    channelNames = [u"DEFAULT_TOKEN_CHANNEL", u"HIDDEN"]
 
-    modeNames = [ "DEFAULT_MODE" ]
+    modeNames = ["DEFAULT_MODE"]
 
-    literalNames = [ "<INVALID>",
-            "'sfql'", "'macro'", "'list'", "'items'", "'condition'", "'and'", 
-            "'or'", "'not'", "'<'", "'<='", "'>'", "'>='", "'='", "'!='", 
-            "'in'", "'contains'", "'icontains'", "'startswith'", "'pmatch'", 
-            "'exists'", "'['", "']'", "'('", "')'", "','", "'-'" ]
+    literalNames = [
+        "<INVALID>",
+        "'sfql'",
+        "'macro'",
+        "'list'",
+        "'items'",
+        "'condition'",
+        "'and'",
+        "'or'",
+        "'not'",
+        "'<'",
+        "'<='",
+        "'>'",
+        "'>='",
+        "'='",
+        "'!='",
+        "'in'",
+        "'contains'",
+        "'icontains'",
+        "'startswith'",
+        "'pmatch'",
+        "'exists'",
+        "'['",
+        "']'",
+        "'('",
+        "')'",
+        "','",
+        "'-'",
+    ]
 
-    symbolicNames = [ "<INVALID>",
-            "QUERY", "MACRO", "LIST", "ITEMS", "COND", "AND", "OR", "NOT", 
-            "LT", "LE", "GT", "GE", "EQ", "NEQ", "IN", "CONTAINS", "ICONTAINS", 
-            "STARTSWITH", "PMATCH", "EXISTS", "LBRACK", "RBRACK", "LPAREN", 
-            "RPAREN", "LISTSEP", "DECL", "DEF", "SEVERITY", "ID", "NUMBER", 
-            "PATH", "STRING", "WS", "NL", "COMMENT", "ANY" ]
+    symbolicNames = [
+        "<INVALID>",
+        "QUERY",
+        "MACRO",
+        "LIST",
+        "ITEMS",
+        "COND",
+        "AND",
+        "OR",
+        "NOT",
+        "LT",
+        "LE",
+        "GT",
+        "GE",
+        "EQ",
+        "NEQ",
+        "IN",
+        "CONTAINS",
+        "ICONTAINS",
+        "STARTSWITH",
+        "PMATCH",
+        "EXISTS",
+        "LBRACK",
+        "RBRACK",
+        "LPAREN",
+        "RPAREN",
+        "LISTSEP",
+        "DECL",
+        "DEF",
+        "SEVERITY",
+        "ID",
+        "NUMBER",
+        "PATH",
+        "STRING",
+        "WS",
+        "NL",
+        "COMMENT",
+        "ANY",
+    ]
 
-    ruleNames = [ "QUERY", "MACRO", "LIST", "ITEMS", "COND", "AND", "OR", 
-                  "NOT", "LT", "LE", "GT", "GE", "EQ", "NEQ", "IN", "CONTAINS", 
-                  "ICONTAINS", "STARTSWITH", "PMATCH", "EXISTS", "LBRACK", 
-                  "RBRACK", "LPAREN", "RPAREN", "LISTSEP", "DECL", "DEF", 
-                  "SEVERITY", "ID", "NUMBER", "PATH", "STRING", "STRLIT", 
-                  "ESC", "WS", "NL", "COMMENT", "ANY" ]
+    ruleNames = [
+        "QUERY",
+        "MACRO",
+        "LIST",
+        "ITEMS",
+        "COND",
+        "AND",
+        "OR",
+        "NOT",
+        "LT",
+        "LE",
+        "GT",
+        "GE",
+        "EQ",
+        "NEQ",
+        "IN",
+        "CONTAINS",
+        "ICONTAINS",
+        "STARTSWITH",
+        "PMATCH",
+        "EXISTS",
+        "LBRACK",
+        "RBRACK",
+        "LPAREN",
+        "RPAREN",
+        "LISTSEP",
+        "DECL",
+        "DEF",
+        "SEVERITY",
+        "ID",
+        "NUMBER",
+        "PATH",
+        "STRING",
+        "STRLIT",
+        "ESC",
+        "WS",
+        "NL",
+        "COMMENT",
+        "ANY",
+    ]
 
     grammarFileName = "sfql.g4"
 
-    def __init__(self, input=None, output:TextIO = sys.stdout):
+    def __init__(self, input=None, output: TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.7.2")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None
-
-

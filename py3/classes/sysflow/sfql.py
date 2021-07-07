@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os, time
+import os
 from functools import reduce, partial
 from typing import Callable, Generic, TypeVar
 from frozendict import frozendict
@@ -28,7 +28,6 @@ from sysflow.grammar.sfqlListener import sfqlListener
 from sysflow.grammar.sfqlParser import sfqlParser
 from sysflow.objtypes import ObjectTypes, OBJECT_MAP
 import sysflow.utils as utils
-import sysflow.openflags as openflags
 
 """
 .. module:: sysflow.sfql
@@ -38,25 +37,27 @@ import sysflow.openflags as openflags
 
 T = TypeVar('T')
 
+
 class SfqlInterpreter(sfqlListener, Generic[T]):
     """
-       **SfqlInterpreter**
+    **SfqlInterpreter**
 
-       This class takes a sfql expression (and optionally a file containining a library of
-       lists and macros) and produces a predicate expression that can be matched against
-       sysflow records.
-       Example Usage::
+    This class takes a sfql expression (and optionally a file containining a library of
+    lists and macros) and produces a predicate expression that can be matched against
+    sysflow records.
+    Example Usage::
 
-            # using 'filter' to filter the input stream
-            reader = FlattenedSFReader('trace.sf')
-            interpreter = SfqlInterpreter()
-            query = '- sfql: type = FF'
-            for r in interpreter.filter(reader, query):
-                print(r)
+         # using 'filter' to filter the input stream
+         reader = FlattenedSFReader('trace.sf')
+         interpreter = SfqlInterpreter()
+         query = '- sfql: type = FF'
+         for r in interpreter.filter(reader, query):
+             print(r)
 
-       :param interpreter: An interpreter for executing sfql expressions.
-       :type interpreter: sysflow.SfqlInterpreter
+    :param interpreter: An interpreter for executing sfql expressions.
+    :type interpreter: sysflow.SfqlInterpreter
     """
+
     _macros = {}
     _lists = {}
     _criteria = None
@@ -149,8 +150,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
         self._macros[ctx.ID().getText()] = ctx.expression()
 
     def exitF_list(self, ctx: sfqlParser.F_listContext):
-        self._lists[ctx.ID().getText()] = [item.getText().strip('\"')
-                                           for item in ctx.items().atom()]
+        self._lists[ctx.ID().getText()] = [item.getText().strip('\"') for item in ctx.items().atom()]
 
     def _all(self, preds: Callable[[T], bool]):
         return lambda t: all(p(t) for p in preds)
@@ -183,8 +183,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             if var in self._macros:
                 return self.visitExpression(self._macros[var])
             else:
-                raise Exception(
-                    'SFQL error: unrecognized reference {0}'.format(var))
+                raise Exception('SFQL error: unrecognized reference {0}'.format(var))
         elif ctx.NOT():
             return lambda t: not self.visitTerm(ctx.getChild(1))(t)
         elif ctx.unary_operator():
@@ -192,8 +191,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             if ctx.unary_operator().EXISTS():
                 return lambda t: not not self._getAttr(t, lop)
             else:
-                raise Exception(
-                    'SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
+                raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
         elif ctx.binary_operator():
             lop = ctx.atom(0).getText()
             rop = lambda t: self.mapper.getAttr(t, ctx.atom(1).getText())
@@ -216,8 +214,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             elif ctx.binary_operator().LE():
                 return lambda t: self._evalPred(t, lop, lambda s: int(s) >= int(rop(t)))
             else:
-                raise Exception(
-                    'SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
+                raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
         elif ctx.expression():
             return self.visitExpression(ctx.expression())
         elif ctx.IN():
@@ -229,8 +226,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             rop = self._getList(ctx)
             return lambda t: any(self._evalPred(t, lop, lambda s: e in s) for e in rop)
         else:
-            raise Exception(
-                'SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
+            raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
         return lambda t: False
 
     def _getList(self, ctx: sfqlParser.TermContext) -> list:
@@ -248,14 +244,16 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             lst.append(l)
         return lst
 
+
 class SfqlMapper(Generic[T]):
 
-    _ptree= {}
+    _ptree = {}
 
     @staticmethod
     def _rgetattr(obj, attr, *args):
         def _getattr(obj, attr):
             return getattr(obj, attr, *args) if obj else None
+
         return reduce(_getattr, [obj] + attr.split('.'))
 
     @staticmethod
@@ -264,9 +262,8 @@ class SfqlMapper(Generic[T]):
 
     @staticmethod
     def _getObjType(t: T, attr: str = None):
-        return OBJECT_MAP.get(t[0],'?')
+        return OBJECT_MAP.get(t[0], '?')
 
-   
     @staticmethod
     def _getHeaderAttr(t: T, attr: str):
         hd = t[1]
@@ -295,10 +292,10 @@ class SfqlMapper(Generic[T]):
     def _getProcAttr(t: T, attr: str):
         proc = t[4]
         if not proc:
-            return None        
+            return None
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
-        elif attr == 'apid':            
+        elif attr == 'apid':
             apid = SfqlMapper._getProcAncestry(proc.oid, 'oid.hpid', [proc.oid.hpid])
             return ','.join([str(i) for i in apid])
         elif attr == 'aname':
@@ -309,7 +306,7 @@ class SfqlMapper(Generic[T]):
 
     @staticmethod
     def _getProcAncestry(oid, attr: str, anc: list):
-        _oid = frozendict(vars(oid))        
+        _oid = frozendict(vars(oid))
         pproc = SfqlMapper._ptree[_oid] if _oid in SfqlMapper._ptree else None
         return SfqlMapper._getProcAncestry(pproc.oid, attr, anc + [SfqlMapper._rgetattr(pproc, attr)]) if pproc else anc
 
@@ -317,7 +314,7 @@ class SfqlMapper(Generic[T]):
     def _getPProcAttr(t: T, attr: str):
         proc = t[3]
         if not proc:
-            return None        
+            return None
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
         else:
@@ -382,7 +379,7 @@ class SfqlMapper(Generic[T]):
         'proc.tid': partial(_getEvtFlowAttr.__func__, attr='tid'),
         'proc.gid': partial(_getProcAttr.__func__, attr='gid'),
         'proc.group': partial(_getProcAttr.__func__, attr='groupName'),
-        'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),        
+        'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
         'proc.tty': partial(_getProcAttr.__func__, attr='tty'),
         'proc.entry': partial(_getProcAttr.__func__, attr='entry'),
         'proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
@@ -422,17 +419,17 @@ class SfqlMapper(Generic[T]):
         'flow.wops': partial(_getEvtFlowAttr.__func__, attr='numWSendOps'),
         'container.id': partial(_getContAttr.__func__, attr='id'),
         'container.name': partial(_getContAttr.__func__, attr='name'),
-        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),        
+        'container.imageid': partial(_getContAttr.__func__, attr='imageid'),
         'container.image': partial(_getContAttr.__func__, attr='image'),
         'container.type': partial(_getContAttr.__func__, attr='type'),
         'container.privileged': partial(_getContAttr.__func__, attr='privileged'),
         'pf.nthreads': partial(_getEvtFlowAttr.__func__, attr='numThreadsCloned'),
         'pf.nexits': partial(_getEvtFlowAttr.__func__, attr='numThreadsExited'),
-        'pf.nerrors':  partial(_getEvtFlowAttr.__func__, attr='numCloneErrors'),
+        'pf.nerrors': partial(_getEvtFlowAttr.__func__, attr='numCloneErrors'),
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
         'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
         'schema': partial(_getHeaderAttr.__func__, attr='version'),
-        'filename': partial(_getHeaderAttr.__func__, attr='filename')
+        'filename': partial(_getHeaderAttr.__func__, attr='filename'),
     }
 
     def __init__(self):
@@ -443,9 +440,8 @@ class SfqlMapper(Generic[T]):
 
     def getAttr(self, t: T, attr: str):
         if self.hasAttr(attr):
-            if t[4]:            
+            if t[4]:
                 self._ptree[frozendict(vars(t[4].oid))] = t[3]
             return self._mapper[attr](t)
         else:
             return attr.strip('\"')
-
