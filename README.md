@@ -1,4 +1,4 @@
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/sysflowtelemetry/sysprint)](https://hub.docker.com/r/sysflowtelemetry/sysprint/builds)
+[![Build Status](https://img.shields.io/github/workflow/status/sysflow-telemetry/sf-apis/ci)](https://github.com/sysflow-telemetry/sf-apis/actions)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sysflowtelemetry/sysprint)](https://hub.docker.com/r/sysflowtelemetry/sysprint)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sysflow-telemetry/sf-apis)
 [![Documentation Status](https://readthedocs.org/projects/sysflow/badge/?version=latest)](https://sysflow.readthedocs.io/en/latest/?badge=latest)
@@ -6,7 +6,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.2.2`](https://github.com/sysflow-telemetry/sf-apis/blob/0.2.2/Dockerfile), [`latest`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile)
+-	[`0.3.0`](https://github.com/sysflow-telemetry/sf-apis/blob/0.2.2/Dockerfile), [`latest`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile)
 
 # Quick reference
 

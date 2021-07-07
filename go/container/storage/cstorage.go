@@ -1,3 +1,23 @@
+//
+// Copyright (C) 2020 IBM Corporation.
+//
+// Authors:
+// Frederico Araujo <frederico.araujo@ibm.com>
+// Teryl Taylor <terylt@ibm.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Package storage implements container filesystem introspection utilities.
 package storage
 
 import (
@@ -16,6 +36,7 @@ import (
 // exists. Can be a mount, container layer, image, or unknown if not found.
 type Layer uint8
 
+// Container layering filesystem constants.
 const (
 	LMOUNT     Layer = iota
 	LCONT      Layer = iota
@@ -136,6 +157,9 @@ func (c *CStorage) GetImageTopLayer(ContainerID string) (string, error) {
 // GetContainerConfig returns the configuration information about a container given its container Id.
 func (c *CStorage) GetContainerConfig(ContainerID string) (map[string]interface{}, error) {
 	path, err := c.GetContUserDir(ContainerID)
+	if err != nil {
+		return nil, err
+	}
 	f, err := os.Open(path + "/config.json")
 	if err != nil {
 		return nil, err
@@ -280,9 +304,9 @@ func (c *CStorage) GetHostFilePath(path string) (string, Layer, error) {
 
 // GetFilePath finds the true container or  filesystem path of a file. If the container id is "", the api assumes the file is host
 // Function also returns the filesystem layer on which the path was found which will always be HOST for a host file, but the following for a container:  (mount, container layer, or image layer).
-func (c *CStorage) GetFilePath(contId string, path string) (string, Layer, error) {
-	if contId == "" {
+func (c *CStorage) GetFilePath(contID string, path string) (string, Layer, error) {
+	if contID == "" {
 		return c.GetHostFilePath(path)
 	}
-	return c.GetContainerFilePath(contId, path)
+	return c.GetContainerFilePath(contID, path)
 }

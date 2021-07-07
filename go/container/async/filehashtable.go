@@ -1,3 +1,23 @@
+//
+// Copyright (C) 2020 IBM Corporation.
+//
+// Authors:
+// Frederico Araujo <frederico.araujo@ibm.com>
+// Teryl Taylor <terylt@ibm.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Package async implements asynchronous functions to compute file hashes in containers. 
 package async
 
 import (
@@ -115,16 +135,16 @@ func (f *FileHashTable) Close() {
 
 // Get returns the file hashes of file in a container, if it exists.  Note that the file hash will
 // only appear in the hash when the asynchronous thread has completed the file hashing calculations.
-func (f *FileHashTable) Get(containerId string, pth string) *FileHashInfo {
-	if entry, ok := f.hashTable.Get(containerId + filepath.Clean(pth)); ok {
+func (f *FileHashTable) Get(containerID string, pth string) *FileHashInfo {
+	if entry, ok := f.hashTable.Get(containerID + filepath.Clean(pth)); ok {
 		return entry.(*FileHashInfo)
 	}
 	return nil
 }
 
 // Remove removes an item from the cache if present.
-func (f *FileHashTable) Remove(containerId string, pth string) {
-	f.hashTable.Delete(containerId + filepath.Clean(pth))
+func (f *FileHashTable) Remove(containerID string, pth string) {
+	f.hashTable.Delete(containerID + filepath.Clean(pth))
 }
 
 // hashThread launches the hashing thread and is typically called as a go function.
