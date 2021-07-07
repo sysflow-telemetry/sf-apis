@@ -1,5 +1,6 @@
 package sfgo
 
+// OpFlag bipmap constants.
 const (
 	OP_CLONE      = (1 << 0)
 	OP_EXEC       = (1 << 1)
@@ -24,6 +25,7 @@ const (
 	OP_RENAME     = (1 << 20)
 )
 
+// OpFlag string constants.
 const (
 	OpFlagMkdir        = "MKDIR"
 	OpFlagRmdir        = "RMDIR"
@@ -62,6 +64,7 @@ const (
 	OpFlagEmpty        = ""
 )
 
+// OpFlag event type constants.
 const (
 	EvTypeMkdir    = "mkdir"
 	EvTypeRmdir    = "rmdir"

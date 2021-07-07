@@ -1,3 +1,4 @@
+// Package sfgo implements Go stubs for the SysFlow format.
 package sfgo
 
 import (
@@ -352,7 +353,7 @@ func GetEvtTypes(opFlags int32, rtype RecordType) []string {
 func GetOpenFlags(flag int64) []string {
 	var flags = make([]string, 0)
 	cache := getCache()
-	if v, ok := cache.openFlags.Get(string(flag)); ok {
+	if v, ok := cache.openFlags.Get(string(flag)); ok { //nolint:govet
 		return v.([]string)
 	}
 	if flag == O_NONE {
@@ -400,7 +401,7 @@ func GetOpenFlags(flag int64) []string {
 	if flag&O_SYNC == O_SYNC {
 		flags = append(flags, OpenFlagSync)
 	}
-	cache.openFlags.Set(string(flag), flags)
+	cache.openFlags.Set(string(flag), flags) //nolint:govet
 	return flags
 }
 
@@ -438,7 +439,7 @@ func GetProto(iana int64) string {
 
 // GetFileType returns the string representation of a ASCII file type.
 func GetFileType(t int64) string {
-	return string(t)
+	return string(t) //nolint:govet
 }
 
 // GetSockFamily returns the sock family of a socket descriptor.

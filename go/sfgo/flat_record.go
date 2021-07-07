@@ -2,6 +2,7 @@ package sfgo
 
 import "errors"
 
+// Constants.
 const (
 	TS_INT      Attribute = EV_FILE_TS_INT
 	TID_INT     Attribute = EV_FILE_TID_INT

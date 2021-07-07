@@ -1,8 +1,12 @@
 // Code generate by sfindex. DO NOT EDIT.
+
+// Package sfgo implements Go stubs for the SysFlow format.
 package sfgo
 
+// Attribute defines an indexed attribute.
 type Attribute uint32
 
+// Flat indexes.
 const (
 	ARRAY_INT Attribute = 0
 	ARRAY_STR Attribute = 0

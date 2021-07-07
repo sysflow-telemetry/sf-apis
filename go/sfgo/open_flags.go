@@ -19,6 +19,7 @@ const (
 	O_CLOEXEC   = (1 << 12)
 )
 
+// OpenFlag string constants.
 const (
 	OpenFlagNone      = "NONE"
 	OpenFlagRdonly    = "RDONLY"
