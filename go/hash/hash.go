@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2020 IBM Corporation.
+// Copyright (C) 2021 IBM Corporation.
 //
 // Authors:
 // Frederico Araujo <frederico.araujo@ibm.com>
@@ -17,20 +17,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package plugins implements plugin interfaces for the SysFlow Processor.
-package plugins
+// Package hash implements hashing utilities.
+package hash
 
-// SFPipeline is an interface representing a telemetry pipeline.
-type SFPipeline interface {
-	Load(driverName string) error
-	Init(path string) error
-	Shutdown() error
-	GetRootChannel() interface{}
-	AddChannel(channelName string, channel interface{})
-	Wait()
-	GetNumChannels() int
-	GetNumProcessors() int
-	GetNumHandlers() int
-	GetPluginCache() SFPluginCache
-	Print()
+import (
+	"fmt"
+
+	"github.com/cespare/xxhash"
+)
+
+// GetHash computes the hash of its input arguments.
+func GetHash(objs ...interface{}) uint64 {
+	h := xxhash.New()
+	for _, o := range objs {
+		h.Write([]byte(fmt.Sprintf("%v", o)))
+	}
+	return h.Sum64()
+}
+
+// GetHashStr computes the hash string of its input arguments.
+func GetHashStr(objs ...interface{}) string {
+	h := xxhash.New()
+	for _, o := range objs {
+		h.Write([]byte(fmt.Sprintf("%v", o)))
+	}
+	return fmt.Sprintf("%x", h.Sum(nil))
 }

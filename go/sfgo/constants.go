@@ -1,8 +1,13 @@
+// Package sfgo implements Go stubs for the SysFlow format.
 package sfgo
 
+// SFObjectType defines the type for the SysFlow object type.
 type SFObjectType = UnionSFHeaderContainerProcessFileProcessEventNetworkFlowFileFlowFileEventNetworkEventProcessFlowTypeEnum
+
+// SFObject defines the type for the SysFlow object.
 type SFObject = UnionSFHeaderContainerProcessFileProcessEventNetworkFlowFileFlowFileEventNetworkEventProcessFlow
 
+// SFObjectType enumeration.
 const (
 	SF_HEADER    SFObjectType = UnionSFHeaderContainerProcessFileProcessEventNetworkFlowFileFlowFileEventNetworkEventProcessFlowTypeEnumSFHeader
 	SF_CONT      SFObjectType = UnionSFHeaderContainerProcessFileProcessEventNetworkFlowFileFlowFileEventNetworkEventProcessFlowTypeEnumContainer

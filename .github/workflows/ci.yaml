@@ -1,0 +1,189 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+    tags:
+      - '*'     
+  pull_request:
+    branches:
+      - master
+      - dev
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - ready_for_review
+      - unlocked
+      - review_requested
+  workflow_dispatch:
+    
+env:
+  DOCKER_REGISTRY_ORGANIZATION: sysflowtelemetry
+  GH_ORGANIZATION: sysflow-telemetry
+  SFNB_DOCKER_IMAGE_NAME: sfnb
+  SYSPRINT_DOCKER_IMAGE_NAME: sysprint  
+
+jobs:
+  lint-go-api:
+    runs-on: ubuntu-latest        
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+      - name: Init API module
+        working-directory: go             
+        run: go mod init github.com/sysflow-telemetry/sf-apis/go || true          
+      - name: Lint go API
+        uses: golangci/golangci-lint-action@v2           
+        with:          
+          version: latest
+          working-directory: go            
+          args: --disable=errcheck                   
+  lint-python-api:        
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'      
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip          
+          python -m pip install black unimport          
+      - name: Check style
+        run: |
+          black --check -S -l 120 py3/classes/sysflow
+          black --check -S -l 120 py3/utils/sysprint
+      - name: Check imports
+        run: |
+          unimport --check --exclude __init__.py py3/classes/sysflow
+          unimport --check --exclude __init__.py py3/utils/sysprint
+  docker-sfnb:
+    needs: lint-python-api
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:      
+      - name: Checkout
+        uses: actions/checkout@v2      
+      - name: Docker meta
+        id: metasfnb
+        uses: docker/metadata-action@v3
+        with:          
+          images: |
+            ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
+            ghcr.io/${{ env.GH_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
+          tags: |            
+            type=edge,branch=master
+            type=match,pattern=dev
+            type=ref,event=tag            
+            type=ref,event=pr         
+            type=semver,pattern={{version}}
+          labels: |
+            org.opencontainers.image.documentation=https://sysflow.readthedocs.io/
+            org.opencontainers.image.vendor=SysFlow
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}    
+      - name: Build and push
+        id: docker_build        
+        uses: docker/build-push-action@v2        
+        with:
+          file: Dockerfile.sfnb
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: "${{ steps.metasfnb.outputs.tags }}"
+          labels: "${{ steps.metasfnb.outputs.labels }}"
+      - name: push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        if: ${{ github.ref == 'refs/heads/master' }}
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
+        with:
+          destination_container_repo: ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
+          provider: dockerhub          
+          readme_file: "README.md"      
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+  docker-sysprint:
+    needs: lint-python-api
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:      
+      - name: Checkout
+        uses: actions/checkout@v2      
+      - name: Docker meta
+        id: metasysprint
+        uses: docker/metadata-action@v3
+        with:          
+          images: |
+            ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
+            ghcr.io/${{ env.GH_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
+          tags: |            
+            type=edge,branch=master
+            type=match,pattern=dev
+            type=ref,event=tag            
+            type=ref,event=pr         
+            type=semver,pattern={{version}}
+          labels: |
+            org.opencontainers.image.documentation=https://sysflow.readthedocs.io/
+            org.opencontainers.image.vendor=SysFlow
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}    
+      - name: Build and push
+        id: docker_build        
+        uses: docker/build-push-action@v2        
+        with:
+          file: Dockerfile.sysprint
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: "${{ steps.metasysprint.outputs.tags }}"
+          labels: "${{ steps.metasysprint.outputs.labels }}"
+      - name: push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        if: ${{ github.ref == 'refs/heads/master' }}
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
+        with:
+          destination_container_repo: ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
+          provider: dockerhub          
+          readme_file: "README.md"      
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
