@@ -19,8 +19,9 @@
 @namespace("sysflow.entity")
 protocol SysFlow {
   record SFHeader {
-     long version = 2;
+     long version = 3;
      string exporter;
      string ip = "NA";
+     string filename;
   }
 }

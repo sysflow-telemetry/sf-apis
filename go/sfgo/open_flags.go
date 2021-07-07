@@ -19,20 +19,21 @@ const (
 	O_CLOEXEC   = (1 << 12)
 )
 
+// OpenFlag string constants.
 const (
-	openFlagNone      = "NONE"
-	openFlagRdonly    = "RDONLY"
-	openFlagWronly    = "WRONLY"
-	openFlagRdwr      = "RDWR"
-	openFlagCreat     = "CREAT"
-	openFlagExcl      = "EXCL"
-	openFlagTrunc     = "TRUNC"
-	openFlagAppend    = "APPEND"
-	openFlagNonBlock  = "NONBLOCK"
-	openFlagDsync     = "DSYNC"
-	openFlagDirect    = "DIRECT"
-	openFlagLargefile = "LARGEFILE"
-	openFlagDir       = "DIRECTORY"
-	openFlagCloexec   = "CLOEXEC"
-	openFlagSync      = "SYNC"
+	OpenFlagNone      = "NONE"
+	OpenFlagRdonly    = "RDONLY"
+	OpenFlagWronly    = "WRONLY"
+	OpenFlagRdwr      = "RDWR"
+	OpenFlagCreat     = "CREAT"
+	OpenFlagExcl      = "EXCL"
+	OpenFlagTrunc     = "TRUNC"
+	OpenFlagAppend    = "APPEND"
+	OpenFlagNonBlock  = "NONBLOCK"
+	OpenFlagDsync     = "DSYNC"
+	OpenFlagDirect    = "DIRECT"
+	OpenFlagLargefile = "LARGEFILE"
+	OpenFlagDir       = "DIRECTORY"
+	OpenFlagCloexec   = "CLOEXEC"
+	OpenFlagSync      = "SYNC"
 )
