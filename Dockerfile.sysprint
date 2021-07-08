@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2019 IBM Corporation.
+# Copyright (C) 2021 IBM Corporation.
 #
 # Authors:
 # Frederico Araujo <frederico.araujo@ibm.com>
@@ -16,7 +16,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+ARG UBI_VER=8.4-205
+FROM registry.access.redhat.com/ubi8/ubi-minimal:${UBI_VER}
 
 # Update Labels
 LABEL "name"="SysFlow Printer (a.k.a. sysprint)"
