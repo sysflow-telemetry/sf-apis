@@ -18,6 +18,18 @@
 # limitations under the License.
 FROM registry.access.redhat.com/ubi8/ubi-minimal
 
+# Update Labels
+LABEL "name"="SysFlow Printer (a.k.a. sysprint)"
+LABEL "vendor"="SysFlow"
+LABEL "maintainer"="The SysFlow team"
+LABEL "documentation"="https://sysflow.readthedocs.io"
+LABEL "version"="${VERSION}"
+LABEL "release"="${RELEASE}"
+LABEL "summary"="The SysFlow Printer is a command-line utility for inspecting SysFlow traces."
+LABEL "description"="The SysFlow Printer is a command-line utility for inspecting SysFlow traces."
+LABEL "io.k8s.display-name"="SysFlow Printer"
+LABEL "io.k8s.description"="The SysFlow Printer is a command-line utility for inspecting SysFlow traces."
+
 # Install Python environment
 RUN microdnf install -y --disableplugin=subscription-manager \
         python38 && \

@@ -1,5 +1,17 @@
 FROM jupyter/scipy-notebook
 
+# Update Labels
+LABEL "name"="SysFlow Notebook"
+LABEL "vendor"="SysFlow"
+LABEL "maintainer"="The SysFlow team"
+LABEL "documentation"="https://sysflow.readthedocs.io"
+LABEL "version"="${VERSION}"
+LABEL "release"="${RELEASE}"
+LABEL "summary"="The SysFlow Notebook is a pre-configured Jupyter Notebook based on scipy-notebook for SysFlow."
+LABEL "description"="The SysFlow Notebook is a pre-configured Jupyter Notebook based on scipy-notebook for SysFlow."
+LABEL "io.k8s.display-name"="SysFlow Notebook"
+LABEL "io.k8s.description"="The SysFlow Notebook is a pre-configured Jupyter Notebook based on scipy-notebook for SysFlow."
+
 # Install  graphviz python bindings
 RUN conda install -y graphviz
 
