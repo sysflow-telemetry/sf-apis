@@ -19,6 +19,10 @@
 ARG UBI_VER=8.4-205
 FROM registry.access.redhat.com/ubi8/ubi-minimal:${UBI_VER}
 
+# Build args
+ARG VERSION=dev
+ARG RELEASE=dev
+
 # Update Labels
 LABEL "name"="SysFlow Printer (a.k.a. sysprint)"
 LABEL "vendor"="SysFlow"
