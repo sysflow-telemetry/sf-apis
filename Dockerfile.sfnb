@@ -18,6 +18,10 @@
 # limitations under the License.
 FROM jupyter/scipy-notebook
 
+# Build args
+ARG VERSION=dev
+ARG RELEASE=dev
+
 # Update Labels
 LABEL "name"="SysFlow Notebook"
 LABEL "vendor"="SysFlow"
