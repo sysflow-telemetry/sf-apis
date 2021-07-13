@@ -40,3 +40,9 @@ type SFProcessor interface {
 	SetOutChan(ch []interface{})
 	Cleanup()
 }
+
+// SFTestableProcessor defines a testable SysFlow processor interface.
+type SFTestableProcessor interface {
+	SFProcessor
+	Test() (bool, error)
+}

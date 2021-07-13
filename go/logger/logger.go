@@ -38,15 +38,16 @@ const (
 	INFO
 	WARN
 	ERROR
+	HEALTH
 )
 
 func (d LogLevel) String() string {
-	return [...]string{"Trace", "Info", "Warn", "Error"}[d]
+	return [...]string{"Trace", "Info", "Warn", "Error", "Health"}[d]
 }
 
 // GetLogLevelFromValue returns LogLevel corresponding to string s (if not found, defaults to INFO).
 func GetLogLevelFromValue(s string) LogLevel {
-	m := map[string]LogLevel{"trace": TRACE, "info": INFO, "warn": WARN, "error": ERROR}
+	m := map[string]LogLevel{"trace": TRACE, "info": INFO, "warn": WARN, "error": ERROR, "health": HEALTH}
 	if l, ok := m[strings.ToLower(s)]; ok {
 		return l
 	}
@@ -55,25 +56,28 @@ func GetLogLevelFromValue(s string) LogLevel {
 
 // Loggers reflecting different log levels.
 var (
-	Trace *log.Logger
-	Info  *log.Logger
-	Warn  *log.Logger
-	Error *log.Logger
+	Trace  *log.Logger
+	Info   *log.Logger
+	Warn   *log.Logger
+	Error  *log.Logger
+	Health *log.Logger
 )
 
 // InitLoggers initialize utility loggers with default i/o streams.
 func InitLoggers(level LogLevel) {
 	switch level {
 	case TRACE:
-		initLoggers(os.Stdout, os.Stdout, os.Stdout, os.Stderr)		
+		initLoggers(os.Stdout, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	case INFO:
-		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
+		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	case WARN:
-		initLoggers(ioutil.Discard, ioutil.Discard, os.Stdout, os.Stderr)
+		initLoggers(ioutil.Discard, ioutil.Discard, os.Stdout, os.Stderr, os.Stdout)
 	case ERROR:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr)		
+		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr, os.Stdout)
+	case HEALTH:
+		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr, os.Stdout)
 	default:
-		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
+		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	}
 }
 
@@ -81,7 +85,8 @@ func initLoggers(
 	traceHandle io.Writer,
 	infoHandle io.Writer,
 	warnHandle io.Writer,
-	errorHandle io.Writer) {
+	errorHandle io.Writer,
+	healthHandle io.Writer) {
 
 	Trace = log.New(traceHandle,
 		fmt.Sprintf("[%s] ", TRACE),
@@ -97,5 +102,9 @@ func initLoggers(
 
 	Error = log.New(errorHandle,
 		fmt.Sprintf("[%s] ", ERROR),
+		log.Ldate|log.Ltime|log.Lshortfile)
+
+	Health = log.New(healthHandle,
+		fmt.Sprintf("[%s] ", HEALTH),
 		log.Ldate|log.Ltime|log.Lshortfile)
 }
