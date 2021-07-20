@@ -85,10 +85,9 @@ jobs:
             ghcr.io/${{ env.GH_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
           tags: |            
             type=edge,branch=master
-            type=match,pattern=dev
+            type=ref,event=branch
             type=ref,event=tag            
-            type=ref,event=pr         
-            type=semver,pattern={{version}}
+            type=ref,event=pr
           labels: |
             org.opencontainers.image.documentation=https://sysflow.readthedocs.io/
             org.opencontainers.image.vendor=SysFlow
@@ -154,10 +153,9 @@ jobs:
             ghcr.io/${{ env.GH_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
           tags: |            
             type=edge,branch=master
-            type=match,pattern=dev
+            type=ref,event=branch
             type=ref,event=tag            
-            type=ref,event=pr         
-            type=semver,pattern={{version}}
+            type=ref,event=pr
           labels: |
             org.opencontainers.image.documentation=https://sysflow.readthedocs.io/
             org.opencontainers.image.vendor=SysFlow
