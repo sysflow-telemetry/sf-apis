@@ -111,7 +111,14 @@ _fields = { #   '<key>': (<columnn name>, <column width>, <description>, <query_
                 'node.id': ('Node ID', 12, 'Node identifier', False),
                 'node.ip': ('Node IP', 16, 'Node IP address', False),
                 'schema': ('SF Schema', 8, 'SysFlow schema version', False),
-                'version': ('API version', 8, 'SysFlow JSON schema version', False),                
+                'version': ('API version', 8, 'SysFlow JSON schema version', False),
+                'pod.id' : ('Pod Id', 12, 'Pod Identifier', False),
+                'pod.name' : ('Pod Name', 30, 'Pod Name', False),
+                'pod.nname' : ('Pod Node Name', 12, 'Pod Node Name', False),
+                'pod.hostip' : ('Pod Host IP', 16, 'Pod Host IP', False),
+                'pod.internalip' : ('Pod Intern IP', 16, 'Pod Internal IP', False),
+                'pod.ns' : ('Pod Namespace', 12, 'Pod Namespace', False),
+                'pod.rstrtcnt' : ('Rstrt Cnt', 9, 'Pod Restart Count', False)
           }
 
 class SFFormatter(object):
@@ -144,6 +151,12 @@ class SFFormatter(object):
         self.reader = reader
         self.sfqlint = SfqlInterpreter()
         self.defs = defs
+
+    def enablePodFields(self):
+        """Enables fields related to pods to be added to the output by default.
+        """
+        global _default_fields
+        _default_fields = ['ts_uts', 'type', 'proc.exe', 'proc.args', 'pproc.pid', 'proc.pid', 'proc.tid', 'opflags', 'res', 'flow.rbytes', 'flow.wbytes', 'container.id', 'pod.name']
 
     def toDataframe(self, fields=None, expr=None):
         """Enables a delegate function to be applied to each JSON record read.
@@ -328,7 +341,7 @@ class SFFormatter(object):
             columns, row = fallback
         return columns, row
 
-    def _flatten(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
+    def _flatten(self, objtype, header, pod, cont, pproc, proc, files, evt, flow, fields):
         _flat_map = OrderedDict()
         evflow = evt or flow
         _flat_map['version'] = _version
@@ -397,6 +410,15 @@ class SFFormatter(object):
         _flat_map['node.id'] = header.exporter if header else ''
         _flat_map['node.ip'] = header.ip if header and hasattr(header, 'ip') else ''
         _flat_map['schema'] = header.version if header else ''
+
+        _flat_map['pod.id'] = pod.id if pod else '' 
+        _flat_map['pod.name'] = pod.name if pod else '' 
+        _flat_map['pod.nname'] = pod.nodeName if pod else '' 
+        _flat_map['pod.hostip'] = pod.hostIP if pod else '' 
+        _flat_map['pod.internalip'] = pod.internalIP if pod else '' 
+        _flat_map['pod.ns'] = pod.namespace if pod else '' 
+        _flat_map['pod.rstrtcnt'] = int(pod.restartCount) if pod else None
+
 
         if fields:
             od = OrderedDict()

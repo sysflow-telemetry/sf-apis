@@ -16,18 +16,37 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-@namespace ("sysflow.entity")
-
+@namespace("sysflow.entity")
 protocol SysFlow {
 import idl "../type/datatypes.avdl";
+import idl "container.avdl";
 
-record Container {
+record Port {
+  int port;
+  int targetPort;
+  int nodePort;
+  string proto;
+}
+
+record Service {
+  string name;
+  string id;
+  string namespace;
+  array<sysflow.entity.Port> portList;
+  string clusterIP;
+}
+
+record Pod {
+  long ts;
   string id;
   string name;
-  string image;
-  string imageid;
-  sysflow.type.ContainerType type; 
-  boolean privileged;
-  union{null, string} podId;
+  string nodeName;
+  string hostIP;
+  string internalIP;
+  string namespace;
+  long restartCount;
+  map<string> labels;
+  map<string> selectors;
+  array<sysflow.entity.Service> services;
 }
 }

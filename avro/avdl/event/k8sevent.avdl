@@ -1,4 +1,4 @@
-/** Copyright (C) 2019 IBM Corporation.
+/** Copyright (C) 2021 IBM Corporation.
 *
 * Authors:
 * Frederico Araujo <frederico.araujo@ibm.com>
@@ -16,18 +16,10 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 **/
-@namespace ("sysflow.entity")
-
+@namespace("sysflow.event")
 protocol SysFlow {
-import idl "../type/datatypes.avdl";
-
-record Container {
-  string id;
-  string name;
-  string image;
-  string imageid;
-  sysflow.type.ContainerType type; 
-  boolean privileged;
-  union{null, string} podId;
+record K8sEvent {
+  long ts;
+  string message;
 }
 }

@@ -28,8 +28,11 @@ import idl "entity/process.avdl";
 import idl "entity/header.avdl";
 import idl "entity/container.avdl";
 import idl "entity/file.avdl";
+import idl "entity/pod.avdl";
+import idl "event/k8sevent.avdl";
+
 
 record SysFlow {
-   union {sysflow.entity.SFHeader, sysflow.entity.Container, sysflow.entity.Process, sysflow.entity.File, sysflow.event.ProcessEvent, sysflow.flow.NetworkFlow, sysflow.flow.FileFlow, sysflow.event.FileEvent, sysflow.event.NetworkEvent, sysflow.flow.ProcessFlow} rec;
+   union {sysflow.entity.SFHeader, sysflow.entity.Container, sysflow.entity.Process, sysflow.entity.File, sysflow.event.ProcessEvent, sysflow.flow.NetworkFlow, sysflow.flow.FileFlow, sysflow.event.FileEvent, sysflow.event.NetworkEvent, sysflow.flow.ProcessFlow, sysflow.entity.Pod, sysflow.event.K8sEvent} rec;
 }
 }

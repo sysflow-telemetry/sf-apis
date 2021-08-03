@@ -64,6 +64,8 @@ def sysprint(trace, args):
     """print a sysflow file in human-readable format"""
     reader = FlattenedSFReader(trace, False)
     formatter = SFFormatter(reader)
+    if args.k8s:
+        formatter.enablePodFields()
     fields = args.fields.split(',') if args.fields else None
     if args.output == 'json':
         if args.file is not None:
@@ -126,6 +128,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--s3port', help='s3 server port', default=443)
     parser.add_argument('-a', '--s3accesskey', help='s3 access key', default=None)
     parser.add_argument('-s', '--s3secretkey', help='s3 secret key', default=None)
+    parser.add_argument('-k', '--k8s', help='add pod related fields to output', action='store_true')
     parser.add_argument('--secure', help='indicates if SSL connection', type=str2bool, nargs='?', const=True, default=True)
 
     # parse args and configuration

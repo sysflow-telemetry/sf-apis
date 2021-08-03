@@ -1,0 +1,12 @@
+{
+  "type" : "record",
+  "name" : "K8sEvent",
+  "namespace" : "sysflow.event",
+  "fields" : [ {
+    "name" : "ts",
+    "type" : "long"
+  }, {
+    "name" : "message",
+    "type" : "string"
+  } ]
+}
