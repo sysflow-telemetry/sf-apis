@@ -1,3 +1,23 @@
+//
+// Copyright (C) 2020 IBM Corporation.
+//
+// Authors:
+// Frederico Araujo <frederico.araujo@ibm.com>
+// Teryl Taylor <terylt@ibm.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Package converter implements a converter for SysFlow schema into sfgo sysflow objects.
 package converter
 
 import (
@@ -27,6 +47,9 @@ func (s *SFObjectConverter) createHeader(hdr map[string]interface{}) *sfgo.SFHea
 	} else {
 		sfhdr.SetDefault(cIPIdx)
 	}
+        if val, ok := hdr[cHdrFilename]; ok {
+		sfhdr.Filename = val.(string)
+	}
 	return sfhdr
 }
 
@@ -49,13 +72,13 @@ func (s *SFObjectConverter) createContainer(cont map[string]interface{}) *sfgo.C
 }
 
 func (s *SFObjectConverter) getTimestamp(x interface{}) int64 {
-	switch x.(type) {
+	switch x := x.(type) {
 	case int64:
-		return x.(int64)
+		return x
 	case time.Time:
-		nsecs := int64(x.(time.Time).Nanosecond() / int(time.Millisecond))
-		millisecs := x.(time.Time).Unix() % int64(time.Millisecond)
-		secs := x.(time.Time).Unix() / int64(time.Millisecond)
+		nsecs := int64(x.Nanosecond() / int(time.Millisecond))
+		millisecs := x.Unix() % int64(time.Millisecond)
+		secs := x.Unix() / int64(time.Millisecond)
 		nsecs += millisecs * int64(time.Microsecond)
 		t := time.Unix(secs, nsecs)
 		return t.UnixNano()
@@ -161,7 +184,7 @@ func (s *SFObjectConverter) createProcEvent(procEvt map[string]interface{}) *sfg
 		Ret:     procEvt[cRet].(int32),
 	}
 	if val, ok := procEvt[cProcEvtArgs].([]interface{}); ok {
-		for _, arg := range val {
+		for _, arg := range val { //nolint:typecheck
 			sfprocEvt.Args = append(sfprocEvt.Args, arg.(string))
 		}
 	}
@@ -180,7 +203,7 @@ func (s *SFObjectConverter) createFileEvent(fileEvt map[string]interface{}) *sfg
 	sffileEvt.Ret = fileEvt[cRet].(int32)
 	if val, ok := fileEvt[cFileEvtNewFileOID]; ok && val != nil {
 		foid := val.(map[string]interface{})
-		if o, ok := foid[cFileObjectID].([]byte); ok {
+		if o, ok := foid[cFileObjectID].([]byte); ok { //nolint:typecheck
 			newFOID := &sfgo.UnionNullFOID{
 				UnionType: sfgo.UnionNullFOIDTypeEnumFOID,
 			}

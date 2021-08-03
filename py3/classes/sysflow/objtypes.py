@@ -26,23 +26,26 @@ from enum import Enum
 .. moduleauthor:: Frederico Araujo, Teryl Taylor
 """
 
+
 class ObjectTypes(Enum):
     """
-       **ObjectTypes**
+    **ObjectTypes**
 
-       Enumeration representing each of the object types:
-          HEADER = 0,
-          CONT = 1,
-          PROC = 2,
-          FILE = 3,
-          PROC_EVT = 4,
-          NET_FLOW = 5,
-          FILE_FLOW = 6,
-          FILE_EVT = 7
-          PROC_FLOW = 8
-          POD = 9
-          K8S_EVT = 10
+    Enumeration representing each of the object types:
+       HEADER = 0,
+       CONT = 1,
+       PROC = 2,
+       FILE = 3,
+       PROC_EVT = 4,
+       NET_FLOW = 5,
+       FILE_FLOW = 6,
+       FILE_EVT = 7
+       PROC_FLOW = 8
+       POD = 9
+       K8S_EVT = 10
+
     """
+
     HEADER = 0
     CONT = 1
     PROC = 2
@@ -55,19 +58,20 @@ class ObjectTypes(Enum):
     POD = 9
     K8S_EVT = 10
 
+
 OBJECT_MAP = {
-    ObjectTypes.HEADER : "H",
-    ObjectTypes.CONT : "C",
-    ObjectTypes.PROC : "P",
-    ObjectTypes.FILE : "F",
-    ObjectTypes.PROC_EVT : "PE",
-    ObjectTypes.NET_FLOW : "NF",
-    ObjectTypes.FILE_FLOW : "FF",
-    ObjectTypes.FILE_EVT : "FE",
-    ObjectTypes.PROC_FLOW : "PF",
-    ObjectTypes.POD : "POD",
-    ObjectTypes.K8S_EVT :  "KE" 
-    }
+    ObjectTypes.HEADER: "H",
+    ObjectTypes.CONT: "C",
+    ObjectTypes.PROC: "P",
+    ObjectTypes.FILE: "F",
+    ObjectTypes.PROC_EVT: "PE",
+    ObjectTypes.NET_FLOW: "NF",
+    ObjectTypes.FILE_FLOW: "FF",
+    ObjectTypes.FILE_EVT: "FE",
+    ObjectTypes.PROC_FLOW: "PF",
+    ObjectTypes.POD: "POD",
+    ObjectTypes.K8S_EVT: "KE",
+}
 
 OBJ_NAME_MAP = {
     "sysflow.entity.SFHeader": ObjectTypes.HEADER,
@@ -80,5 +84,5 @@ OBJ_NAME_MAP = {
     "sysflow.flow.FileFlow": ObjectTypes.FILE_FLOW,
     "sysflow.flow.ProcessFlow": ObjectTypes.PROC_FLOW,
     "sysflow.entity.Pod": ObjectTypes.POD,
-    "sysflow.event.K8sEvent": ObjectTypes.K8S_EVT
+    "sysflow.event.K8sEvent": ObjectTypes.K8S_EVT,
 }

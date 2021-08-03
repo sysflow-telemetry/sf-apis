@@ -24,11 +24,11 @@ from setuptools import setup
 
 setup(
     name = 'sysflow',
-    version = '0.2.2',    
+    version = '0.3.0',    
     description = ('Install SysFlow python API and utilities'),    
     packages=['sysflow', 'sysflow.grammar'],
     package_data={'sysflow': ['schema.avsc']},
-    install_requires=['tabulate==0.8.6', 'minio==7.0.3', 'antlr4-python3-runtime==4.7.2', 'dotty-dict==1.2.1', 'numpy==1.19.4', 'pandas==1.1.4', 'frozendict==1.2', 'fastavro==0.23.6'],
+    install_requires=['tabulate==0.8.9', 'minio==7.0.3', 'antlr4-python3-runtime==4.9.2', 'dotty-dict==1.3.0', 'numpy==1.21.0', 'pandas==1.3.0', 'frozendict==2.0.3', 'fastavro==1.4.2'],
     scripts=['utils/sysprint'],
     package_dir = {'': 'classes'}
 )

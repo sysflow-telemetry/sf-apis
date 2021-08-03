@@ -13,8 +13,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 > - **Fixed**: for any bug fixes.
 > - **Security**: in case of vulnerabilities.
 
-## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...HEAD)]
+## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.3.0...HEAD)]
 
+## [[0.3.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...0.3.0)] - 2021-07-09
+
+### Added
+
+- Added secret vault wrapper package to Go API.
+- Added hashing utility package to Go API.
+- Added trace attribute to SysFlow schema.
+
+### Changed
+
+- Moved away from Dockerhub CI.
+- Updated verstions of python API dependencies.
+- Fixed lint issues in Python and Go APIs.
+- Refactored processor plugin interfaces in Go APIs.
 
 ## [[0.2.2](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.1...0.2.2)] - 2020-12-07
 

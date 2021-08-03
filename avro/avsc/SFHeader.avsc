@@ -5,7 +5,7 @@
   "fields" : [ {
     "name" : "version",
     "type" : "long",
-    "default" : 2
+    "default" : 4
   }, {
     "name" : "exporter",
     "type" : "string"
@@ -13,5 +13,8 @@
     "name" : "ip",
     "type" : "string",
     "default" : "NA"
+  }, {
+    "name" : "filename",
+    "type" : "string"
   } ]
 }

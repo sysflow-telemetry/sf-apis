@@ -32,10 +32,12 @@ struct SFHeader {
     int64_t version;
     std::string exporter;
     std::string ip;
+    std::string filename;
     SFHeader() :
         version(int64_t()),
         exporter(std::string()),
-        ip(std::string())
+        ip(std::string()),
+        filename(std::string())
         { }
 };
 
@@ -729,6 +731,7 @@ template<> struct codec_traits<sysflow::SFHeader> {
         avro::encode(e, v.version);
         avro::encode(e, v.exporter);
         avro::encode(e, v.ip);
+        avro::encode(e, v.filename);
     }
     static void decode(Decoder& d, sysflow::SFHeader& v) {
         if (avro::ResolvingDecoder *rd =
@@ -746,6 +749,9 @@ template<> struct codec_traits<sysflow::SFHeader> {
                 case 2:
                     avro::decode(d, v.ip);
                     break;
+                case 3:
+                    avro::decode(d, v.filename);
+                    break;
                 default:
                     break;
                 }
@@ -754,6 +760,7 @@ template<> struct codec_traits<sysflow::SFHeader> {
             avro::decode(d, v.version);
             avro::decode(d, v.exporter);
             avro::decode(d, v.ip);
+            avro::decode(d, v.filename);
         }
     }
 };

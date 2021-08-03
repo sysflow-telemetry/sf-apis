@@ -1,8 +1,12 @@
 // Code generate by sfindex. DO NOT EDIT.
+
+// Package sfgo implements Go stubs for the SysFlow format.
 package sfgo
 
+// Attribute defines an indexed attribute.
 type Attribute uint32
 
+// Flat indexes.
 const (
 	ARRAY_INT Attribute = 0
 	ARRAY_STR Attribute = 0
@@ -12,9 +16,10 @@ const (
 	SFHE_VERSION_INT  Attribute = SF_REC_TYPE + 1
 	SFHE_EXPORTER_STR Attribute = ARRAY_STR
 	SFHE_IP_STR       Attribute = SFHE_EXPORTER_STR + 1
+	SFHE_FILENAME_STR Attribute = SFHE_IP_STR + 1
 
 	//Type name:  Container
-	CONT_ID_STR         Attribute = SFHE_IP_STR + 1
+	CONT_ID_STR         Attribute = SFHE_FILENAME_STR + 1
 	CONT_NAME_STR       Attribute = CONT_ID_STR + 1
 	CONT_IMAGE_STR      Attribute = CONT_NAME_STR + 1
 	CONT_IMAGEID_STR    Attribute = CONT_IMAGE_STR + 1
@@ -95,5 +100,5 @@ const (
 	EV_PROC_RET_INT     Attribute = EV_PROC_OPFLAGS_INT + 1
 
 	INT_ARRAY_SIZE Attribute = 30 + 1
-	STR_ARRAY_SIZE Attribute = 16 + 1
+	STR_ARRAY_SIZE Attribute = 17 + 1
 )

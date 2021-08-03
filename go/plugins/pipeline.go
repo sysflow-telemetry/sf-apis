@@ -16,7 +16,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+
+// Package plugins implements plugin interfaces for the SysFlow Processor.
 package plugins
 
 // SFPipeline is an interface representing a telemetry pipeline.
