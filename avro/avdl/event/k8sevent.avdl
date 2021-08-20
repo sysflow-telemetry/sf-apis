@@ -17,9 +17,25 @@
 * limitations under the License.
 **/
 @namespace("sysflow.event")
+/*
+{"apiVersion":"v1","items":[{"addresses":["192.168.99.102","minikube"],"labels":{"beta.kubernetes.io/arch":"amd64","beta.kubernetes.io/os":"linux","kubernetes.io/arch":"amd64","kubernetes.io/hostname":"minikube","kubernetes.io/os":"linux","minikube.k8s.io/commit":"23f40a012abb52eff365ff99a709501a61ac5876","minikube.k8s.io/name":"minikube","minikube.k8s.io/updated_at":"2021_03_20T20_24_20_0700","minikube.k8s.io/version":"v1.15.1","node-role.kubernetes.io/master":""},"name":"minikube","timestamp":"2021-03-20T20:24:16Z","uid":"b8213733-2f08-4f65-8780-ee99ca5e30d3"}],"kind":"Node","type":"MODIFIED"}*/
+
 protocol SysFlow {
+import idl "../type/datatypes.avdl";
+
+/*record K8sItem {
+   string name;
+   long ts;
+   string uid;
+   array<string> addresses;
+   map<string> labels;
+}*/
+
+
 record K8sEvent {
-  long ts;
+  sysflow.type.K8sComponent kind;
+  sysflow.type.K8sAction action;
+  //array<sysflow.event.K8sItem> items;
   string message;
 }
 }
