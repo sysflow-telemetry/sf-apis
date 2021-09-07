@@ -33,7 +33,8 @@ record Service {
   string id;
   string namespace;
   array<sysflow.entity.Port> portList;
-  string clusterIP;
+  @logicalType("ipaddr")
+  array<long> clusterIP;
 }
 
 record Pod {
@@ -41,8 +42,10 @@ record Pod {
   string id;
   string name;
   string nodeName;
-  string hostIP;
-  string internalIP;
+  @logicalType("ipaddr")
+  array<long> hostIP;
+  @logicalType("ipaddr")
+  array<long> internalIP;
   string namespace;
   long restartCount;
   map<string> labels;

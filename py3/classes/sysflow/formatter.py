@@ -134,6 +134,9 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'pod.internalip': ('Pod Intern IP', 16, 'Pod Internal IP', False),
     'pod.ns': ('Pod Namespace', 12, 'Pod Namespace', False),
     'pod.rstrtcnt': ('Rstrt Cnt', 9, 'Pod Restart Count', False),
+    'k8s.action': ('K8s EV Action', 9, 'K8s Event Action', False),
+    'k8s.kind': ('K8s EV Comp Type', 9, 'K8s Event Component Type', False),
+    'k8s.msg': ('K8s EV Msg', 100, 'K8s Event Message', False),
 }
 
 
@@ -168,6 +171,10 @@ class SFFormatter(object):
         self.reader = reader
         self.sfqlint = SfqlInterpreter()
         self.defs = defs
+        self.k8sEvents = False
+    
+    def enableK8sEvents(self):
+        self.k8sEvents = True
 
     def enablePodFields(self):
         """Enables fields related to pods to be added to the output by default."""
@@ -318,7 +325,6 @@ class SFFormatter(object):
         colwidths = self._colwidths()
         bulkRecs = []
         first = True
-
         # compute relative size of columns based on terminal width
         sel = {k: v for (k, v) in colwidths.items() if k in fields}
         tw = reduce(lambda w1, w2: w1 + w2, sel.values())
@@ -373,6 +379,31 @@ class SFFormatter(object):
 
     def _flatten(self, objtype, header, pod, cont, pproc, proc, files, evt, flow, fields):
         _flat_map = OrderedDict()
+        if objtype == ObjectTypes.K8S_EVT:
+            _flat_map['k8s.action'] = evt.action
+            _flat_map['k8s.kind'] = evt.kind
+            _flat_map['k8s.msg'] = evt.message
+            _flat_map['type'] = OBJECT_MAP.get(objtype, '?')
+            _flat_map['ts'] = utils.getTimeStrIso8601(evt.ts) 
+            _flat_map['ts_uts'] = int(evt.ts)
+            if fields:
+                od = OrderedDict()
+                for k in fields:
+                    if k in _flat_map:
+                        od[k] = _flat_map[k]
+                    else:
+                        od[k] = ''
+                return od
+            return _flat_map
+        else:
+            _flat_map['k8s.action'] = ''
+            _flat_map['k8s.kind'] = ''
+            _flat_map['k8s.msg'] = ''
+
+        
+            
+
+
         evflow = evt or flow
         _flat_map['version'] = _version
         _flat_map['type'] = OBJECT_MAP.get(objtype, '?')

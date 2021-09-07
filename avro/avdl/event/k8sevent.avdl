@@ -35,6 +35,7 @@ import idl "../type/datatypes.avdl";
 record K8sEvent {
   sysflow.type.K8sComponent kind;
   sysflow.type.K8sAction action;
+  long ts;
   //array<sysflow.event.K8sItem> items;
   string message;
 }

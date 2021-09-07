@@ -35,6 +35,10 @@
     }
   }, {
     "name" : "clusterIP",
-    "type" : "string"
+    "type" : {
+      "type" : "array",
+      "items" : "long",
+      "logicalType" : "ipaddr"
+    }
   } ]
 }

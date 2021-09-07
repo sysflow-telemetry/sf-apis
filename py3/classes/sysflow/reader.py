@@ -228,7 +228,7 @@ class FlattenedSFReader(SFReader):
                     pod = None
                     if rec.podId is not None:
                         if not rec.podId in self.pods:
-                            print("ERROR: Cannot find pod object for record. This should not happen.")
+                            print("ERROR: Cannot find pod object for record. This should not happen. Cont Pod Id: {0}".format(rec.podId))
                         else:
                             pod = self.pods[rec.podId]
                     return (ObjectTypes.CONT, self.header, pod, rec, None, None, None, None, None)
@@ -245,7 +245,7 @@ class FlattenedSFReader(SFReader):
                     pod = None
                     if container is not None and container.podId is not None:
                         if not container.podId in self.pods:
-                            print("ERROR: Cannot find pod object for record. This should not happen.")
+                            print("ERROR: Cannot find pod object for record. This should not happen. Proc Pod Id: {0}".format(container.podId))
                         else:
                             pod = self.pods[container.podId]
                     return (ObjectTypes.PROC, self.header, pod, container, None, rec, None, None, None)
@@ -262,10 +262,12 @@ class FlattenedSFReader(SFReader):
                     pod = None
                     if container is not None and container.podId is not None:
                         if not container.podId in self.pods:
-                            print("ERROR: Cannot find pod object for record. This should not happen.")
+                            print("ERROR: Cannot find pod object for record. This should not happen. File Pod Id: {0}".format(container.podId))
                         else:
                             pod = self.pods[container.podId]
                     return (ObjectTypes.FILE, self.header, pod, container, None, None, (rec, None), None, None)
+            elif objtype == ObjectTypes.K8S_EVT:
+                return (objtype, self.header, None, None, None, None, None, rec, None)
             else:
                 procOID = self.getProcessKey(rec.procOID)
                 proc = None
@@ -289,7 +291,7 @@ class FlattenedSFReader(SFReader):
                             container = self.conts[proc.containerId]
                     if container is not None and container.podId is not None:
                         if not container.podId in self.pods:
-                            print("ERROR: Cannot find pod object for record. This should not happen.")
+                            print("ERROR: Cannot find pod object for record. This should not happen. Evt Pod Id: {0}".format(container.podId))
                         else:
                             pod = self.pods[container.podId]
                 if objtype == ObjectTypes.FILE_EVT:

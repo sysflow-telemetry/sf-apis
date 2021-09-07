@@ -34,6 +34,16 @@
     "namespace" : "sysflow.type",
     "symbols" : [ "CT_DOCKER", "CT_LXC", "CT_LIBVIRT_LXC", "CT_MESOS", "CT_RKT", "CT_CUSTOM", "CT_CRI", "CT_CONTAINERD", "CT_CRIO", "CT_BPM" ]
   }, {
+    "type" : "enum",
+    "name" : "K8sAction",
+    "namespace" : "sysflow.type",
+    "symbols" : [ "K8S_COMPONENT_ADDED", "K8S_COMPONENT_MODIFIED", "K8S_COMPONENT_DELETED", "K8S_COMPONENT_ERROR", "K8S_COMPONENT_NONEXISTENT", "K8S_COMPONENT_UNKNOWN" ]
+  }, {
+    "type" : "enum",
+    "name" : "K8sComponent",
+    "namespace" : "sysflow.type",
+    "symbols" : [ "K8S_NODES", "K8S_NAMESPACES", "K8S_PODS", "K8S_REPLICATIONCONTROLLERS", "K8S_SERVICES", "K8S_EVENTS", "K8S_REPLICASETS", "K8S_DAEMONSETS", "K8S_DEPLOYMENTS", "K8S_UNKNOWN" ]
+  }, {
     "type" : "record",
     "name" : "ProcessFlow",
     "namespace" : "sysflow.flow",
@@ -388,7 +398,11 @@
       }
     }, {
       "name" : "clusterIP",
-      "type" : "string"
+      "type" : {
+        "type" : "array",
+        "items" : "long",
+        "logicalType" : "ipaddr"
+      }
     } ]
   }, {
     "type" : "record",
@@ -408,10 +422,18 @@
       "type" : "string"
     }, {
       "name" : "hostIP",
-      "type" : "string"
+      "type" : {
+        "type" : "array",
+        "items" : "long",
+        "logicalType" : "ipaddr"
+      }
     }, {
       "name" : "internalIP",
-      "type" : "string"
+      "type" : {
+        "type" : "array",
+        "items" : "long",
+        "logicalType" : "ipaddr"
+      }
     }, {
       "name" : "namespace",
       "type" : "string"
@@ -442,6 +464,12 @@
     "name" : "K8sEvent",
     "namespace" : "sysflow.event",
     "fields" : [ {
+      "name" : "kind",
+      "type" : "sysflow.type.K8sComponent"
+    }, {
+      "name" : "action",
+      "type" : "sysflow.type.K8sAction"
+    }, {
       "name" : "ts",
       "type" : "long"
     }, {

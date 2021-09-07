@@ -16,10 +16,18 @@
     "type" : "string"
   }, {
     "name" : "hostIP",
-    "type" : "string"
+    "type" : {
+      "type" : "array",
+      "items" : "long",
+      "logicalType" : "ipaddr"
+    }
   }, {
     "name" : "internalIP",
-    "type" : "string"
+    "type" : {
+      "type" : "array",
+      "items" : "long",
+      "logicalType" : "ipaddr"
+    }
   }, {
     "name" : "namespace",
     "type" : "string"
@@ -78,7 +86,11 @@
           }
         }, {
           "name" : "clusterIP",
-          "type" : "string"
+          "type" : {
+            "type" : "array",
+            "items" : "long",
+            "logicalType" : "ipaddr"
+          }
         } ]
       }
     }

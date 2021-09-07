@@ -393,13 +393,13 @@ struct Service {
     std::string id;
     std::string namespace_;
     std::vector<Port > portList;
-    std::string clusterIP;
+    std::vector<int64_t > clusterIP;
     Service() :
         name(std::string()),
         id(std::string()),
         namespace_(std::string()),
         portList(std::vector<Port >()),
-        clusterIP(std::string())
+        clusterIP(std::vector<int64_t >())
         { }
 };
 
@@ -408,8 +408,8 @@ struct Pod {
     std::string id;
     std::string name;
     std::string nodeName;
-    std::string hostIP;
-    std::string internalIP;
+    std::vector<int64_t > hostIP;
+    std::vector<int64_t > internalIP;
     std::string namespace_;
     int64_t restartCount;
     std::map<std::string, std::string > labels;
@@ -420,8 +420,8 @@ struct Pod {
         id(std::string()),
         name(std::string()),
         nodeName(std::string()),
-        hostIP(std::string()),
-        internalIP(std::string()),
+        hostIP(std::vector<int64_t >()),
+        internalIP(std::vector<int64_t >()),
         namespace_(std::string()),
         restartCount(int64_t()),
         labels(std::map<std::string, std::string >()),
@@ -430,10 +430,36 @@ struct Pod {
         { }
 };
 
+enum class K8sComponent: unsigned {
+    K8S_NODES,
+    K8S_NAMESPACES,
+    K8S_PODS,
+    K8S_REPLICATIONCONTROLLERS,
+    K8S_SERVICES,
+    K8S_EVENTS,
+    K8S_REPLICASETS,
+    K8S_DAEMONSETS,
+    K8S_DEPLOYMENTS,
+    K8S_UNKNOWN,
+};
+
+enum class K8sAction: unsigned {
+    K8S_COMPONENT_ADDED,
+    K8S_COMPONENT_MODIFIED,
+    K8S_COMPONENT_DELETED,
+    K8S_COMPONENT_ERROR,
+    K8S_COMPONENT_NONEXISTENT,
+    K8S_COMPONENT_UNKNOWN,
+};
+
 struct K8sEvent {
+    K8sComponent kind;
+    K8sAction action;
     int64_t ts;
     std::string message;
     K8sEvent() :
+        kind(K8sComponent()),
+        action(K8sAction()),
         ts(int64_t()),
         message(std::string())
         { }
@@ -1736,8 +1762,54 @@ template<> struct codec_traits<sysflow::Pod> {
     }
 };
 
+template<> struct codec_traits<sysflow::K8sComponent> {
+    static void encode(Encoder& e, sysflow::K8sComponent v) {
+        if (v > sysflow::K8sComponent::K8S_UNKNOWN)
+        {
+            std::ostringstream error;
+            error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::K8sComponent and cannot be encoded";
+            throw avro::Exception(error.str());
+        }
+        e.encodeEnum(static_cast<size_t>(v));
+    }
+    static void decode(Decoder& d, sysflow::K8sComponent& v) {
+        size_t index = d.decodeEnum();
+        if (index > static_cast<size_t>(sysflow::K8sComponent::K8S_UNKNOWN))
+        {
+            std::ostringstream error;
+            error << "enum value " << index << " is out of bound for sysflow::K8sComponent and cannot be decoded";
+            throw avro::Exception(error.str());
+        }
+        v = static_cast<sysflow::K8sComponent>(index);
+    }
+};
+
+template<> struct codec_traits<sysflow::K8sAction> {
+    static void encode(Encoder& e, sysflow::K8sAction v) {
+        if (v > sysflow::K8sAction::K8S_COMPONENT_UNKNOWN)
+        {
+            std::ostringstream error;
+            error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::K8sAction and cannot be encoded";
+            throw avro::Exception(error.str());
+        }
+        e.encodeEnum(static_cast<size_t>(v));
+    }
+    static void decode(Decoder& d, sysflow::K8sAction& v) {
+        size_t index = d.decodeEnum();
+        if (index > static_cast<size_t>(sysflow::K8sAction::K8S_COMPONENT_UNKNOWN))
+        {
+            std::ostringstream error;
+            error << "enum value " << index << " is out of bound for sysflow::K8sAction and cannot be decoded";
+            throw avro::Exception(error.str());
+        }
+        v = static_cast<sysflow::K8sAction>(index);
+    }
+};
+
 template<> struct codec_traits<sysflow::K8sEvent> {
     static void encode(Encoder& e, const sysflow::K8sEvent& v) {
+        avro::encode(e, v.kind);
+        avro::encode(e, v.action);
         avro::encode(e, v.ts);
         avro::encode(e, v.message);
     }
@@ -1749,9 +1821,15 @@ template<> struct codec_traits<sysflow::K8sEvent> {
                 it != fo.end(); ++it) {
                 switch (*it) {
                 case 0:
-                    avro::decode(d, v.ts);
+                    avro::decode(d, v.kind);
                     break;
                 case 1:
+                    avro::decode(d, v.action);
+                    break;
+                case 2:
+                    avro::decode(d, v.ts);
+                    break;
+                case 3:
                     avro::decode(d, v.message);
                     break;
                 default:
@@ -1759,6 +1837,8 @@ template<> struct codec_traits<sysflow::K8sEvent> {
                 }
             }
         } else {
+            avro::decode(d, v.kind);
+            avro::decode(d, v.action);
             avro::decode(d, v.ts);
             avro::decode(d, v.message);
         }
