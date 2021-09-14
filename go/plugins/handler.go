@@ -31,15 +31,15 @@ type SFHandler interface {
 	Init(conf map[string]interface{}) error
 	IsEntityEnabled() bool
 	HandleHeader(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
-	HandleContainer(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
-	HandleProcess(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
-	HandleFile(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
-	HandleNetFlow(sf *CtxSysFlow, hdr *sfgo.SFHeader, nf *sfgo.NetworkFlow) error
-	HandleNetEvt(sf *CtxSysFlow, hdr *sfgo.SFHeader, ne *sfgo.NetworkEvent) error
-	HandleFileFlow(sf *CtxSysFlow, hdr *sfgo.SFHeader, ff *sfgo.FileFlow) error
-	HandleFileEvt(sf *CtxSysFlow, hdr *sfgo.SFHeader, fe *sfgo.FileEvent) error
-	HandleProcFlow(sf *CtxSysFlow, hdr *sfgo.SFHeader, pf *sfgo.ProcessFlow) error
-	HandleProcEvt(sf *CtxSysFlow, hdr *sfgo.SFHeader, pe *sfgo.ProcessEvent) error
+	HandleContainer(sf *CtxSysFlow, cont *sfgo.Container) error
+	HandleProcess(sf *CtxSysFlow, proc *sfgo.Process) error
+	HandleFile(sf *CtxSysFlow, file *sfgo.File) error
+	HandleNetFlow(sf *CtxSysFlow, nf *sfgo.NetworkFlow) error
+	HandleNetEvt(sf *CtxSysFlow, ne *sfgo.NetworkEvent) error
+	HandleFileFlow(sf *CtxSysFlow, ff *sfgo.FileFlow) error
+	HandleFileEvt(sf *CtxSysFlow, fe *sfgo.FileEvent) error
+	HandleProcFlow(sf *CtxSysFlow, pf *sfgo.ProcessFlow) error
+	HandleProcEvt(sf *CtxSysFlow, pe *sfgo.ProcessEvent) error
 	SetOutChan(ch []interface{})
 	Cleanup()
 }

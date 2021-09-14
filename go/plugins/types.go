@@ -27,6 +27,7 @@ import (
 // CtxSysFlow defines a container for wrapping a SysFlow record with contextual information
 type CtxSysFlow struct {
 	*sfgo.SysFlow
+	Header    *sfgo.SFHeader
 	Container *sfgo.Container
 	Process   *sfgo.Process
 	File      *sfgo.File
