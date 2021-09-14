@@ -21,21 +21,25 @@
 package plugins
 
 import (
-	"sync"
+	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
 )
 
-// SFProcessor defines the SysFlow processor interface.
-type SFProcessor interface {
-	Register(pc SFPluginCache)
-	Init(conf map[string]interface{}) error
-	Process(record interface{}, wg *sync.WaitGroup)
-	GetName() string
-	SetOutChan(ch []interface{})
-	Cleanup()
+// CtxSysFlow defines a container for wrapping a SysFlow record with contextual information
+type CtxSysFlow struct {
+	*sfgo.SysFlow
+	Container *sfgo.Container
+	Process   *sfgo.Process
+	File      *sfgo.File
+	NewFile   *sfgo.File
+	PTree     []*sfgo.Process
 }
 
-// SFTestableProcessor defines a testable SysFlow processor interface.
-type SFTestableProcessor interface {
-	SFProcessor
-	Test() (bool, error)
+// CtxSFChannel defines a Contextual SysFlow channel for data transfer.
+type CtxSFChannel struct {
+	In chan *CtxSysFlow
+}
+
+// SFChannel defines a SysFlow channel for data transfer.
+type SFChannel struct {
+	In chan *sfgo.SysFlow
 }

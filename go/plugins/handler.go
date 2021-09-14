@@ -30,16 +30,16 @@ type SFHandler interface {
 	RegisterHandler(hc SFHandlerCache)
 	Init(conf map[string]interface{}) error
 	IsEntityEnabled() bool
-	HandleHeader(sf *sfgo.SysFlow, hdr *sfgo.SFHeader) error
-	HandleContainer(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container) error
-	HandleProcess(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process) error
-	HandleFile(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, file *sfgo.File) error
-	HandleNetFlow(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, nf *sfgo.NetworkFlow) error
-	HandleNetEvt(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, ne *sfgo.NetworkEvent) error
-	HandleFileFlow(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, file *sfgo.File, ff *sfgo.FileFlow) error
-	HandleFileEvt(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, file1 *sfgo.File, file2 *sfgo.File, fe *sfgo.FileEvent) error
-	HandleProcFlow(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, pf *sfgo.ProcessFlow) error
-	HandleProcEvt(sf *sfgo.SysFlow, hdr *sfgo.SFHeader, cont *sfgo.Container, proc *sfgo.Process, pe *sfgo.ProcessEvent) error
+	HandleHeader(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
+	HandleContainer(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
+	HandleProcess(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
+	HandleFile(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
+	HandleNetFlow(sf *CtxSysFlow, hdr *sfgo.SFHeader, nf *sfgo.NetworkFlow) error
+	HandleNetEvt(sf *CtxSysFlow, hdr *sfgo.SFHeader, ne *sfgo.NetworkEvent) error
+	HandleFileFlow(sf *CtxSysFlow, hdr *sfgo.SFHeader, ff *sfgo.FileFlow) error
+	HandleFileEvt(sf *CtxSysFlow, hdr *sfgo.SFHeader, fe *sfgo.FileEvent) error
+	HandleProcFlow(sf *CtxSysFlow, hdr *sfgo.SFHeader, pf *sfgo.ProcessFlow) error
+	HandleProcEvt(sf *CtxSysFlow, hdr *sfgo.SFHeader, pe *sfgo.ProcessEvent) error
 	SetOutChan(ch []interface{})
 	Cleanup()
 }
