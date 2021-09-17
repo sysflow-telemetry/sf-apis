@@ -22,24 +22,27 @@ package hash
 
 import (
 	"fmt"
+	"hash"
 
 	"github.com/cespare/xxhash"
 )
 
 // GetHash computes the hash of its input arguments.
 func GetHash(objs ...interface{}) uint64 {
-	h := xxhash.New()
-	for _, o := range objs {
-		h.Write([]byte(fmt.Sprintf("%v", o)))
-	}
+	h := getHash(objs)
 	return h.Sum64()
 }
 
 // GetHashStr computes the hash string of its input arguments.
 func GetHashStr(objs ...interface{}) string {
+	h := getHash(objs)
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func getHash(objs ...interface{}) hash.Hash64 {
 	h := xxhash.New()
 	for _, o := range objs {
 		h.Write([]byte(fmt.Sprintf("%v", o)))
 	}
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return h
 }
