@@ -16,7 +16,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-ARG UBI_VER=8.4-208
+ARG UBI_VER
 FROM registry.access.redhat.com/ubi8/ubi-minimal:${UBI_VER}
 
 # Build args
