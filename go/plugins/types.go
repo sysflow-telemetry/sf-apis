@@ -24,22 +24,23 @@ import (
 	"github.com/sysflow-telemetry/sf-apis/go/sfgo"
 )
 
-// SFHandler defines the SysFlow handler interface.
-type SFHandler interface {
-	RegisterChannel(pc SFPluginCache)
-	RegisterHandler(hc SFHandlerCache)
-	Init(conf map[string]interface{}) error
-	IsEntityEnabled() bool
-	HandleHeader(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
-	HandleContainer(sf *CtxSysFlow, cont *sfgo.Container) error
-	HandleProcess(sf *CtxSysFlow, proc *sfgo.Process) error
-	HandleFile(sf *CtxSysFlow, file *sfgo.File) error
-	HandleNetFlow(sf *CtxSysFlow, nf *sfgo.NetworkFlow) error
-	HandleNetEvt(sf *CtxSysFlow, ne *sfgo.NetworkEvent) error
-	HandleFileFlow(sf *CtxSysFlow, ff *sfgo.FileFlow) error
-	HandleFileEvt(sf *CtxSysFlow, fe *sfgo.FileEvent) error
-	HandleProcFlow(sf *CtxSysFlow, pf *sfgo.ProcessFlow) error
-	HandleProcEvt(sf *CtxSysFlow, pe *sfgo.ProcessEvent) error
-	SetOutChan(ch []interface{})
-	Cleanup()
+// CtxSysFlow defines a container for wrapping a SysFlow record with contextual information
+type CtxSysFlow struct {
+	*sfgo.SysFlow
+	Header    *sfgo.SFHeader
+	Container *sfgo.Container
+	Process   *sfgo.Process
+	File      *sfgo.File
+	NewFile   *sfgo.File
+	PTree     []*sfgo.Process
+}
+
+// CtxSFChannel defines a Contextual SysFlow channel for data transfer.
+type CtxSFChannel struct {
+	In chan *CtxSysFlow
+}
+
+// SFChannel defines a SysFlow channel for data transfer.
+type SFChannel struct {
+	In chan *sfgo.SysFlow
 }
