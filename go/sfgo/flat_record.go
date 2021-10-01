@@ -64,8 +64,9 @@ type Source uint32
 
 // FlatRecord is a multi-source flat record
 type FlatRecord struct {
-	Sources []Source
-	Ints    [][]int64
-	Strs    [][]string
-	Ptree   []*Process
+	Sources    []Source
+	Ints       [][]int64
+	Strs       [][]string
+	Ptree      []*Process
+	GraphletID uint64
 }
