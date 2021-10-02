@@ -1,7 +1,5 @@
 package sfgo
 
-import "errors"
-
 // Constants.
 const (
 	TS_INT      Attribute = EV_FILE_TS_INT
@@ -16,7 +14,7 @@ const (
 	NUMRRECVBYTES_INT Attribute = FL_FILE_NUMRRECVBYTES_INT
 	NUMWSENDBYTES_INT Attribute = FL_FILE_NUMWSENDBYTES_INT
 
-	HEADER    int64 = 0
+/*	HEADER    int64 = 0
 	CONT      int64 = 1
 	PROC      int64 = 2
 	FILE      int64 = 3
@@ -24,31 +22,8 @@ const (
 	NET_FLOW  int64 = 5
 	FILE_FLOW int64 = 6
 	FILE_EVT  int64 = 7
+*/
 )
-
-// ParseRecordType converts a numerical flat rtype into a RecordType enum.
-func ParseRecordType(rtype int64) (RecordType, error) {
-	switch rtype {
-	case PROC_EVT:
-		return TyPE, nil
-	case FILE_EVT:
-		return TyFE, nil
-	case FILE_FLOW:
-		return TyFF, nil
-	case NET_FLOW:
-		return TyNF, nil
-	case PROC:
-		return TyP, nil
-	case FILE:
-		return TyF, nil
-	case CONT:
-		return TyC, nil
-	case HEADER:
-		return TyH, nil
-	default:
-		return TyUnknow, errors.New("unrecognized record type")
-	}
-}
 
 // sftypes is used to obtain zero values for types used during flattening.
 type sftypes struct {
