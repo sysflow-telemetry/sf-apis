@@ -39,15 +39,16 @@ const (
 	WARN
 	ERROR
 	HEALTH
+	QUIET
 )
 
 func (d LogLevel) String() string {
-	return [...]string{"Trace", "Info", "Warn", "Error", "Health"}[d]
+	return [...]string{"Trace", "Info", "Warn", "Error", "Health", "Quiet"}[d]
 }
 
 // GetLogLevelFromValue returns LogLevel corresponding to string s (if not found, defaults to INFO).
 func GetLogLevelFromValue(s string) LogLevel {
-	m := map[string]LogLevel{"trace": TRACE, "info": INFO, "warn": WARN, "error": ERROR, "health": HEALTH}
+	m := map[string]LogLevel{"trace": TRACE, "info": INFO, "warn": WARN, "error": ERROR, "health": HEALTH, "quiet": QUIET}
 	if l, ok := m[strings.ToLower(s)]; ok {
 		return l
 	}
@@ -75,7 +76,9 @@ func InitLoggers(level LogLevel) {
 	case ERROR:
 		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr, os.Stdout)
 	case HEALTH:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr, os.Stdout)
+		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stdout)
+	case QUIET:
+		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard)
 	default:
 		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	}

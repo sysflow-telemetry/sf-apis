@@ -15,7 +15,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.3.0...HEAD)]
 
-## [[0.3.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...0.3.0)] - 2021-07-09
+### Changed
+
+- Update(ubi): Bumped UBI-minimal version to 8.4-210 in sysprint.
+- Update(py3): Updated log level on warning messages in SysFlow reader API.
+
+## [[0.3.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...0.3.0)] - 2021-09-20
 
 ### Added
 
