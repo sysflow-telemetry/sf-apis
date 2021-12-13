@@ -2,8 +2,8 @@ package sfgo
 
 import "errors"
 
-// RecordType denotes a record type.
-type RecordType int
+// SFObjectType denotes a sysflow record type.
+type SFObjectType = RecUnionTypeEnum
 
 // SysFlow object types.
 const (
@@ -22,47 +22,68 @@ const (
 
 // RecordType enumeration.
 const (
-	TyP RecordType = iota
-	TyF
-	TyC
-	TyH
-	TyPE
-	TyPF
-	TyNE
-	TyNF
-	TyFE
-	TyFF
-	TyUnknow
+	SF_HEADER    SFObjectType = RecUnionTypeEnumSFHeader
+	SF_CONT      SFObjectType = RecUnionTypeEnumContainer
+	SF_PROCESS   SFObjectType = RecUnionTypeEnumProcess
+	SF_FILE      SFObjectType = RecUnionTypeEnumFile
+	SF_PROC_EVT  SFObjectType = RecUnionTypeEnumProcessEvent
+	SF_NET_FLOW  SFObjectType = RecUnionTypeEnumNetworkFlow
+	SF_FILE_FLOW SFObjectType = RecUnionTypeEnumFileFlow
+	SF_FILE_EVT  SFObjectType = RecUnionTypeEnumFileEvent
+	SF_NET_EVT   SFObjectType = RecUnionTypeEnumNetworkEvent
+	SF_PROC_FLOW SFObjectType = RecUnionTypeEnumProcessFlow
+	SF_UNKNOWN   SFObjectType = RecUnionTypeEnumProcessFlow + 1
+
+	HEADER    int64 = int64(RecUnionTypeEnumSFHeader)
+	CONT      int64 = int64(RecUnionTypeEnumContainer)
+	PROC      int64 = int64(RecUnionTypeEnumProcess)
+	FILE      int64 = int64(RecUnionTypeEnumFile)
+	PROC_EVT  int64 = int64(RecUnionTypeEnumProcessEvent)
+	NET_FLOW  int64 = int64(RecUnionTypeEnumNetworkFlow)
+	FILE_FLOW int64 = int64(RecUnionTypeEnumFileFlow)
+	FILE_EVT  int64 = int64(RecUnionTypeEnumFileEvent)
+	NET_EVT   int64 = int64(RecUnionTypeEnumNetworkEvent)
+	PROC_FLOW int64 = int64(RecUnionTypeEnumProcessFlow)
 )
 
-func (s RecordType) String() string {
-	return [...]string{TyPStr, TyFStr, TyCStr, TyHStr, TyPEStr, TyPFStr, TyNEStr, TyNFStr, TyFEStr, TyFFStr, TyUnknownStr}[s]
+func (s SFObjectType) String() string {
+	return [...]string{TyHStr, TyCStr, TyPStr, TyFStr, TyPEStr, TyNFStr, TyFFStr, TyFEStr, TyNEStr, TyPFStr, TyUnknownStr}[s]
 }
 
 // ParseRecordTypeStr converts a valide string rtype into its enum type.
-func ParseRecordTypeStr(rtype string) (RecordType, error) {
+func ParseRecordTypeStr(rtype string) (SFObjectType, error) {
 	switch rtype {
 	case TyPEStr:
-		return TyPE, nil
+		return SF_PROC_EVT, nil
 	case TyFFStr:
-		return TyFF, nil
+		return SF_FILE_FLOW, nil
 	case TyNFStr:
-		return TyNF, nil
+		return SF_NET_FLOW, nil
 	case TyFEStr:
-		return TyFE, nil
+		return SF_FILE_EVT, nil
 	case TyPFStr:
-		return TyPF, nil
+		return SF_PROC_FLOW, nil
 	case TyPStr:
-		return TyP, nil
+		return SF_PROCESS, nil
 	case TyFStr:
-		return TyF, nil
+		return SF_FILE, nil
 	case TyCStr:
-		return TyC, nil
+		return SF_CONT, nil
 	case TyHStr:
-		return TyH, nil
+		return SF_HEADER, nil
 	case TyNEStr:
-		return TyNE, nil
+		return SF_NET_EVT, nil
 	default:
-		return TyUnknow, errors.New("unrecognized string rtype")
+		return SF_UNKNOWN, errors.New("unrecognized string rtype")
 	}
+}
+
+// ParseRecordType converts a numerical flat rtype into a RecordType enum.
+func ParseRecordType(rtype int64) (SFObjectType, error) {
+	r := SFObjectType(rtype)
+
+	if r >= 0 && r < SF_UNKNOWN {
+		return r, nil
+	}
+	return SF_UNKNOWN, errors.New("unrecognized record type")
 }

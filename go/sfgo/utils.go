@@ -192,7 +192,7 @@ func GetOpFlagsStr(opFlags int32) string {
 }
 
 // GetOpFlags creates a list representation of opflag strings.
-func GetOpFlags(opFlags int32, rtype RecordType) []string {
+func GetOpFlags(opFlags int32, rtype SFObjectType) []string {
 	var ops = make([]string, 0)
 	cache := getCache()
 	if v, ok := cache.opFlags.Get(string(opFlags)); ok {
@@ -241,14 +241,14 @@ func GetOpFlags(opFlags int32, rtype RecordType) []string {
 		ops = append(ops, OpFlagClose)
 	}
 	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
-		if rtype == TyNF {
+		if rtype == SF_NET_FLOW {
 			ops = append(ops, OpFlagSend)
 		} else {
 			ops = append(ops, OpFlagWrite)
 		}
 	}
 	if opFlags&OP_READ_RECV == OP_READ_RECV {
-		if rtype == TyNF {
+		if rtype == SF_NET_FLOW {
 			ops = append(ops, OpFlagReceive)
 		} else {
 			ops = append(ops, OpFlagRead)
@@ -274,7 +274,7 @@ func GetOpFlags(opFlags int32, rtype RecordType) []string {
 }
 
 // GetEvtTypes creates a list representation of event types.
-func GetEvtTypes(opFlags int32, rtype RecordType) []string {
+func GetEvtTypes(opFlags int32, rtype SFObjectType) []string {
 	var ops = make([]string, 0)
 	cache := getCache()
 	if v, ok := cache.evtTypes.Get(string(opFlags)); ok {
@@ -323,14 +323,14 @@ func GetEvtTypes(opFlags int32, rtype RecordType) []string {
 		ops = append(ops, EvTypeClose)
 	}
 	if opFlags&OP_WRITE_SEND == OP_WRITE_SEND {
-		if rtype == TyNF {
+		if rtype == SF_NET_FLOW {
 			ops = append(ops, EvTypeSend)
 		} else {
 			ops = append(ops, EvTypeWrite)
 		}
 	}
 	if opFlags&OP_READ_RECV == OP_READ_RECV {
-		if rtype == TyNF {
+		if rtype == SF_NET_FLOW {
 			ops = append(ops, EvTypeReceive)
 		} else {
 			ops = append(ops, EvTypeRead)
