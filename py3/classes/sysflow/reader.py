@@ -161,6 +161,8 @@ class FlattenedSFReader(SFReader):
 
      **header** (:class:`sysflow.entity.SFHeader`) The header entity of the file.
 
+     **pod** (:class:`sysflow.entity.Pod`) The pod associated with the flow/evt, or None if no pod.
+
      **cont** (:class:`sysflow.entity.Container`) The container associated with the flow/evt, or None if no container.
 
      **pproc** (:class:`sysflow.entity.Process`) The parent process associated with the flow/evt.
@@ -220,7 +222,7 @@ class FlattenedSFReader(SFReader):
                 key = rec.id
                 self.pods[key] = rec
                 if self.retEntities:
-                    return (ObjectTypes.POD, self.header, rec, None, None, None, None, None)
+                    return (ObjectTypes.POD, self.header, rec, None, None, None, None, None, None)
             elif objtype == ObjectTypes.CONT:
                 key = rec.id
                 self.conts[key] = rec
