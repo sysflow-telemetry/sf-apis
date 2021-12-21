@@ -30,6 +30,7 @@ tabulate.PRESERVE_WHITESPACE = True
 from tabulate import tabulate
 from dotty_dict import dotty
 import pandas as pd
+from sysflow.reader import NestedNamespace
 
 """
 .. module:: sysflow.formatter
@@ -134,6 +135,7 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'pod.internalip': ('Pod Intern IP', 16, 'Pod Internal IP', False),
     'pod.ns': ('Pod Namespace', 12, 'Pod Namespace', False),
     'pod.rstrtcnt': ('Rstrt Cnt', 9, 'Pod Restart Count', False),
+    'pod.services': ('Pod Services', 100, 'Pod Services', False),
     'k8s.action': ('K8s EV Action', 25, 'K8s Event Action', False),
     'k8s.kind': ('K8s EV Comp Type', 26, 'K8s Event Component Type', False),
     'k8s.msg': ('K8s EV Msg', 100, 'K8s Event Message', False),
@@ -344,7 +346,10 @@ class SFFormatter(object):
             for key, value in record.items():
                 sw = int(wf * (colwidths[key]))
                 w = sw if sw > 8 else colwidths[key]
-                data = '{0: <{width}}'.format('' if value is None else value, width=w)
+                if not isinstance(value, str) and not isinstance(value, int):
+                    data = '{0: <{width}}'.format('' if value is None else json.dumps(value), width=w)
+                else:
+                    data = '{0: <{width}}'.format('' if value is None else value, width=w)
                 record[key] = (data[w:] and '..') + data[-w:]
             bulkRecs.append(record)
             if idx > 0 and idx % 1000 == 0:
@@ -481,10 +486,11 @@ class SFFormatter(object):
         _flat_map['pod.id'] = pod.id if pod else ''
         _flat_map['pod.name'] = pod.name if pod else ''
         _flat_map['pod.nname'] = pod.nodeName if pod else ''
-        _flat_map['pod.hostip'] = pod.hostIP if pod else ''
-        _flat_map['pod.internalip'] = pod.internalIP if pod else ''
+        _flat_map['pod.hostip'] = list(map(utils.getIpIntStr, pod.hostIP)) if pod else ''
+        _flat_map['pod.internalip'] = list(map(utils.getIpIntStr, pod.internalIP)) if pod else ''
         _flat_map['pod.ns'] = pod.namespace if pod else ''
         _flat_map['pod.rstrtcnt'] = int(pod.restartCount) if pod else None
+        _flat_map['pod.services'] = self._obj_to_dict(pod.services) if pod else ''
 
         if fields:
             od = OrderedDict()
@@ -500,3 +506,15 @@ class SFFormatter(object):
         for k, v in r.items():
             d[k] = v
         return d.to_dict()
+
+    def _obj_to_dict(self, obj):
+        if isinstance(obj, list):
+            ret = list(map(self._obj_to_dict, obj))
+        elif isinstance(obj, NestedNamespace):
+            ret = {key: self._obj_to_dict(getattr(obj, key)) for key in vars(obj)}
+        elif isinstance(obj, str) or isinstance(obj, int):
+            ret = obj
+        else:
+            print(f'ERROR: Cannot handle type {type(obj)} for {obj}')
+            ret = None
+        return ret
