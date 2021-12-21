@@ -134,8 +134,8 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'pod.internalip': ('Pod Intern IP', 16, 'Pod Internal IP', False),
     'pod.ns': ('Pod Namespace', 12, 'Pod Namespace', False),
     'pod.rstrtcnt': ('Rstrt Cnt', 9, 'Pod Restart Count', False),
-    'k8s.action': ('K8s EV Action', 9, 'K8s Event Action', False),
-    'k8s.kind': ('K8s EV Comp Type', 9, 'K8s Event Component Type', False),
+    'k8s.action': ('K8s EV Action', 25, 'K8s Event Action', False),
+    'k8s.kind': ('K8s EV Comp Type', 26, 'K8s Event Component Type', False),
     'k8s.msg': ('K8s EV Msg', 100, 'K8s Event Message', False),
 }
 
@@ -194,6 +194,11 @@ class SFFormatter(object):
             'container.id',
             'pod.name',
         ]
+
+    def enableAllFields(self):
+        """Enables all available fields to be added to the output by default."""
+        global _default_fields
+        _default_fields = self.getFields()
 
     def toDataframe(self, fields=None, expr=None):
         """Enables a delegate function to be applied to each JSON record read.
@@ -489,9 +494,9 @@ class SFFormatter(object):
 
         return _flat_map
 
-    def _nest(self, objtype, header, cont, pproc, proc, files, evt, flow, fields):
+    def _nest(self, objtype, header, pod, cont, pproc, proc, files, evt, flow, fields):
         d = dotty()
-        r = self._flatten(objtype, header, cont, pproc, proc, files, evt, flow, fields)
+        r = self._flatten(objtype, header, pod, cont, pproc, proc, files, evt, flow, fields)
         for k, v in r.items():
             d[k] = v
         return d.to_dict()
