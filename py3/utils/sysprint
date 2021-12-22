@@ -82,7 +82,7 @@ def sysprint(trace, args):
         formatter.enablePodFields()
     fields = args.fields.split(',') if args.fields else None
     if args.allfields:
-        fields = None   # override specified fields
+        fields = None  # override specified fields
         formatter.enableAllFields()
     if args.output == 'json':
         if args.file is not None:

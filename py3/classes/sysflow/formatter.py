@@ -174,7 +174,7 @@ class SFFormatter(object):
         self.sfqlint = SfqlInterpreter()
         self.defs = defs
         self.k8sEvents = False
-    
+
     def enableK8sEvents(self):
         self.k8sEvents = True
 
