@@ -123,11 +123,6 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'pf.nthreads': ('NoThreads', 8, 'Threads created', False),
     'pf.nexits': ('NoThrExits', 8, 'Threads exited', False),
     'pf.nerrors': ('NoThrErrs', 8, 'Clone errors', False),
-    'node.id': ('Node ID', 12, 'Node identifier', False),
-    'node.ip': ('Node IP', 16, 'Node IP address', False),
-    'schema': ('SF Schema', 8, 'SysFlow schema version', False),
-    'version': ('API version', 8, 'SysFlow JSON schema version', False),
-    'filename': ('File name', 15, 'SysFlow trace file name', False),
     'pod.id': ('Pod Id', 12, 'Pod Identifier', False),
     'pod.name': ('Pod Name', 30, 'Pod Name', False),
     'pod.nname': ('Pod Node Name', 12, 'Pod Node Name', False),
@@ -139,6 +134,11 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'k8s.action': ('K8s EV Action', 25, 'K8s Event Action', False),
     'k8s.kind': ('K8s EV Comp Type', 26, 'K8s Event Component Type', False),
     'k8s.msg': ('K8s EV Msg', 100, 'K8s Event Message', False),
+    'node.id': ('Node ID', 12, 'Node identifier', False),
+    'node.ip': ('Node IP', 16, 'Node IP address', False),
+    'schema': ('SF Schema', 8, 'SysFlow schema version', False),
+    'version': ('API version', 8, 'SysFlow JSON schema version', False),
+    'filename': ('File name', 15, 'SysFlow trace file name', False),
 }
 
 
@@ -389,31 +389,6 @@ class SFFormatter(object):
 
     def _flatten(self, objtype, header, pod, cont, pproc, proc, files, evt, flow, fields):
         _flat_map = OrderedDict()
-        if objtype == ObjectTypes.K8S_EVT:
-            _flat_map['k8s.action'] = evt.action
-            _flat_map['k8s.kind'] = evt.kind
-            _flat_map['k8s.msg'] = evt.message
-            _flat_map['type'] = OBJECT_MAP.get(objtype, '?')
-            _flat_map['ts'] = utils.getTimeStrIso8601(evt.ts) 
-            _flat_map['ts_uts'] = int(evt.ts)
-            if fields:
-                od = OrderedDict()
-                for k in fields:
-                    if k in _flat_map:
-                        od[k] = _flat_map[k]
-                    else:
-                        od[k] = ''
-                return od
-            return _flat_map
-        else:
-            _flat_map['k8s.action'] = ''
-            _flat_map['k8s.kind'] = ''
-            _flat_map['k8s.msg'] = ''
-
-        
-            
-
-
         evflow = evt or flow
         _flat_map['version'] = _version
         _flat_map['type'] = OBJECT_MAP.get(objtype, '?')
@@ -478,11 +453,6 @@ class SFFormatter(object):
         _flat_map['container.image'] = cont.image if cont else ''
         _flat_map['container.type'] = cont.type if cont else ''
         _flat_map['container.privileged'] = cont.privileged if cont else ''
-        _flat_map['node.id'] = header.exporter if header else ''
-        _flat_map['node.ip'] = header.ip if header and hasattr(header, 'ip') else ''
-        _flat_map['filename'] = header.filename if header and hasattr(header, 'filename') else ''
-        _flat_map['schema'] = header.version if header else ''
-
         _flat_map['pod.id'] = pod.id if pod else ''
         _flat_map['pod.name'] = pod.name if pod else ''
         _flat_map['pod.nname'] = pod.nodeName if pod else ''
@@ -491,6 +461,31 @@ class SFFormatter(object):
         _flat_map['pod.ns'] = pod.namespace if pod else ''
         _flat_map['pod.rstrtcnt'] = int(pod.restartCount) if pod else None
         _flat_map['pod.services'] = self._obj_to_dict(pod.services) if pod else ''
+        _flat_map['node.id'] = header.exporter if header else ''
+        _flat_map['node.ip'] = header.ip if header and hasattr(header, 'ip') else ''
+        _flat_map['filename'] = header.filename if header and hasattr(header, 'filename') else ''
+        _flat_map['schema'] = header.version if header else ''
+
+        if objtype == ObjectTypes.K8S_EVT:
+            _flat_map['k8s.action'] = evt.action
+            _flat_map['k8s.kind'] = evt.kind
+            _flat_map['k8s.msg'] = evt.message
+            _flat_map['type'] = OBJECT_MAP.get(objtype, '?')
+            _flat_map['ts'] = utils.getTimeStrIso8601(evt.ts)
+            _flat_map['ts_uts'] = int(evt.ts)
+            if fields:
+                od = OrderedDict()
+                for k in fields:
+                    if k in _flat_map:
+                        od[k] = _flat_map[k]
+                    else:
+                        od[k] = ''
+                return od
+            return _flat_map
+        else:
+            _flat_map['k8s.action'] = ''
+            _flat_map['k8s.kind'] = ''
+            _flat_map['k8s.msg'] = ''
 
         if fields:
             od = OrderedDict()
