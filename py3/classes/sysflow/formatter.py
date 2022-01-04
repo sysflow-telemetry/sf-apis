@@ -393,15 +393,17 @@ class SFFormatter(object):
         _flat_map['version'] = _version
         _flat_map['type'] = OBJECT_MAP.get(objtype, '?')
         _flat_map['state'] = proc.state if proc else files[0].state if files and files[0] else ''
-        _flat_map['opflags'] = utils.getOpFlagsStr(evflow.opFlags) if evflow else ''
-        _flat_map['opflags_bitmap'] = evflow.opFlags if evflow else ''
-        _flat_map['ret'] = int(evflow.ret) if evt else None
+        _flat_map['opflags'] = utils.getOpFlagsStr(evflow.opFlags) if evflow and 'opFlags' in vars(evflow) else ''
+        _flat_map['opflags_bitmap'] = evflow.opFlags if evflow and 'opFlags' in vars(evflow) else ''
+        _flat_map['ret'] = int(evflow.ret) if evt and 'ret' in vars(evflow) else None
         _flat_map['ts'] = utils.getTimeStrIso8601(evflow.ts) if evflow else ''
         _flat_map['ts_uts'] = int(evflow.ts) if evflow else None
         _flat_map['endts'] = utils.getTimeStrIso8601(evflow.endTs) if flow else ''
         _flat_map['endts_uts'] = int(evflow.endTs) if flow else None
         _flat_map['proc.pid'] = int(proc.oid.hpid) if proc else None
-        _flat_map['proc.tid'] = int(evflow.tid) if evflow and objtype != ObjectTypes.PROC_FLOW else None
+        _flat_map['proc.tid'] = (
+            int(evflow.tid) if evflow and 'tid' in vars(evflow) and objtype != ObjectTypes.PROC_FLOW else None
+        )
         _flat_map['proc.uid'] = int(proc.uid) if proc else None
         _flat_map['proc.user'] = proc.userName if proc else ''
         _flat_map['proc.gid'] = int(proc.gid) if proc else None
