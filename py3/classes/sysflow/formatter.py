@@ -509,6 +509,9 @@ class SFFormatter(object):
             ret = list(map(self._obj_to_dict, obj))
         elif isinstance(obj, NestedNamespace):
             ret = {key: self._obj_to_dict(getattr(obj, key)) for key in vars(obj)}
+            # need to handle the special case of 'clusterIP's in the service dict in order to convert back Int to string with IP address
+            if 'clusterIP' in ret:
+                ret['clusterIP'] = list(map(utils.getIpIntStr, ret['clusterIP']))
         elif isinstance(obj, str) or isinstance(obj, int):
             ret = obj
         else:
