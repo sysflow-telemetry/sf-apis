@@ -54,9 +54,10 @@ class ObjectTypes(Enum):
     NET_FLOW = 5
     FILE_FLOW = 6
     FILE_EVT = 7
-    PROC_FLOW = 8
-    POD = 9
-    K8S_EVT = 10
+    NET_EVT = 8
+    PROC_FLOW = 9
+    POD = 10
+    K8S_EVT = 11
 
 
 OBJECT_MAP = {
@@ -68,6 +69,7 @@ OBJECT_MAP = {
     ObjectTypes.NET_FLOW: "NF",
     ObjectTypes.FILE_FLOW: "FF",
     ObjectTypes.FILE_EVT: "FE",
+    ObjectTypes.NET_EVT: "NE",
     ObjectTypes.PROC_FLOW: "PF",
     ObjectTypes.POD: "POD",
     ObjectTypes.K8S_EVT: "KE",
@@ -82,6 +84,7 @@ OBJ_NAME_MAP = {
     "sysflow.event.FileEvent": ObjectTypes.FILE_EVT,
     "sysflow.flow.NetworkFlow": ObjectTypes.NET_FLOW,
     "sysflow.flow.FileFlow": ObjectTypes.FILE_FLOW,
+    "sysflow.event.NetEvent": ObjectTypes.NET_EVT,
     "sysflow.flow.ProcessFlow": ObjectTypes.PROC_FLOW,
     "sysflow.entity.Pod": ObjectTypes.POD,
     "sysflow.event.K8sEvent": ObjectTypes.K8S_EVT,

@@ -47,7 +47,7 @@ func (s *SFObjectConverter) createHeader(hdr map[string]interface{}) *sfgo.SFHea
 	} else {
 		sfhdr.SetDefault(cIPIdx)
 	}
-        if val, ok := hdr[cHdrFilename]; ok {
+	if val, ok := hdr[cHdrFilename]; ok {
 		sfhdr.Filename = val.(string)
 	}
 	return sfhdr
@@ -108,14 +108,14 @@ func (s *SFObjectConverter) createFile(file map[string]interface{}) *sfgo.File {
 	if val, ok := file[cContID]; ok && val != nil {
 		unionString := val.(map[string]interface{})
 		if v, o := unionString[cString]; o {
-			contID := &sfgo.UnionNullString{
+			contID := &sfgo.ContainerIdUnion{
 				String:    v.(string),
-				UnionType: sfgo.UnionNullStringTypeEnumString,
+				UnionType: sfgo.ContainerIdUnionTypeEnumString,
 			}
 			sffile.ContainerId = contID
 		}
 	} else {
-		sffile.ContainerId = sfgo.NewUnionNullString()
+		sffile.ContainerId = sfgo.NewContainerIdUnion()
 	}
 	return sffile
 }
@@ -139,13 +139,13 @@ func (s *SFObjectConverter) createProcess(proc map[string]interface{}) *sfgo.Pro
 	sfproc.State = s.mapStateObject(proc[cState].(string))
 	sfproc.Oid = s.createOID(proc[cOID].(map[string]interface{}))
 	if val, ok := proc[cPOID]; ok && val != nil {
-		pproc := &sfgo.UnionNullOID{
+		pproc := &sfgo.PoidUnion{
 			OID:       s.createOID(val.(map[string]interface{})),
-			UnionType: sfgo.UnionNullOIDTypeEnumOID,
+			UnionType: sfgo.PoidUnionTypeEnumOID,
 		}
 		sfproc.Poid = pproc
 	} else {
-		sfproc.Poid = sfgo.NewUnionNullOID()
+		sfproc.Poid = sfgo.NewPoidUnion()
 	}
 	sfproc.Ts = s.getTimestamp(proc[cTs])
 	sfproc.Exe = proc[cPrcExe].(string)
@@ -158,14 +158,14 @@ func (s *SFObjectConverter) createProcess(proc map[string]interface{}) *sfgo.Pro
 	if val, ok := proc[cContID]; ok && val != nil {
 		unionString := val.(map[string]interface{})
 		if v, o := unionString[cString]; o {
-			contID := &sfgo.UnionNullString{
+			contID := &sfgo.ContainerIdUnion{
 				String:    v.(string),
-				UnionType: sfgo.UnionNullStringTypeEnumString,
+				UnionType: sfgo.ContainerIdUnionTypeEnumString,
 			}
 			sfproc.ContainerId = contID
 		}
 	} else {
-		sfproc.ContainerId = sfgo.NewUnionNullString()
+		sfproc.ContainerId = sfgo.NewContainerIdUnion()
 	}
 	if val, ok := proc[cPrcEntry]; ok {
 		sfproc.Entry = val.(bool)
@@ -204,14 +204,14 @@ func (s *SFObjectConverter) createFileEvent(fileEvt map[string]interface{}) *sfg
 	if val, ok := fileEvt[cFileEvtNewFileOID]; ok && val != nil {
 		foid := val.(map[string]interface{})
 		if o, ok := foid[cFileObjectID].([]byte); ok { //nolint:typecheck
-			newFOID := &sfgo.UnionNullFOID{
-				UnionType: sfgo.UnionNullFOIDTypeEnumFOID,
+			newFOID := &sfgo.NewFileOIDUnion{
+				UnionType: sfgo.NewFileOIDUnionTypeEnumFOID,
 			}
 			copy(newFOID.FOID[:], o)
 			sffileEvt.NewFileOID = newFOID
 		}
 	} else {
-		sffileEvt.NewFileOID = sfgo.NewUnionNullFOID()
+		sffileEvt.NewFileOID = sfgo.NewNewFileOIDUnion()
 	}
 
 	return sffileEvt
@@ -275,7 +275,7 @@ func (s *SFObjectConverter) ConvertToSysFlow(datum interface{}) *sfgo.SysFlow {
 	record := datum.(map[string]interface{})
 	rec := record[cRec].(map[string]interface{})
 	sFlow := sfgo.NewSysFlow()
-	sFlow.Rec = sfgo.NewUnionSFHeaderContainerProcessFileProcessEventNetworkFlowFileFlowFileEventNetworkEventProcessFlow()
+	sFlow.Rec = sfgo.NewRecUnion()
 	for key, val := range rec {
 		obj := val.(map[string]interface{})
 		switch key {
