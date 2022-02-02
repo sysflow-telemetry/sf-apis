@@ -76,6 +76,12 @@ docker run --rm -d --name sfnb --user $(id -u):$(id -g) --group-add users -v $(p
 
 Then, open a web browser and point it to `http://localhost:8888` (alternatively, the remote server name or IP where the notebook is hosted). To obtain the notebook authentication token, run `docker logs sfnb`.
 
+Note: If classic Jupyter notebook is preferred, run:
+
+```
+docker run --rm -d --name sfnb --user $(id -u):$(id -g) --group-add users -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 -e DOCKER_STACKS_JUPYTER_CMD=notebook sysflowtelemetry/sfnb
+```
+
 # License
 
 View [license information](https://github.com/sysflow-telemetry/sf-exporter/blob/master/LICENSE.md) for the software contained in this image.
