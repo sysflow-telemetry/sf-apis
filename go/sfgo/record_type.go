@@ -63,6 +63,6 @@ func ParseRecordTypeStr(rtype string) (RecordType, error) {
 	case TyNEStr:
 		return TyNE, nil
 	default:
-		return TyUnknow, errors.New("Unrecognized string rtype")
+		return TyUnknow, errors.New("unrecognized string rtype")
 	}
 }

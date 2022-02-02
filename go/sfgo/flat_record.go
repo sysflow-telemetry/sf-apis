@@ -46,7 +46,7 @@ func ParseRecordType(rtype int64) (RecordType, error) {
 	case HEADER:
 		return TyH, nil
 	default:
-		return TyUnknow, errors.New("Unrecognized record type")
+		return TyUnknow, errors.New("unrecognized record type")
 	}
 }
 
@@ -67,4 +67,5 @@ type FlatRecord struct {
 	Sources []Source
 	Ints    [][]int64
 	Strs    [][]string
+	Ptree   []*Process
 }

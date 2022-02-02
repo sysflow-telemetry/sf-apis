@@ -43,7 +43,7 @@ jobs:
       - name: Lint go API
         uses: golangci/golangci-lint-action@v2           
         with:          
-          version: latest
+          version: v1.42.1
           working-directory: go            
           args: --disable=errcheck                   
   lint-python-api:        
