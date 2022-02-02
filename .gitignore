@@ -39,6 +39,4 @@ dist
 *.antlr
 .vscode
 *.ipynb_checkpoints/
-pynb/.env
-pynb/mitre-tag-timeline.md
-pynb/mitre-tag-timeline.py
+pynb/iframe_figures/
