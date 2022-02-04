@@ -1,0 +1,514 @@
+[
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 8
+        },
+        "destination": {
+            "ip": "172.18.0.2",
+            "port": 0
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:32:30.544Z",
+            "event-microsecond": 544867,
+            "id": 1,
+            "reason": "Possible Nmap ping sweep",
+            "type": "allowed",
+            "signature-id": 2000005,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.779Z",
+        "tags": [
+            "mitre:T1018"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 36440
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 23
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:32:31.405Z",
+            "event-microsecond": 405826,
+            "id": 5,
+            "reason": "TCP Port Scanning - probing closed port",
+            "type": "allowed",
+            "signature-id": 2000006,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.787Z",
+        "tags": [
+            "mitre:T1046"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 8
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 0
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:32:30.832Z",
+            "event-microsecond": 832526,
+            "id": 3,
+            "reason": "Possible Nmap ping sweep",
+            "type": "allowed",
+            "signature-id": 2000005,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.787Z",
+        "tags": [
+            "mitre:T1018"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 48962
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 3000
+        },
+        "event": {
+            "priority": 1,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Web Application Attack",
+            "category": "network",
+            "start": "2021-11-29T10:32:34.172Z",
+            "event-microsecond": 172957,
+            "id": 7,
+            "reason": "SQL Injection attempt",
+            "type": "allowed",
+            "signature-id": 2000003,
+            "severity": 2
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.787Z",
+        "tags": [
+            "mitre:T1190"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.2",
+            "port": 0
+        },
+        "destination": {
+            "ip": "172.18.0.3",
+            "port": 0
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:32:30.544Z",
+            "event-microsecond": 544913,
+            "id": 2,
+            "reason": "Possible Nmap ping sweep",
+            "type": "allowed",
+            "signature-id": 2000005,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.787Z",
+        "tags": [
+            "mitre:T1018"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 35086
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 199
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 2,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:32:31.408Z",
+            "event-microsecond": 408979,
+            "id": 6,
+            "reason": "TCP Port Scanning",
+            "type": "allowed",
+            "signature-id": 2000007,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.787Z",
+        "tags": [
+            "mitre:T1046"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.4",
+            "port": 0
+        },
+        "destination": {
+            "ip": "172.18.0.3",
+            "port": 0
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:32:30.832Z",
+            "event-microsecond": 832567,
+            "id": 4,
+            "reason": "Possible Nmap ping sweep",
+            "type": "allowed",
+            "signature-id": 2000005,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:34.787Z",
+        "tags": [
+            "mitre:T1018"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 49032
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 3000
+        },
+        "event": {
+            "priority": 1,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Web Application Attack",
+            "category": "network",
+            "start": "2021-11-29T10:32:40.593Z",
+            "event-microsecond": 593338,
+            "id": 8,
+            "reason": "Possible SSTI attack",
+            "type": "allowed",
+            "signature-id": 2000002,
+            "severity": 2
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:32:41.790Z",
+        "tags": [
+            "mitre:T1068"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.2",
+            "port": 3306
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 35870
+        },
+        "event": {
+            "priority": 2,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Attempted User Privilege Gain",
+            "category": "network",
+            "start": "2021-11-29T10:34:01.626Z",
+            "event-microsecond": 626244,
+            "id": 9,
+            "reason": "MySQL: failed login attempt",
+            "type": "allowed",
+            "signature-id": 2000004,
+            "severity": 1
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:06.800Z",
+        "tags": [
+            "mitre:T1110.001"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.2",
+            "port": 3306
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 35872
+        },
+        "event": {
+            "priority": 2,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Attempted User Privilege Gain",
+            "category": "network",
+            "start": "2021-11-29T10:34:01.631Z",
+            "event-microsecond": 631429,
+            "id": 10,
+            "reason": "MySQL: failed login attempt",
+            "type": "allowed",
+            "signature-id": 2000004,
+            "severity": 1
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:06.800Z",
+        "tags": [
+            "mitre:T1110.001"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.2",
+            "port": 3306
+        },
+        "destination": {
+            "ip": "172.18.0.4",
+            "port": 35874
+        },
+        "event": {
+            "priority": 2,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Attempted User Privilege Gain",
+            "category": "network",
+            "start": "2021-11-29T10:34:01.637Z",
+            "event-microsecond": 637088,
+            "id": 11,
+            "reason": "MySQL: failed login attempt",
+            "type": "allowed",
+            "signature-id": 2000004,
+            "severity": 1
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:06.800Z",
+        "tags": [
+            "mitre:T1110.001"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.3",
+            "port": 49784
+        },
+        "destination": {
+            "ip": "104.16.18.94",
+            "port": 80
+        },
+        "event": {
+            "priority": 3,
+            "kind": "alert",
+            "signature-revision": 2,
+            "action": "Detection of a Network Scan",
+            "category": "network",
+            "start": "2021-11-29T10:34:26.719Z",
+            "event-microsecond": 719560,
+            "id": 12,
+            "reason": "TCP Port Scanning",
+            "type": "allowed",
+            "signature-id": 2000007,
+            "severity": 0
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:31.808Z",
+        "tags": [
+            "mitre:T1046"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.4",
+            "port": 59456
+        },
+        "destination": {
+            "ip": "10.72.1.40",
+            "port": 3000
+        },
+        "event": {
+            "priority": 1,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Web Application Attack",
+            "category": "network",
+            "start": "2021-11-29T10:34:33.245Z",
+            "event-microsecond": 245924,
+            "id": 13,
+            "reason": "SQL Injection attempt",
+            "type": "allowed",
+            "signature-id": 2000003,
+            "severity": 2
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:34.811Z",
+        "tags": [
+            "mitre:T1190"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.4",
+            "port": 59456
+        },
+        "destination": {
+            "ip": "10.72.1.40",
+            "port": 3000
+        },
+        "event": {
+            "priority": 1,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Web Application Attack",
+            "category": "network",
+            "start": "2021-11-29T10:34:33.932Z",
+            "event-microsecond": 932052,
+            "id": 14,
+            "reason": "SQL Injection attempt",
+            "type": "allowed",
+            "signature-id": 2000003,
+            "severity": 2
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:34.812Z",
+        "tags": [
+            "mitre:T1190"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.4",
+            "port": 59456
+        },
+        "destination": {
+            "ip": "10.72.1.40",
+            "port": 3000
+        },
+        "event": {
+            "priority": 1,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Web Application Attack",
+            "category": "network",
+            "start": "2021-11-29T10:34:34.416Z",
+            "event-microsecond": 416038,
+            "id": 15,
+            "reason": "SQL Injection attempt",
+            "type": "allowed",
+            "signature-id": 2000003,
+            "severity": 2
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:34.812Z",
+        "tags": [
+            "mitre:T1190"
+        ]
+    },
+    {
+        "ecs": {
+            "version": "1.11.0"
+        },
+        "source": {
+            "ip": "172.18.0.4",
+            "port": 59460
+        },
+        "destination": {
+            "ip": "10.72.1.40",
+            "port": 3000
+        },
+        "event": {
+            "priority": 1,
+            "kind": "alert",
+            "signature-revision": 1,
+            "action": "Web Application Attack",
+            "category": "network",
+            "start": "2021-11-29T10:34:34.746Z",
+            "event-microsecond": 746077,
+            "id": 16,
+            "reason": "Possible SSTI attack",
+            "type": "allowed",
+            "signature-id": 2000002,
+            "severity": 2
+        },
+        "type": "event",
+        "@timestamp": "2021-11-29T10:34:35.812Z",
+        "tags": [
+            "mitre:T1068"
+        ]
+    }
+]

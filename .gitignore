@@ -39,3 +39,4 @@ dist
 *.antlr
 .vscode
 *.ipynb_checkpoints/
+pynb/iframe_figures/

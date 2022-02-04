@@ -49,9 +49,10 @@ RUN apt-get update -yqq && \
 
 # Copy sources
 COPY --chown=$NB_UID:$NB_UID py3 /tmp/build
+COPY --chown=$NB_UID:$NB_UID pynb/requirements.txt /tmp/build/requirements.pynb.txt
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_UID
 
 # Install sysflow API
-RUN cd /tmp/build && pip install . && rm -r /tmp/build
+RUN cd /tmp/build && pip install . && pip install -r requirements.pynb.txt && rm -r /tmp/build
