@@ -13,14 +13,34 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 > - **Fixed**: for any bug fixes.
 > - **Security**: in case of vulnerabilities.
 
-## [[UNRELEASED](https://github.com/sysflow-telemetry/sf-apis/compare/0.3.0...HEAD)]
+## [Unreleased]
+
+## [0.4.0] - 2022-02-18
+
+### Added
+
+- Go: Added set data structures
+- Go: Added contextual SysFlow record to capture provenance information
+- Pynb: Added new notebook on MITRE ATT&CK tagging and visualization
+
+### Changed
+
+- BREAKING Go: renamed the unions in golang classes
+- Pynb: restrictured working directory for SysFlow notebooks
+- Pynb: updated base Jupyter image, making Jupyter lab the default environment for SysFlow notebooks (see updated usage in README.md)
+
+### Security
+
+- Update github.com/containers/storage to fix CVE-2021-20291
+
+## [0.3.1] - 2021-09-29
 
 ### Changed
 
 - Update(ubi): Bumped UBI-minimal version to 8.4-210 in sysprint.
 - Update(py3): Updated log level on warning messages in SysFlow reader API.
 
-## [[0.3.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...0.3.0)] - 2021-09-20
+## [0.3.0] - 2021-09-20
 
 ### Added
 
@@ -35,20 +55,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fixed lint issues in Python and Go APIs.
 - Refactored processor plugin interfaces in Go APIs.
 
-## [[0.2.2](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.1...0.2.2)] - 2020-12-07
+## [0.2.2] - 2020-12-07
 
 ### Changed
 
 - Fixed versions of Pandas and numpy in python APIs.
 
-
-## [[0.2.1](https://github.com/sysflow-telemetry/sf-apis/compare/0.2.0...0.2.1)] - 2020-12-02
+## [0.2.1] - 2020-12-02
 
 ### Added
 
 - Adds flattened indices for file OID attributes in go API.
 
-## [[0.2.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0...0.2.0)] - 2020-12-01
+## [0.2.0] - 2020-12-01
 
 ### Added
 
@@ -59,7 +78,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Performance optimizations for golang APIs, including opflag and openflag map caching.
 
-## [[0.1.0](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc4...0.1.0)] - 2020-10-30
+## [0.1.0] - 2020-10-30
 
 ### Added
 
@@ -70,7 +89,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Refactored driver and plugin interface
 - Refactored golang libraries to use constants for flags.
 
-## [[0.1.0-rc4](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0-rc4)] - 2020-08-10
+## [0.1.0-rc4] - 2020-08-10
 
 ### Added
 
@@ -89,7 +108,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Fixed attribute name typo when computing proc and pproc duration.
 - Fixed bug in provenance queries.
 
-## [[0.1-rc3](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc2...0.1-rc3)] - 2020-03-17
+## [0.1-rc3] - 2020-03-17
 
 ### Added
 
@@ -110,7 +129,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Several bug fixes in formatting API.
 - Proper handling of keyboard interrupts in sysprint. 
 
-## [[0.1-rc2](https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc1...0.1-rc2)] - 2019-11-08
+## [0.1-rc2] - 2019-11-08
 
 ### Changed
 
@@ -121,3 +140,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - First release candidate with basic set of SysFlow APIs (C++ and Python).
+
+[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.0-rc1...HEAD
+[0.4.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.3.1...0.4.0-rc1
+[0.3.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.3.0...0.3.1
+[0.3.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...0.3.0
+[0.2.2]: https://github.com/sysflow-telemetry/sf-apis/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0...0.2.0
+[0.1.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc4...0.1.0
+[0.1.0-rc4]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc3...0.1.0-rc4
+[0.1.0-rc3]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc2...0.1.0-rc3
+[0.1.0-rc2]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc1...0.1.0-rc2
+[0.1.0-rc1]: https://github.com/sysflow-telemetry/sf-apis/releases/tag/0.1.0-rc1
