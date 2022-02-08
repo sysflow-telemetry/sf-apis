@@ -149,7 +149,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 [0.2.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc4...0.1.0
-[0.1.0-rc4]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc3...0.1.0-rc4
-[0.1.0-rc3]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc2...0.1.0-rc3
-[0.1.0-rc2]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1.0-rc1...0.1.0-rc2
-[0.1.0-rc1]: https://github.com/sysflow-telemetry/sf-apis/releases/tag/0.1.0-rc1
+[0.1.0-rc4]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc3...0.1.0-rc4
+[0.1-rc3]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc2...0.1-rc3
+[0.1-rc2]: https://github.com/sysflow-telemetry/sf-apis/compare/0.1-rc1...0.1-rc2
+[0.1-rc1]: https://github.com/sysflow-telemetry/sf-apis/releases/tag/0.1-rc1
