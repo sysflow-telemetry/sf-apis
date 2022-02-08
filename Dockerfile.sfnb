@@ -55,4 +55,4 @@ COPY --chown=$NB_UID:$NB_UID pynb/requirements.txt /tmp/build/requirements.pynb.
 USER $NB_UID
 
 # Install sysflow API
-RUN cd /tmp/build && pip install . && pip install -r requirements.pynb.txt && rm -r /tmp/build
+RUN cd /tmp/build && pip install --user -r requirements.pynb.txt && pip install --user . && rm -r /tmp/build
