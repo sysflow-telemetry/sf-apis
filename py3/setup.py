@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright (C) 2019 IBM Corporation.
+# Copyright (C) 2022 IBM Corporation.
 #
 # Authors:
 # Frederico Araujo <frederico.araujo@ibm.com>
@@ -18,17 +18,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import setuptools
 
-import os
-from setuptools import setup
+if __name__ == "__main__":
+    setuptools.setup()
 
-setup(
-    name = 'sysflow',
-    version = '0.4.0-rc1',    
-    description = ('Install SysFlow python API and utilities'),    
-    packages=['sysflow', 'sysflow.grammar'],
-    package_data={'sysflow': ['schema.avsc']},
-    install_requires=['tabulate>=0.8.9', 'minio>=7.0.3', 'antlr4-python3-runtime==4.9.2', 'dotty-dict>=1.3.0', 'pandas>=1.3.0', 'frozendict>=2.0.3', 'fastavro==1.4.2'],
-    scripts=['utils/sysprint'],
-    package_dir = {'': 'classes'}
-)
