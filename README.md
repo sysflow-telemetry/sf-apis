@@ -6,7 +6,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.3.0`, `latest`](https://github.com/sysflow-telemetry/sf-apis/blob/0.3.0/Dockerfile), [`edge`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile), [`dev`](https://github.com/sysflow-telemetry/sf-apis/blob/dev/Dockerfile)
+-	[`0.4.0`, `latest`](https://github.com/sysflow-telemetry/sf-apis/blob/0.4.0/Dockerfile), [`edge`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile), [`dev`](https://github.com/sysflow-telemetry/sf-apis/blob/dev/Dockerfile)
 
 # Quick reference
 
@@ -71,14 +71,20 @@ docker run --rm -d --name sfnb -p 8888:8888 sysflowtelemetry/sfnb
 To mount example notebooks and data files into Jupyter's `work` directory, git clone this repository locally, cd into it, and run:
 
 ```
-docker run --rm -d --name sfnb --user $(id -u):$(id -g) --group-add users -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 sysflowtelemetry/sfnb
+docker run --rm -d --name sfnb -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 sysflowtelemetry/sfnb
 ```
 
 Then, open a web browser and point it to `http://localhost:8888` (alternatively, the remote server name or IP where the notebook is hosted). To obtain the notebook authentication token, run `docker logs sfnb`.
 
+Note: If classic Jupyter notebook is preferred, run:
+
+```
+docker run --rm -d --name sfnb -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 -e DOCKER_STACKS_JUPYTER_CMD=notebook sysflowtelemetry/sfnb
+```
+
 # License
 
-View [license information](https://github.com/sysflow-telemetry/sf-exporter/blob/master/LICENSE.md) for the software contained in this image.
+View [license information](https://github.com/sysflow-telemetry/sf-apis/blob/master/LICENSE.md) for the software contained in this image.
 
 As with all Docker images, these likely also contain other software which may be under other licenses (such as Bash, etc from the base distribution, along with any direct or indirect dependencies of the primary software being contained).
 

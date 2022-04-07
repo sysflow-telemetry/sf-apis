@@ -1,0 +1,268 @@
+[
+    {
+        "rule_name": "Sysmon_183e7ea8-ac4b-4c23-9aec-b3dac4e401ac_0 Net.exe Execution",
+        "alert_info": {
+            "type": "debug"
+        },
+        "alert_sent": true,
+        "alert_time": "2021-11-29T10:34:56.760582Z",
+        "ecs": {
+            "version": "1.9.0"
+        },
+        "event": {
+            "code": "1",
+            "provider": "Microsoft-Windows-Sysmon",
+            "kind": "alert",
+            "created": "2021-11-29T10:34:35.068Z",
+            "action": "Process Create (rule: ProcessCreate)",
+            "type": "start",
+            "category": "process",
+            "reason": "Sysmon Net.exe Execution",
+            "severity": 0,
+            "alert_sent": true,
+            "alert_time": "2021-11-29T10:34:56.760582+00:00"
+        },
+        "process": {
+            "args": "net  user keepmein pw1#testing /add /y ",
+            "parent": {
+                "args": "c:\\windows\\system32\\cmd.exe /d /s /c \"net user keepmein pw1#testing /add /y & powershell -c \"add-windowscapability -online -name openssh.server~~~~0.0.1.0;start-service sshd\" > c:/temp/openssh.txt\"",
+                "name": "cmd.exe",
+                "guid": "{3d67d3f8-acba-61a4-b1ea-330500000000}",
+                "pid": "5764",
+                "executable": "c:\\windows\\system32\\cmd.exe"
+            },
+            "thread_id": "4892",
+            "name": "net.exe",
+            "guid": "{3d67d3f8-acba-61a4-9bec-330500000000}",
+            "working_directory": "c:\\installs\\juice-shop_12.8.1\\",
+            "pid": "3260",
+            "executable": "c:\\windows\\system32\\net.exe"
+        },
+        "user": {
+            "domain": "nt authority",
+            "name": "system"
+        },
+        "tags": [
+            "mitre:t1049",
+            "mitre:t1018",
+            "mitre:t1135",
+            "mitre:t1201",
+            "mitre:t1069.001",
+            "mitre:t1069.002",
+            "mitre:t1087.001",
+            "mitre:t1087.002",
+            "mitre:t1021.002",
+            "mitre:t1077"
+        ],
+        "match_time": "2021-11-29T10:34:36.720Z",
+        "@timestamp": "2021-11-29T10:34:56.760767Z"
+    },
+    {
+        "rule_name": "Sysmon_cd219ff3-fa99-45d4-8380-a7d15116c6dc_0 Net.exe User Account Creation",
+        "alert_info": {
+            "type": "debug"
+        },
+        "alert_sent": true,
+        "alert_time": "2021-11-29T10:35:33.759248Z",
+        "ecs": {
+            "version": "1.9.0"
+        },
+        "event": {
+            "code": "1",
+            "provider": "Microsoft-Windows-Sysmon",
+            "kind": "alert",
+            "created": "2021-11-29T10:34:35.068Z",
+            "action": "Process Create (rule: ProcessCreate)",
+            "type": "start",
+            "category": "process",
+            "reason": "Sysmon Net.exe User Account Creation",
+            "severity": 1,
+            "alert_sent": true,
+            "alert_time": "2021-11-29T10:35:33.759248+00:00"
+        },
+        "process": {
+            "args": "c:\\windows\\system32\\net1  user keepmein pw1#testing /add /y ",
+            "parent": {
+                "args": "net  user keepmein pw1#testing /add /y ",
+                "name": "net.exe",
+                "guid": "{3d67d3f8-acba-61a4-9bec-330500000000}",
+                "pid": "3260",
+                "executable": "c:\\windows\\system32\\net.exe"
+            },
+            "thread_id": "4892",
+            "name": "net1.exe",
+            "guid": "{3d67d3f8-acba-61a4-53f1-330500000000}",
+            "working_directory": "c:\\installs\\juice-shop_12.8.1\\",
+            "pid": "7108",
+            "executable": "c:\\windows\\system32\\net1.exe"
+        },
+        "user": {
+            "domain": "nt authority",
+            "name": "system"
+        },
+        "tags": [
+            "mitre:t1136",
+            "mitre:t1136.001"
+        ],
+        "match_time": "2021-11-29T10:34:36.720Z",
+        "@timestamp": "2021-11-29T10:35:33.759391Z"
+    },
+    {
+        "rule_name": "Sysmon_cd219ff3-fa99-45d4-8380-a7d15116c6dc_0 Net.exe User Account Creation",
+        "alert_info": {
+            "type": "debug"
+        },
+        "alert_sent": true,
+        "alert_time": "2021-11-29T10:35:33.771535Z",
+        "ecs": {
+            "version": "1.9.0"
+        },
+        "event": {
+            "code": "1",
+            "provider": "Microsoft-Windows-Sysmon",
+            "kind": "alert",
+            "created": "2021-11-29T10:34:35.068Z",
+            "action": "Process Create (rule: ProcessCreate)",
+            "type": "start",
+            "category": "process",
+            "reason": "Sysmon Net.exe User Account Creation",
+            "severity": 1,
+            "alert_sent": true,
+            "alert_time": "2021-11-29T10:35:33.771535+00:00"
+        },
+        "process": {
+            "args": "net  user keepmein pw1#testing /add /y ",
+            "parent": {
+                "args": "c:\\windows\\system32\\cmd.exe /d /s /c \"net user keepmein pw1#testing /add /y & powershell -c \"add-windowscapability -online -name openssh.server~~~~0.0.1.0;start-service sshd\" > c:/temp/openssh.txt\"",
+                "name": "cmd.exe",
+                "guid": "{3d67d3f8-acba-61a4-b1ea-330500000000}",
+                "pid": "5764",
+                "executable": "c:\\windows\\system32\\cmd.exe"
+            },
+            "thread_id": "4892",
+            "name": "net.exe",
+            "guid": "{3d67d3f8-acba-61a4-9bec-330500000000}",
+            "working_directory": "c:\\installs\\juice-shop_12.8.1\\",
+            "pid": "3260",
+            "executable": "c:\\windows\\system32\\net.exe"
+        },
+        "user": {
+            "domain": "nt authority",
+            "name": "system"
+        },
+        "tags": [
+            "mitre:t1136",
+            "mitre:t1136.001"
+        ],
+        "match_time": "2021-11-29T10:34:36.720Z",
+        "@timestamp": "2021-11-29T10:35:33.771672Z"
+    },
+    {
+        "rule_name": "Sysmon_f4bbd493-b796-416e-bbf2-121235348529_0 Non Interactive PowerShell",
+        "alert_info": {
+            "type": "debug"
+        },
+        "alert_sent": true,
+        "alert_time": "2021-11-29T10:34:53.708850Z",
+        "ecs": {
+            "version": "1.9.0"
+        },
+        "event": {
+            "code": "1",
+            "provider": "Microsoft-Windows-Sysmon",
+            "kind": "alert",
+            "created": "2021-11-29T10:34:35.069Z",
+            "action": "Process Create (rule: ProcessCreate)",
+            "type": "start",
+            "category": "process",
+            "reason": "Sysmon Non Interactive PowerShell",
+            "severity": 1,
+            "alert_sent": true,
+            "alert_time": "2021-11-29T10:34:53.708850+00:00"
+        },
+        "process": {
+            "args": "powershell  -c \"add-windowscapability -online -name openssh.server~~~~0.0.1.0;start-service sshd\" ",
+            "parent": {
+                "args": "c:\\windows\\system32\\cmd.exe /d /s /c \"net user keepmein pw1#testing /add /y & powershell -c \"add-windowscapability -online -name openssh.server~~~~0.0.1.0;start-service sshd\" > c:/temp/openssh.txt\"",
+                "name": "cmd.exe",
+                "guid": "{3d67d3f8-acba-61a4-b1ea-330500000000}",
+                "pid": "5764",
+                "executable": "c:\\windows\\system32\\cmd.exe"
+            },
+            "thread_id": "4892",
+            "name": "powershell.exe",
+            "guid": "{3d67d3f8-acba-61a4-e1f7-330500000000}",
+            "working_directory": "c:\\installs\\juice-shop_12.8.1\\",
+            "pid": "4792",
+            "executable": "c:\\windows\\system32\\windowspowershell\\v1.0\\powershell.exe"
+        },
+        "user": {
+            "domain": "nt authority",
+            "name": "system"
+        },
+        "tags": [
+            "mitre:t1086",
+            "mitre:t1059.001"
+        ],
+        "match_time": "2021-11-29T10:34:36.720Z",
+        "@timestamp": "2021-11-29T10:34:53.709005Z"
+    },
+    {
+        "rule_name": "Sysmon_183e7ea8-ac4b-4c23-9aec-b3dac4e401ac_0 Net.exe Execution",
+        "alert_info": {
+            "type": "debug"
+        },
+        "alert_sent": true,
+        "alert_time": "2021-11-29T10:34:56.731926Z",
+        "ecs": {
+            "version": "1.9.0"
+        },
+        "event": {
+            "code": "1",
+            "provider": "Microsoft-Windows-Sysmon",
+            "kind": "alert",
+            "created": "2021-11-29T10:34:35.068Z",
+            "action": "Process Create (rule: ProcessCreate)",
+            "type": "start",
+            "category": "process",
+            "reason": "Sysmon Net.exe Execution",
+            "severity": 0,
+            "alert_sent": true,
+            "alert_time": "2021-11-29T10:34:56.731926+00:00"
+        },
+        "process": {
+            "args": "c:\\windows\\system32\\net1  user keepmein pw1#testing /add /y ",
+            "parent": {
+                "args": "net  user keepmein pw1#testing /add /y ",
+                "name": "net.exe",
+                "guid": "{3d67d3f8-acba-61a4-9bec-330500000000}",
+                "pid": "3260",
+                "executable": "c:\\windows\\system32\\net.exe"
+            },
+            "thread_id": "4892",
+            "name": "net1.exe",
+            "guid": "{3d67d3f8-acba-61a4-53f1-330500000000}",
+            "working_directory": "c:\\installs\\juice-shop_12.8.1\\",
+            "pid": "7108",
+            "executable": "c:\\windows\\system32\\net1.exe"
+        },
+        "user": {
+            "domain": "nt authority",
+            "name": "system"
+        },
+        "tags": [
+            "mitre:t1049",
+            "mitre:t1018",
+            "mitre:t1135",
+            "mitre:t1201",
+            "mitre:t1069.001",
+            "mitre:t1069.002",
+            "mitre:t1087.001",
+            "mitre:t1087.002",
+            "mitre:t1021.002",
+            "mitre:t1077"
+        ],
+        "match_time": "2021-11-29T10:34:36.720Z",
+        "@timestamp": "2021-11-29T10:34:56.732110Z"
+    }
+]
