@@ -1,0 +1,28 @@
+{
+  "type" : "record",
+  "name" : "K8sEvent",
+  "namespace" : "sysflow.event",
+  "fields" : [ {
+    "name" : "kind",
+    "type" : {
+      "type" : "enum",
+      "name" : "K8sComponent",
+      "namespace" : "sysflow.type",
+      "symbols" : [ "K8S_NODES", "K8S_NAMESPACES", "K8S_PODS", "K8S_REPLICATIONCONTROLLERS", "K8S_SERVICES", "K8S_EVENTS", "K8S_REPLICASETS", "K8S_DAEMONSETS", "K8S_DEPLOYMENTS", "K8S_UNKNOWN" ]
+    }
+  }, {
+    "name" : "action",
+    "type" : {
+      "type" : "enum",
+      "name" : "K8sAction",
+      "namespace" : "sysflow.type",
+      "symbols" : [ "K8S_COMPONENT_ADDED", "K8S_COMPONENT_MODIFIED", "K8S_COMPONENT_DELETED", "K8S_COMPONENT_ERROR", "K8S_COMPONENT_NONEXISTENT", "K8S_COMPONENT_UNKNOWN" ]
+    }
+  }, {
+    "name" : "ts",
+    "type" : "long"
+  }, {
+    "name" : "message",
+    "type" : "string"
+  } ]
+}

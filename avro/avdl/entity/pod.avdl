@@ -1,0 +1,55 @@
+/** Copyright (C) 2022 IBM Corporation.
+*
+* Authors:
+* Frederico Araujo <frederico.araujo@ibm.com>
+* Teryl Taylor <terylt@ibm.com>
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+**/
+@namespace("sysflow.entity")
+protocol SysFlow {
+import idl "../type/datatypes.avdl";
+import idl "container.avdl";
+
+record Port {
+  int port;
+  int targetPort;
+  int nodePort;
+  string proto;
+}
+
+record Service {
+  string name;
+  string id;
+  string namespace;
+  array<sysflow.entity.Port> portList;
+  @logicalType("ipaddr")
+  array<long> clusterIP;
+}
+
+record Pod {
+  long ts;
+  string id;
+  string name;
+  string nodeName;
+  @logicalType("ipaddr")
+  array<long> hostIP;
+  @logicalType("ipaddr")
+  array<long> internalIP;
+  string namespace;
+  long restartCount;
+  map<string> labels;
+  map<string> selectors;
+  array<sysflow.entity.Service> services;
+}
+}
