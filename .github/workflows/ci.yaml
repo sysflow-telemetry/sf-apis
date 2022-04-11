@@ -40,18 +40,13 @@ jobs:
       - name: Init API module
         working-directory: go
         run: |
-          sudo apt update -qq && sudo apt install -yqq libdevmapper-dev
           go mod init github.com/sysflow-telemetry/sf-apis/go || true
-          go mod tidy -compat=1.17
-          go build -tags exclude_graphdriver_btrfs ./...
       - name: Lint go API
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.42.1
           working-directory: go
-          args: --disable=errcheck
-          skip-pkg-cache: true
-          skip-build-cache: true
+          args: --disable=errcheck --build-tags=exclude_graphdriver_btrfs
   lint-python-api:
     runs-on: ubuntu-latest
     steps:
