@@ -6,7 +6,7 @@ on:
       - master
       - dev
     tags:
-      - '*'     
+      - '*'
   pull_request:
     branches:
       - master
@@ -20,16 +20,16 @@ on:
       - unlocked
       - review_requested
   workflow_dispatch:
-    
+
 env:
   DOCKER_REGISTRY_ORGANIZATION: sysflowtelemetry
   GH_ORGANIZATION: sysflow-telemetry
   SFNB_DOCKER_IMAGE_NAME: sfnb
-  SYSPRINT_DOCKER_IMAGE_NAME: sysprint  
+  SYSPRINT_DOCKER_IMAGE_NAME: sysprint
 
 jobs:
   lint-go-api:
-    runs-on: ubuntu-latest        
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -38,15 +38,15 @@ jobs:
         with:
           go-version: 1.16
       - name: Init API module
-        working-directory: go             
-        run: go mod init github.com/sysflow-telemetry/sf-apis/go || true          
+        working-directory: go
+        run: go mod init github.com/sysflow-telemetry/sf-apis/go || true
       - name: Lint go API
-        uses: golangci/golangci-lint-action@v2           
-        with:          
+        uses: golangci/golangci-lint-action@v2
+        with:
           version: v1.42.1
-          working-directory: go            
-          args: --disable=errcheck                   
-  lint-python-api:        
+          working-directory: go
+          args: --disable=errcheck
+  lint-python-api:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -54,39 +54,39 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'      
+          python-version: '3.x'
       - name: Install requirements
         run: |
-          python -m pip install --upgrade pip          
-          python -m pip install black==21.6b0 unimport==0.8.3          
+          python -m pip install --upgrade pip
+          python -m pip install black==22.3 unimport==0.9.5
       - name: Check style
         run: |
           black --check -S -l 120 --exclude \.grammar py3/classes/sysflow
           black --check -S -l 120 py3/utils/sysprint
       - name: Check imports
         run: |
-          unimport --check --exclude __init__.py py3/classes/sysflow
-          unimport --check --exclude __init__.py py3/utils/sysprint  
+          unimport --check --exclude "__init__.py|grammar|schema_classes.py" py3/classes/sysflow
+          unimport --check --exclude __init__.py py3/utils/sysprint
   docker-sfnb:
     needs: lint-python-api
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    steps:      
+    steps:
       - name: Checkout
-        uses: actions/checkout@v2      
+        uses: actions/checkout@v2
       - name: Docker meta
         id: metasfnb
         uses: docker/metadata-action@v3
-        with:          
+        with:
           images: |
             ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
             ghcr.io/${{ env.GH_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
-          tags: |            
+          tags: |
             type=edge,branch=master
             type=ref,event=branch
-            type=ref,event=tag            
+            type=ref,event=tag
             type=ref,event=pr
           labels: |
             org.opencontainers.image.documentation=https://sysflow.readthedocs.io/
@@ -96,31 +96,31 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}  
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set build args
         id: args
         shell: bash
         run: |
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/*/})"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"    
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Build and push
-        id: docker_build        
-        uses: docker/build-push-action@v2        
+        id: docker_build
+        uses: docker/build-push-action@v2
         with:
           file: Dockerfile.sfnb
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ steps.metasfnb.outputs.tags }}"
           labels: "${{ steps.metasfnb.outputs.labels }}"
-          build-args: |            
+          build-args: |
             VERSION=${{ steps.args.outputs.branch }}
             RELEASE=${{ steps.args.outputs.sha_short }}
       - name: push README to Dockerhub
@@ -131,8 +131,8 @@ jobs:
           DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
         with:
           destination_container_repo: ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SFNB_DOCKER_IMAGE_NAME }}
-          provider: dockerhub          
-          readme_file: "README.md"      
+          provider: dockerhub
+          readme_file: "README.md"
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   docker-sysprint:
@@ -141,20 +141,20 @@ jobs:
     permissions:
       contents: read
       packages: write
-    steps:      
+    steps:
       - name: Checkout
-        uses: actions/checkout@v2      
+        uses: actions/checkout@v2
       - name: Docker meta
         id: metasysprint
         uses: docker/metadata-action@v3
-        with:          
+        with:
           images: |
             ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
             ghcr.io/${{ env.GH_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
-          tags: |            
+          tags: |
             type=edge,branch=master
             type=ref,event=branch
-            type=ref,event=tag            
+            type=ref,event=tag
             type=ref,event=pr
           labels: |
             org.opencontainers.image.documentation=https://sysflow.readthedocs.io/
@@ -164,31 +164,31 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}    
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set build args
         id: args
         shell: bash
         run: |
           echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/*/})"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"  
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Build and push
-        id: docker_build        
-        uses: docker/build-push-action@v2        
+        id: docker_build
+        uses: docker/build-push-action@v2
         with:
           file: Dockerfile.sysprint
           push: ${{ github.event_name != 'pull_request' }}
           tags: "${{ steps.metasysprint.outputs.tags }}"
           labels: "${{ steps.metasysprint.outputs.labels }}"
-          build-args: |            
+          build-args: |
             VERSION=${{ steps.args.outputs.branch }}
             RELEASE=${{ steps.args.outputs.sha_short }}
       - name: push README to Dockerhub
@@ -199,8 +199,8 @@ jobs:
           DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
         with:
           destination_container_repo: ${{ env.DOCKER_REGISTRY_ORGANIZATION }}/${{ env.SYSPRINT_DOCKER_IMAGE_NAME }}
-          provider: dockerhub          
-          readme_file: "README.md"      
+          provider: dockerhub
+          readme_file: "README.md"
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   pypi-sysprint:
@@ -208,12 +208,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2 
+        uses: actions/checkout@v2
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - name: Build package        
+      - name: Build package
         shell: bash
         run: cd py3 && python -m pip install build && python -m build --wheel
       - name: Publish package
@@ -223,32 +223,32 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
           packages_dir: py3/dist/
-          skip_existing: true          
-  release:    
-    needs: [docker-sfnb,docker-sysprint,pypi-sysprint]    
+          skip_existing: true
+  release:
+    needs: [docker-sfnb,docker-sysprint,pypi-sysprint]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     permissions:
-      contents: write      
-    steps:      
+      contents: write
+    steps:
       - name: Checkout
-        uses: actions/checkout@v2                 
+        uses: actions/checkout@v2
       - name: Get version from tag
         id: tag_name
         shell: bash
-        run: |          
-          GHREF=${GITHUB_REF#refs/tags/}; echo ::set-output name=current_version::${GHREF%-*}           
-          echo ::set-output name=current_tag::${GITHUB_REF#refs/tags/}                       
+        run: |
+          GHREF=${GITHUB_REF#refs/tags/}; echo ::set-output name=current_version::${GHREF%-*}
+          echo ::set-output name=current_tag::${GITHUB_REF#refs/tags/}
       - name: Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
-        with:          
-          version: ${{ steps.tag_name.outputs.current_version }}
-          path: ./CHANGELOG.md      
-      - name: Release
-        uses: softprops/action-gh-release@v1        
         with:
-          body: ${{ steps.changelog_reader.outputs.changes }}          
-          token: ${{ secrets.GITHUB_TOKEN }}          
+          version: ${{ steps.tag_name.outputs.current_version }}
+          path: ./CHANGELOG.md
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: contains(steps.tag_name.outputs.current_version, '-rc')
           draft: true
