@@ -43,9 +43,10 @@ jobs:
       - name: Lint go API
         uses: golangci/golangci-lint-action@v2
         with:
-          version: v1.42.1
+          version: v1.45.2
           working-directory: go
           args: --disable=errcheck --build-tags=exclude_graphdriver_btrfs
+          modules-download-mode: vendor
   lint-python-api:
     runs-on: ubuntu-latest
     steps:
