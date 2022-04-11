@@ -40,7 +40,7 @@ jobs:
       - name: Init API module
         working-directory: go
         run: |
-          apt update -qq && apt install -yqq libdevmapper-dev
+          sudo apt update -qq && sudo apt install -yqq libdevmapper-dev
           go mod init github.com/sysflow-telemetry/sf-apis/go || true
           go mod tidy -compat=1.17
           go build -tags exclude_graphdriver_btrfs ./...
