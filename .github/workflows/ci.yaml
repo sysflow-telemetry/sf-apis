@@ -69,7 +69,7 @@ jobs:
           black --check -S -l 120 py3/utils/sysprint
       - name: Check imports
         run: |
-          unimport --check --exclude __init__.py py3/classes/sysflow
+          unimport --check --exclude "__init__.py|grammar|schema_classes.py"  py3/classes/sysflow
           unimport --check --exclude __init__.py py3/utils/sysprint
   docker-sfnb:
     needs: lint-python-api
