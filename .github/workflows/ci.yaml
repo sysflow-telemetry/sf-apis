@@ -50,6 +50,7 @@ jobs:
           version: v1.42.1
           working-directory: go
           args: --disable=errcheck
+          skip-cache: true
   lint-python-api:
     runs-on: ubuntu-latest
     steps:
