@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"hash"
 
-	"github.com/cespare/xxhash/v2"
+	xxhash "github.com/cespare/xxhash/v2"
 )
 
 // GetHash computes the hash of its input arguments.
