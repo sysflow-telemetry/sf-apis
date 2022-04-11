@@ -249,7 +249,7 @@ class FlattenedSFReader(SFReader):
                         else:
                             container = self.conts[rec.containerId]
                     pod = None
-                    if container is not None and container.podId is not None:
+                    if container is not None and hasattr(container, 'podId') and container.podId is not None:
                         if not container.podId in self.pods:
                             print(
                                 "ERROR: Cannot find pod object for record. This should not happen. Proc Pod Id: {0}".format(
@@ -270,7 +270,7 @@ class FlattenedSFReader(SFReader):
                         else:
                             container = self.conts[rec.containerId]
                     pod = None
-                    if container is not None and container.podId is not None:
+                    if container is not None and hasattr(container, 'podId') and container.podId is not None:
                         if not container.podId in self.pods:
                             print(
                                 "ERROR: Cannot find pod object for record. This should not happen. File Pod Id: {0}".format(
@@ -303,7 +303,7 @@ class FlattenedSFReader(SFReader):
                             print("WARN: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[proc.containerId]
-                    if container is not None and container.podId is not None:
+                    if container is not None and hasattr(container, 'podId') and container.podId is not None:
                         if not container.podId in self.pods:
                             print(
                                 "ERROR: Cannot find pod object for record. This should not happen. Evt Pod Id: {0}".format(

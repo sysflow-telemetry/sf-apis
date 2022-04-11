@@ -174,6 +174,7 @@ class SFFormatter(object):
         self.sfqlint = SfqlInterpreter()
         self.defs = defs
         self.k8sEvents = False
+        self.allFields = False
 
     def enableK8sEvents(self):
         self.k8sEvents = True
@@ -199,8 +200,7 @@ class SFFormatter(object):
 
     def enableAllFields(self):
         """Enables all available fields to be added to the output by default."""
-        global _default_fields
-        _default_fields = self.getFields()
+        self.allFields = True
 
     def toDataframe(self, fields=None, expr=None):
         """Enables a delegate function to be applied to each JSON record read.
@@ -489,7 +489,7 @@ class SFFormatter(object):
             _flat_map['k8s.kind'] = ''
             _flat_map['k8s.msg'] = ''
 
-        if fields:
+        if not self.allFields and fields:
             od = OrderedDict()
             for k in fields:
                 od[k] = _flat_map[k]
