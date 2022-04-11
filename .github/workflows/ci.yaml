@@ -39,8 +39,7 @@ jobs:
           go-version: 1.17
       - name: Init API module
         working-directory: go
-        run: |
-          go mod init github.com/sysflow-telemetry/sf-apis/go || true
+        run: go mod init github.com/sysflow-telemetry/sf-apis/go || true
       - name: Lint go API
         uses: golangci/golangci-lint-action@v2
         with:
