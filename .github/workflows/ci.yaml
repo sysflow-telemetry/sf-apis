@@ -58,7 +58,7 @@ jobs:
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip          
-          python -m pip install black==22.3 unimport==0.8.3          
+          python -m pip install black==22.3 unimport==0.9.5         
       - name: Check style
         run: |
           black --check -S -l 120 --exclude \.grammar py3/classes/sysflow
