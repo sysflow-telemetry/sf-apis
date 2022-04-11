@@ -36,16 +36,19 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16
+          go-version: 1.17
       - name: Init API module
         working-directory: go
-        run: go mod init github.com/sysflow-telemetry/sf-apis/go || true
+        run: |
+          sudo apt update -qq && sudo apt install -yqq libdevmapper-dev
+          go mod init github.com/sysflow-telemetry/sf-apis/go || true
+          go mod tidy -compat=1.17
       - name: Lint go API
         uses: golangci/golangci-lint-action@v2
         with:
-          version: v1.42.1
+          version: v1.45.2
           working-directory: go
-          args: --disable=errcheck
+          args: --disable=errcheck --build-tags=exclude_graphdriver_btrfs
   lint-python-api:
     runs-on: ubuntu-latest
     steps:
