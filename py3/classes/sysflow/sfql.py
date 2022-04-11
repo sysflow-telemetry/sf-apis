@@ -429,6 +429,13 @@ class SfqlMapper(Generic[T]):
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
         'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
         'schema': partial(_getHeaderAttr.__func__, attr='version'),
+        'pod.id': partial(_getHeaderAttr.__func__, attr='id'),
+        'pod.name': partial(_getHeaderAttr.__func__, attr='name'),
+        'pod.nname': partial(_getHeaderAttr.__func__, attr='nodeName'),
+        'pod.hostip': partial(_getHeaderAttr.__func__, attr='hostIP'),
+        'pod.internalip': partial(_getHeaderAttr.__func__, attr='internalIP'),
+        'pod.ns': partial(_getHeaderAttr.__func__, attr='namespace'),
+        'pod.rstrtcnt': partial(_getHeaderAttr.__func__, attr='restartCount'),
         'filename': partial(_getHeaderAttr.__func__, attr='filename'),
     }
 

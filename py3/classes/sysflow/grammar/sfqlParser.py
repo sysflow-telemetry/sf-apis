@@ -3,10 +3,11 @@
 from antlr4 import *
 from io import StringIO
 import sys
+
 if sys.version_info[1] > 5:
-	from typing import TextIO
+    from typing import TextIO
 else:
-	from typing.io import TextIO
+    from typing.io import TextIO
 
 
 def serializedATN():
@@ -58,29 +59,85 @@ def serializedATN():
         return buf.getvalue()
 
 
-class sfqlParser ( Parser ):
+class sfqlParser(Parser):
 
     grammarFileName = "sfql.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
-    decisionsToDFA = [ DFA(ds, i) for i, ds in enumerate(atn.decisionToState) ]
+    decisionsToDFA = [DFA(ds, i) for i, ds in enumerate(atn.decisionToState)]
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'sfql'", "'macro'", "'list'", "'items'", 
-                     "'condition'", "'and'", "'or'", "'not'", "'<'", "'<='", 
-                     "'>'", "'>='", "'='", "'!='", "'in'", "'contains'", 
-                     "'icontains'", "'startswith'", "'pmatch'", "'exists'", 
-                     "'['", "']'", "'('", "')'", "','", "'-'" ]
+    literalNames = [
+        "<INVALID>",
+        "'sfql'",
+        "'macro'",
+        "'list'",
+        "'items'",
+        "'condition'",
+        "'and'",
+        "'or'",
+        "'not'",
+        "'<'",
+        "'<='",
+        "'>'",
+        "'>='",
+        "'='",
+        "'!='",
+        "'in'",
+        "'contains'",
+        "'icontains'",
+        "'startswith'",
+        "'pmatch'",
+        "'exists'",
+        "'['",
+        "']'",
+        "'('",
+        "')'",
+        "','",
+        "'-'",
+    ]
 
-    symbolicNames = [ "<INVALID>", "QUERY", "MACRO", "LIST", "ITEMS", "COND", 
-                      "AND", "OR", "NOT", "LT", "LE", "GT", "GE", "EQ", 
-                      "NEQ", "IN", "CONTAINS", "ICONTAINS", "STARTSWITH", 
-                      "PMATCH", "EXISTS", "LBRACK", "RBRACK", "LPAREN", 
-                      "RPAREN", "LISTSEP", "DECL", "DEF", "SEVERITY", "ID", 
-                      "NUMBER", "PATH", "STRING", "WS", "NL", "COMMENT", 
-                      "ANY" ]
+    symbolicNames = [
+        "<INVALID>",
+        "QUERY",
+        "MACRO",
+        "LIST",
+        "ITEMS",
+        "COND",
+        "AND",
+        "OR",
+        "NOT",
+        "LT",
+        "LE",
+        "GT",
+        "GE",
+        "EQ",
+        "NEQ",
+        "IN",
+        "CONTAINS",
+        "ICONTAINS",
+        "STARTSWITH",
+        "PMATCH",
+        "EXISTS",
+        "LBRACK",
+        "RBRACK",
+        "LPAREN",
+        "RPAREN",
+        "LISTSEP",
+        "DECL",
+        "DEF",
+        "SEVERITY",
+        "ID",
+        "NUMBER",
+        "PATH",
+        "STRING",
+        "WS",
+        "NL",
+        "COMMENT",
+        "ANY",
+    ]
 
     RULE_definitions = 0
     RULE_f_query = 1
@@ -96,81 +153,87 @@ class sfqlParser ( Parser ):
     RULE_binary_operator = 11
     RULE_unary_operator = 12
 
-    ruleNames =  [ "definitions", "f_query", "f_macro", "f_list", "expression", 
-                   "or_expression", "and_expression", "term", "items", "var", 
-                   "atom", "binary_operator", "unary_operator" ]
+    ruleNames = [
+        "definitions",
+        "f_query",
+        "f_macro",
+        "f_list",
+        "expression",
+        "or_expression",
+        "and_expression",
+        "term",
+        "items",
+        "var",
+        "atom",
+        "binary_operator",
+        "unary_operator",
+    ]
 
     EOF = Token.EOF
-    QUERY=1
-    MACRO=2
-    LIST=3
-    ITEMS=4
-    COND=5
-    AND=6
-    OR=7
-    NOT=8
-    LT=9
-    LE=10
-    GT=11
-    GE=12
-    EQ=13
-    NEQ=14
-    IN=15
-    CONTAINS=16
-    ICONTAINS=17
-    STARTSWITH=18
-    PMATCH=19
-    EXISTS=20
-    LBRACK=21
-    RBRACK=22
-    LPAREN=23
-    RPAREN=24
-    LISTSEP=25
-    DECL=26
-    DEF=27
-    SEVERITY=28
-    ID=29
-    NUMBER=30
-    PATH=31
-    STRING=32
-    WS=33
-    NL=34
-    COMMENT=35
-    ANY=36
+    QUERY = 1
+    MACRO = 2
+    LIST = 3
+    ITEMS = 4
+    COND = 5
+    AND = 6
+    OR = 7
+    NOT = 8
+    LT = 9
+    LE = 10
+    GT = 11
+    GE = 12
+    EQ = 13
+    NEQ = 14
+    IN = 15
+    CONTAINS = 16
+    ICONTAINS = 17
+    STARTSWITH = 18
+    PMATCH = 19
+    EXISTS = 20
+    LBRACK = 21
+    RBRACK = 22
+    LPAREN = 23
+    RPAREN = 24
+    LISTSEP = 25
+    DECL = 26
+    DEF = 27
+    SEVERITY = 28
+    ID = 29
+    NUMBER = 30
+    PATH = 31
+    STRING = 32
+    WS = 33
+    NL = 34
+    COMMENT = 35
+    ANY = 36
 
-    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
+    def __init__(self, input: TokenStream, output: TextIO = sys.stdout):
         super().__init__(input, output)
         self.checkVersion("4.9.2")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
-
-
-
     class DefinitionsContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def f_macro(self, i:int=None):
+        def f_macro(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.F_macroContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.F_macroContext,i)
+                return self.getTypedRuleContext(sfqlParser.F_macroContext, i)
 
-
-        def f_list(self, i:int=None):
+        def f_list(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.F_listContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.F_listContext,i)
-
+                return self.getTypedRuleContext(sfqlParser.F_listContext, i)
 
         def f_query(self):
-            return self.getTypedRuleContext(sfqlParser.F_queryContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.F_queryContext, 0)
 
         def EOF(self):
             return self.getToken(sfqlParser.EOF, 0)
@@ -178,32 +241,29 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_definitions
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDefinitions" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterDefinitions"):
                 listener.enterDefinitions(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDefinitions" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitDefinitions"):
                 listener.exitDefinitions(self)
-
-
-
 
     def definitions(self):
 
         localctx = sfqlParser.DefinitionsContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_definitions)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 30
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,1,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
+            _alt = self._interp.adaptivePredict(self._input, 1, self._ctx)
+            while _alt != 2 and _alt != ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
                     self.state = 28
                     self._errHandler.sync(self)
-                    la_ = self._interp.adaptivePredict(self._input,0,self._ctx)
+                    la_ = self._interp.adaptivePredict(self._input, 0, self._ctx)
                     if la_ == 1:
                         self.state = 26
                         self.f_macro()
@@ -214,26 +274,23 @@ class sfqlParser ( Parser ):
                         self.f_list()
                         pass
 
-             
                 self.state = 32
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,1,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input, 1, self._ctx)
 
             self.state = 34
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==sfqlParser.DECL:
+            if _la == sfqlParser.DECL:
                 self.state = 33
                 self.f_query()
 
-
             self.state = 37
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 3, self._ctx)
             if la_ == 1:
                 self.state = 36
                 self.match(sfqlParser.EOF)
-
 
         except RecognitionException as re:
             localctx.exception = re
@@ -243,11 +300,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class F_queryContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -261,22 +317,18 @@ class sfqlParser ( Parser ):
             return self.getToken(sfqlParser.DEF, 0)
 
         def expression(self):
-            return self.getTypedRuleContext(sfqlParser.ExpressionContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.ExpressionContext, 0)
 
         def getRuleIndex(self):
             return sfqlParser.RULE_f_query
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterF_query" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterF_query"):
                 listener.enterF_query(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitF_query" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitF_query"):
                 listener.exitF_query(self)
-
-
-
 
     def f_query(self):
 
@@ -300,11 +352,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class F_macroContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -314,7 +365,7 @@ class sfqlParser ( Parser ):
         def MACRO(self):
             return self.getToken(sfqlParser.MACRO, 0)
 
-        def DEF(self, i:int=None):
+        def DEF(self, i: int = None):
             if i is None:
                 return self.getTokens(sfqlParser.DEF)
             else:
@@ -327,22 +378,18 @@ class sfqlParser ( Parser ):
             return self.getToken(sfqlParser.COND, 0)
 
         def expression(self):
-            return self.getTypedRuleContext(sfqlParser.ExpressionContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.ExpressionContext, 0)
 
         def getRuleIndex(self):
             return sfqlParser.RULE_f_macro
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterF_macro" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterF_macro"):
                 listener.enterF_macro(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitF_macro" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitF_macro"):
                 listener.exitF_macro(self)
-
-
-
 
     def f_macro(self):
 
@@ -372,11 +419,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class F_listContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -386,7 +432,7 @@ class sfqlParser ( Parser ):
         def LIST(self):
             return self.getToken(sfqlParser.LIST, 0)
 
-        def DEF(self, i:int=None):
+        def DEF(self, i: int = None):
             if i is None:
                 return self.getTokens(sfqlParser.DEF)
             else:
@@ -399,22 +445,18 @@ class sfqlParser ( Parser ):
             return self.getToken(sfqlParser.ITEMS, 0)
 
         def items(self):
-            return self.getTypedRuleContext(sfqlParser.ItemsContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.ItemsContext, 0)
 
         def getRuleIndex(self):
             return sfqlParser.RULE_f_list
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterF_list" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterF_list"):
                 listener.enterF_list(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitF_list" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitF_list"):
                 listener.exitF_list(self)
-
-
-
 
     def f_list(self):
 
@@ -444,31 +486,26 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class ExpressionContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def or_expression(self):
-            return self.getTypedRuleContext(sfqlParser.Or_expressionContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.Or_expressionContext, 0)
 
         def getRuleIndex(self):
             return sfqlParser.RULE_expression
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterExpression" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterExpression"):
                 listener.enterExpression(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitExpression" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitExpression"):
                 listener.exitExpression(self)
-
-
-
 
     def expression(self):
 
@@ -486,22 +523,20 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Or_expressionContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def and_expression(self, i:int=None):
+        def and_expression(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.And_expressionContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.And_expressionContext,i)
+                return self.getTypedRuleContext(sfqlParser.And_expressionContext, i)
 
-
-        def OR(self, i:int=None):
+        def OR(self, i: int = None):
             if i is None:
                 return self.getTokens(sfqlParser.OR)
             else:
@@ -510,22 +545,19 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_or_expression
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterOr_expression" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterOr_expression"):
                 listener.enterOr_expression(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitOr_expression" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitOr_expression"):
                 listener.exitOr_expression(self)
-
-
-
 
     def or_expression(self):
 
         localctx = sfqlParser.Or_expressionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 10, self.RULE_or_expression)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 62
@@ -533,7 +565,7 @@ class sfqlParser ( Parser ):
             self.state = 67
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==sfqlParser.OR:
+            while _la == sfqlParser.OR:
                 self.state = 63
                 self.match(sfqlParser.OR)
                 self.state = 64
@@ -550,22 +582,20 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class And_expressionContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def term(self, i:int=None):
+        def term(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.TermContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.TermContext,i)
+                return self.getTypedRuleContext(sfqlParser.TermContext, i)
 
-
-        def AND(self, i:int=None):
+        def AND(self, i: int = None):
             if i is None:
                 return self.getTokens(sfqlParser.AND)
             else:
@@ -574,22 +604,19 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_and_expression
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAnd_expression" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterAnd_expression"):
                 listener.enterAnd_expression(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAnd_expression" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitAnd_expression"):
                 listener.exitAnd_expression(self)
-
-
-
 
     def and_expression(self):
 
         localctx = sfqlParser.And_expressionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 12, self.RULE_and_expression)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 70
@@ -597,7 +624,7 @@ class sfqlParser ( Parser ):
             self.state = 75
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while _la==sfqlParser.AND:
+            while _la == sfqlParser.AND:
                 self.state = 71
                 self.match(sfqlParser.AND)
                 self.state = 72
@@ -614,39 +641,33 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class TermContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
         def var(self):
-            return self.getTypedRuleContext(sfqlParser.VarContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.VarContext, 0)
 
         def NOT(self):
             return self.getToken(sfqlParser.NOT, 0)
 
         def term(self):
-            return self.getTypedRuleContext(sfqlParser.TermContext,0)
+            return self.getTypedRuleContext(sfqlParser.TermContext, 0)
 
-
-        def atom(self, i:int=None):
+        def atom(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.AtomContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.AtomContext,i)
-
+                return self.getTypedRuleContext(sfqlParser.AtomContext, i)
 
         def unary_operator(self):
-            return self.getTypedRuleContext(sfqlParser.Unary_operatorContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.Unary_operatorContext, 0)
 
         def binary_operator(self):
-            return self.getTypedRuleContext(sfqlParser.Binary_operatorContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.Binary_operatorContext, 0)
 
         def LPAREN(self):
             return self.getToken(sfqlParser.LPAREN, 0)
@@ -660,46 +681,41 @@ class sfqlParser ( Parser ):
         def PMATCH(self):
             return self.getToken(sfqlParser.PMATCH, 0)
 
-        def items(self, i:int=None):
+        def items(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.ItemsContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.ItemsContext,i)
+                return self.getTypedRuleContext(sfqlParser.ItemsContext, i)
 
-
-        def LISTSEP(self, i:int=None):
+        def LISTSEP(self, i: int = None):
             if i is None:
                 return self.getTokens(sfqlParser.LISTSEP)
             else:
                 return self.getToken(sfqlParser.LISTSEP, i)
 
         def expression(self):
-            return self.getTypedRuleContext(sfqlParser.ExpressionContext,0)
-
+            return self.getTypedRuleContext(sfqlParser.ExpressionContext, 0)
 
         def getRuleIndex(self):
             return sfqlParser.RULE_term
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterTerm" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterTerm"):
                 listener.enterTerm(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitTerm" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitTerm"):
                 listener.exitTerm(self)
-
-
-
 
     def term(self):
 
         localctx = sfqlParser.TermContext(self, self._ctx, self.state)
         self.enterRule(localctx, 14, self.RULE_term)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.state = 111
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,9,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input, 9, self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 78
@@ -738,7 +754,7 @@ class sfqlParser ( Parser ):
                 self.atom()
                 self.state = 89
                 _la = self._input.LA(1)
-                if not(_la==sfqlParser.IN or _la==sfqlParser.PMATCH):
+                if not (_la == sfqlParser.IN or _la == sfqlParser.PMATCH):
                     self._errHandler.recoverInline(self)
                 else:
                     self._errHandler.reportMatch(self)
@@ -748,7 +764,14 @@ class sfqlParser ( Parser ):
                 self.state = 93
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
-                if token in [sfqlParser.LT, sfqlParser.GT, sfqlParser.ID, sfqlParser.NUMBER, sfqlParser.PATH, sfqlParser.STRING]:
+                if token in [
+                    sfqlParser.LT,
+                    sfqlParser.GT,
+                    sfqlParser.ID,
+                    sfqlParser.NUMBER,
+                    sfqlParser.PATH,
+                    sfqlParser.STRING,
+                ]:
                     self.state = 91
                     self.atom()
                     pass
@@ -762,13 +785,20 @@ class sfqlParser ( Parser ):
                 self.state = 102
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la==sfqlParser.LISTSEP:
+                while _la == sfqlParser.LISTSEP:
                     self.state = 95
                     self.match(sfqlParser.LISTSEP)
                     self.state = 98
                     self._errHandler.sync(self)
                     token = self._input.LA(1)
-                    if token in [sfqlParser.LT, sfqlParser.GT, sfqlParser.ID, sfqlParser.NUMBER, sfqlParser.PATH, sfqlParser.STRING]:
+                    if token in [
+                        sfqlParser.LT,
+                        sfqlParser.GT,
+                        sfqlParser.ID,
+                        sfqlParser.NUMBER,
+                        sfqlParser.PATH,
+                        sfqlParser.STRING,
+                    ]:
                         self.state = 96
                         self.atom()
                         pass
@@ -797,7 +827,6 @@ class sfqlParser ( Parser ):
                 self.match(sfqlParser.RPAREN)
                 pass
 
-
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -806,11 +835,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class ItemsContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -820,14 +848,13 @@ class sfqlParser ( Parser ):
         def RBRACK(self):
             return self.getToken(sfqlParser.RBRACK, 0)
 
-        def atom(self, i:int=None):
+        def atom(self, i: int = None):
             if i is None:
                 return self.getTypedRuleContexts(sfqlParser.AtomContext)
             else:
-                return self.getTypedRuleContext(sfqlParser.AtomContext,i)
+                return self.getTypedRuleContext(sfqlParser.AtomContext, i)
 
-
-        def LISTSEP(self, i:int=None):
+        def LISTSEP(self, i: int = None):
             if i is None:
                 return self.getTokens(sfqlParser.LISTSEP)
             else:
@@ -836,22 +863,19 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_items
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterItems" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterItems"):
                 listener.enterItems(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitItems" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitItems"):
                 listener.exitItems(self)
-
-
-
 
     def items(self):
 
         localctx = sfqlParser.ItemsContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_items)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 113
@@ -859,13 +883,23 @@ class sfqlParser ( Parser ):
             self.state = 122
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << sfqlParser.LT) | (1 << sfqlParser.GT) | (1 << sfqlParser.ID) | (1 << sfqlParser.NUMBER) | (1 << sfqlParser.PATH) | (1 << sfqlParser.STRING))) != 0):
+            if ((_la) & ~0x3F) == 0 and (
+                (1 << _la)
+                & (
+                    (1 << sfqlParser.LT)
+                    | (1 << sfqlParser.GT)
+                    | (1 << sfqlParser.ID)
+                    | (1 << sfqlParser.NUMBER)
+                    | (1 << sfqlParser.PATH)
+                    | (1 << sfqlParser.STRING)
+                )
+            ) != 0:
                 self.state = 114
                 self.atom()
                 self.state = 119
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                while _la==sfqlParser.LISTSEP:
+                while _la == sfqlParser.LISTSEP:
                     self.state = 115
                     self.match(sfqlParser.LISTSEP)
                     self.state = 116
@@ -873,8 +907,6 @@ class sfqlParser ( Parser ):
                     self.state = 121
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
-
-
 
             self.state = 124
             self.match(sfqlParser.RBRACK)
@@ -886,11 +918,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class VarContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -900,16 +931,13 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_var
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterVar" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterVar"):
                 listener.enterVar(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitVar" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitVar"):
                 listener.exitVar(self)
-
-
-
 
     def var(self):
 
@@ -927,11 +955,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class AtomContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -956,27 +983,40 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_atom
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAtom" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterAtom"):
                 listener.enterAtom(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAtom" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitAtom"):
                 listener.exitAtom(self)
-
-
-
 
     def atom(self):
 
         localctx = sfqlParser.AtomContext(self, self._ctx, self.state)
         self.enterRule(localctx, 20, self.RULE_atom)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 128
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << sfqlParser.LT) | (1 << sfqlParser.GT) | (1 << sfqlParser.ID) | (1 << sfqlParser.NUMBER) | (1 << sfqlParser.PATH) | (1 << sfqlParser.STRING))) != 0)):
+            if not (
+                (
+                    ((_la) & ~0x3F) == 0
+                    and (
+                        (1 << _la)
+                        & (
+                            (1 << sfqlParser.LT)
+                            | (1 << sfqlParser.GT)
+                            | (1 << sfqlParser.ID)
+                            | (1 << sfqlParser.NUMBER)
+                            | (1 << sfqlParser.PATH)
+                            | (1 << sfqlParser.STRING)
+                        )
+                    )
+                    != 0
+                )
+            ):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -989,11 +1029,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Binary_operatorContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1027,27 +1066,43 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_binary_operator
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBinary_operator" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterBinary_operator"):
                 listener.enterBinary_operator(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBinary_operator" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitBinary_operator"):
                 listener.exitBinary_operator(self)
-
-
-
 
     def binary_operator(self):
 
         localctx = sfqlParser.Binary_operatorContext(self, self._ctx, self.state)
         self.enterRule(localctx, 22, self.RULE_binary_operator)
-        self._la = 0 # Token type
+        self._la = 0  # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 130
             _la = self._input.LA(1)
-            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << sfqlParser.LT) | (1 << sfqlParser.LE) | (1 << sfqlParser.GT) | (1 << sfqlParser.GE) | (1 << sfqlParser.EQ) | (1 << sfqlParser.NEQ) | (1 << sfqlParser.CONTAINS) | (1 << sfqlParser.ICONTAINS) | (1 << sfqlParser.STARTSWITH))) != 0)):
+            if not (
+                (
+                    ((_la) & ~0x3F) == 0
+                    and (
+                        (1 << _la)
+                        & (
+                            (1 << sfqlParser.LT)
+                            | (1 << sfqlParser.LE)
+                            | (1 << sfqlParser.GT)
+                            | (1 << sfqlParser.GE)
+                            | (1 << sfqlParser.EQ)
+                            | (1 << sfqlParser.NEQ)
+                            | (1 << sfqlParser.CONTAINS)
+                            | (1 << sfqlParser.ICONTAINS)
+                            | (1 << sfqlParser.STARTSWITH)
+                        )
+                    )
+                    != 0
+                )
+            ):
                 self._errHandler.recoverInline(self)
             else:
                 self._errHandler.reportMatch(self)
@@ -1060,11 +1115,10 @@ class sfqlParser ( Parser ):
             self.exitRule()
         return localctx
 
-
     class Unary_operatorContext(ParserRuleContext):
         __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+        def __init__(self, parser, parent: ParserRuleContext = None, invokingState: int = -1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
@@ -1074,16 +1128,13 @@ class sfqlParser ( Parser ):
         def getRuleIndex(self):
             return sfqlParser.RULE_unary_operator
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterUnary_operator" ):
+        def enterRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "enterUnary_operator"):
                 listener.enterUnary_operator(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitUnary_operator" ):
+        def exitRule(self, listener: ParseTreeListener):
+            if hasattr(listener, "exitUnary_operator"):
                 listener.exitUnary_operator(self)
-
-
-
 
     def unary_operator(self):
 
@@ -1100,8 +1151,3 @@ class sfqlParser ( Parser ):
         finally:
             self.exitRule()
         return localctx
-
-
-
-
-

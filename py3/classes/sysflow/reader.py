@@ -161,6 +161,8 @@ class FlattenedSFReader(SFReader):
 
      **header** (:class:`sysflow.entity.SFHeader`) The header entity of the file.
 
+     **pod** (:class:`sysflow.entity.Pod`) The pod associated with the flow/evt, or None if no pod.
+
      **cont** (:class:`sysflow.entity.Container`) The container associated with the flow/evt, or None if no container.
 
      **pproc** (:class:`sysflow.entity.Process`) The parent process associated with the flow/evt.
@@ -179,6 +181,7 @@ class FlattenedSFReader(SFReader):
         self.processes = dict()
         self.files = dict()
         self.conts = dict()
+        self.pods = dict()
         self.header = None
         self.retEntities = retEntities
 
@@ -209,13 +212,32 @@ class FlattenedSFReader(SFReader):
             objtype, rec = super().next()
             if objtype == ObjectTypes.HEADER:
                 self.header = rec
+                self.processes = dict()
+                self.files = dict()
+                self.conts = dict()
+                self.pods = dict()
                 if self.retEntities:
-                    return (ObjectTypes.HEADER, rec, None, None, None, None, None, None)
+                    return (ObjectTypes.HEADER, rec, None, None, None, None, None, None, None)
+            elif objtype == ObjectTypes.POD:
+                key = rec.id
+                self.pods[key] = rec
+                if self.retEntities:
+                    return (ObjectTypes.POD, self.header, rec, None, None, None, None, None, None)
             elif objtype == ObjectTypes.CONT:
                 key = rec.id
                 self.conts[key] = rec
                 if self.retEntities:
-                    return (ObjectTypes.CONT, self.header, rec, None, None, None, None, None)
+                    pod = None
+                    if rec.podId is not None:
+                        if not rec.podId in self.pods:
+                            print(
+                                "ERROR: Cannot find pod object for record. This should not happen. Cont Pod Id: {0}".format(
+                                    rec.podId
+                                )
+                            )
+                        else:
+                            pod = self.pods[rec.podId]
+                    return (ObjectTypes.CONT, self.header, pod, rec, None, None, None, None, None)
             elif objtype == ObjectTypes.PROC:
                 key = self.getProcessKey(rec.oid)
                 self.processes[key] = rec
@@ -226,7 +248,17 @@ class FlattenedSFReader(SFReader):
                             print("WARN: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[rec.containerId]
-                    return (ObjectTypes.PROC, self.header, container, None, rec, None, None, None)
+                    pod = None
+                    if container is not None and hasattr(container, 'podId') and container.podId is not None:
+                        if not container.podId in self.pods:
+                            print(
+                                "ERROR: Cannot find pod object for record. This should not happen. Proc Pod Id: {0}".format(
+                                    container.podId
+                                )
+                            )
+                        else:
+                            pod = self.pods[container.podId]
+                    return (ObjectTypes.PROC, self.header, pod, container, None, rec, None, None, None)
             elif objtype == ObjectTypes.FILE:
                 key = rec.oid
                 self.files[key] = rec
@@ -237,11 +269,24 @@ class FlattenedSFReader(SFReader):
                             print("WARN: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[rec.containerId]
-                    return (ObjectTypes.FILE, self.header, container, None, None, (rec, None), None, None)
+                    pod = None
+                    if container is not None and hasattr(container, 'podId') and container.podId is not None:
+                        if not container.podId in self.pods:
+                            print(
+                                "ERROR: Cannot find pod object for record. This should not happen. File Pod Id: {0}".format(
+                                    container.podId
+                                )
+                            )
+                        else:
+                            pod = self.pods[container.podId]
+                    return (ObjectTypes.FILE, self.header, pod, container, None, None, (rec, None), None, None)
+            elif objtype == ObjectTypes.K8S_EVT:
+                return (objtype, self.header, None, None, None, None, None, rec, None)
             else:
                 procOID = self.getProcessKey(rec.procOID)
                 proc = None
                 pproc = None
+                pod = None
                 container = None
                 file1 = None
                 file2 = None
@@ -258,6 +303,15 @@ class FlattenedSFReader(SFReader):
                             print("WARN: Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[proc.containerId]
+                    if container is not None and hasattr(container, 'podId') and container.podId is not None:
+                        if not container.podId in self.pods:
+                            print(
+                                "ERROR: Cannot find pod object for record. This should not happen. Evt Pod Id: {0}".format(
+                                    container.podId
+                                )
+                            )
+                        else:
+                            pod = self.pods[container.podId]
                 if objtype == ObjectTypes.FILE_EVT:
                     fileOID = rec.fileOID
                     evt = rec
@@ -284,4 +338,4 @@ class FlattenedSFReader(SFReader):
                 else:
                     flow = rec
                 files = (file1, file2) if file1 is not None or file2 is not None else None
-                return (objtype, self.header, container, pproc, proc, files, evt, flow)
+                return (objtype, self.header, pod, container, pproc, proc, files, evt, flow)
