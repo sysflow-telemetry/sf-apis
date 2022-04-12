@@ -13,7 +13,7 @@ java -jar avro-tools/avro-tools-1.11.0.jar idl2schemata ./avdl/sysflow.avdl avsc
 #avrogencpp -i ./avsc/FileFlow.avsc  -o ./src/sysflow/file_flow.hh -n sysflow.flow
 #avrogencpp -i ./avsc/NetworkFlow.avsc  -o ./src/sysflow/network_flow.hh -n sysflow.flow
 #avrogencpp -i ./avsc/ActionType.avsc  -o ./src/sysflow/action_type.hh -n sysflow.type
-/home/terylt/workspace/sf-apis-merge/sf-apis/avro/avro-cpp-1.11.0/build/avrogencpp -i ./avsc/SysFlow.avsc  -o ../c++/sysflow/sysflow.hh -n sysflow
+avrogencpp -i ./avsc/SysFlow.avsc  -o ../c++/sysflow/sysflow.hh -n sysflow
 echo "#ifndef __AVSC_SYSFLOW${1}" > ../c++/sysflow/avsc_sysflow${1}.hh
 echo "#define __AVSC_SYSFLOW${1}" >> ../c++/sysflow/avsc_sysflow${1}.hh
 echo "#include <string>" >> ../c++/sysflow/avsc_sysflow${1}.hh
