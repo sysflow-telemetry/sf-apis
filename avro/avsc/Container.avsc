@@ -25,5 +25,8 @@
   }, {
     "name" : "privileged",
     "type" : "boolean"
+  }, {
+    "name" : "podId",
+    "type" : [ "null", "string" ]
   } ]
 }

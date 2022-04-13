@@ -54,20 +54,41 @@ enum class ContainerType: unsigned {
     CT_BPM,
 };
 
+struct _SysFlow_avsc_Union__0__ {
+private:
+    size_t idx_;
+    boost::any value_;
+public:
+    size_t idx() const { return idx_; }
+    bool is_null() const {
+        return (idx_ == 0);
+    }
+    void set_null() {
+        idx_ = 0;
+        value_ = boost::any();
+    }
+    std::string get_string() const;
+    void set_string(const std::string& v);
+    _SysFlow_avsc_Union__0__();
+};
+
 struct Container {
+    typedef _SysFlow_avsc_Union__0__ podId_t;
     std::string id;
     std::string name;
     std::string image;
     std::string imageid;
     ContainerType type;
     bool privileged;
+    podId_t podId;
     Container() :
         id(std::string()),
         name(std::string()),
         image(std::string()),
         imageid(std::string()),
         type(ContainerType()),
-        privileged(bool())
+        privileged(bool()),
+        podId(podId_t())
         { }
 };
 
@@ -86,7 +107,7 @@ struct OID {
         { }
 };
 
-struct _SysFlow_avsc_Union__0__ {
+struct _SysFlow_avsc_Union__1__ {
 private:
     size_t idx_;
     boost::any value_;
@@ -101,10 +122,10 @@ public:
     }
     OID get_OID() const;
     void set_OID(const OID& v);
-    _SysFlow_avsc_Union__0__();
+    _SysFlow_avsc_Union__1__();
 };
 
-struct _SysFlow_avsc_Union__1__ {
+struct _SysFlow_avsc_Union__2__ {
 private:
     size_t idx_;
     boost::any value_;
@@ -119,12 +140,12 @@ public:
     }
     std::string get_string() const;
     void set_string(const std::string& v);
-    _SysFlow_avsc_Union__1__();
+    _SysFlow_avsc_Union__2__();
 };
 
 struct Process {
-    typedef _SysFlow_avsc_Union__0__ poid_t;
-    typedef _SysFlow_avsc_Union__1__ containerId_t;
+    typedef _SysFlow_avsc_Union__1__ poid_t;
+    typedef _SysFlow_avsc_Union__2__ containerId_t;
     SFObjectState state;
     OID oid;
     poid_t poid;
@@ -155,7 +176,7 @@ struct Process {
         { }
 };
 
-struct _SysFlow_avsc_Union__2__ {
+struct _SysFlow_avsc_Union__3__ {
 private:
     size_t idx_;
     boost::any value_;
@@ -170,11 +191,11 @@ public:
     }
     std::string get_string() const;
     void set_string(const std::string& v);
-    _SysFlow_avsc_Union__2__();
+    _SysFlow_avsc_Union__3__();
 };
 
 struct File {
-    typedef _SysFlow_avsc_Union__2__ containerId_t;
+    typedef _SysFlow_avsc_Union__3__ containerId_t;
     SFObjectState state;
     std::array<uint8_t, 20> oid;
     int64_t ts;
@@ -272,7 +293,7 @@ struct FileFlow {
         { }
 };
 
-struct _SysFlow_avsc_Union__3__ {
+struct _SysFlow_avsc_Union__4__ {
 private:
     size_t idx_;
     boost::any value_;
@@ -287,11 +308,11 @@ public:
     }
     std::array<uint8_t, 20> get_FOID() const;
     void set_FOID(const std::array<uint8_t, 20>& v);
-    _SysFlow_avsc_Union__3__();
+    _SysFlow_avsc_Union__4__();
 };
 
 struct FileEvent {
-    typedef _SysFlow_avsc_Union__3__ newFileOID_t;
+    typedef _SysFlow_avsc_Union__4__ newFileOID_t;
     OID procOID;
     int64_t ts;
     int64_t tid;
@@ -354,7 +375,97 @@ struct ProcessFlow {
         { }
 };
 
-struct _SysFlow_avsc_Union__4__ {
+struct Port {
+    int32_t port;
+    int32_t targetPort;
+    int32_t nodePort;
+    std::string proto;
+    Port() :
+        port(int32_t()),
+        targetPort(int32_t()),
+        nodePort(int32_t()),
+        proto(std::string())
+        { }
+};
+
+struct Service {
+    std::string name;
+    std::string id;
+    std::string namespace_;
+    std::vector<Port > portList;
+    std::vector<int64_t > clusterIP;
+    Service() :
+        name(std::string()),
+        id(std::string()),
+        namespace_(std::string()),
+        portList(std::vector<Port >()),
+        clusterIP(std::vector<int64_t >())
+        { }
+};
+
+struct Pod {
+    int64_t ts;
+    std::string id;
+    std::string name;
+    std::string nodeName;
+    std::vector<int64_t > hostIP;
+    std::vector<int64_t > internalIP;
+    std::string namespace_;
+    int64_t restartCount;
+    std::map<std::string, std::string > labels;
+    std::map<std::string, std::string > selectors;
+    std::vector<Service > services;
+    Pod() :
+        ts(int64_t()),
+        id(std::string()),
+        name(std::string()),
+        nodeName(std::string()),
+        hostIP(std::vector<int64_t >()),
+        internalIP(std::vector<int64_t >()),
+        namespace_(std::string()),
+        restartCount(int64_t()),
+        labels(std::map<std::string, std::string >()),
+        selectors(std::map<std::string, std::string >()),
+        services(std::vector<Service >())
+        { }
+};
+
+enum class K8sComponent: unsigned {
+    K8S_NODES,
+    K8S_NAMESPACES,
+    K8S_PODS,
+    K8S_REPLICATIONCONTROLLERS,
+    K8S_SERVICES,
+    K8S_EVENTS,
+    K8S_REPLICASETS,
+    K8S_DAEMONSETS,
+    K8S_DEPLOYMENTS,
+    K8S_UNKNOWN,
+};
+
+enum class K8sAction: unsigned {
+    K8S_COMPONENT_ADDED,
+    K8S_COMPONENT_MODIFIED,
+    K8S_COMPONENT_DELETED,
+    K8S_COMPONENT_ERROR,
+    K8S_COMPONENT_NONEXISTENT,
+    K8S_COMPONENT_UNKNOWN,
+};
+
+struct K8sEvent {
+    K8sComponent kind;
+    K8sAction action;
+    int64_t ts;
+    std::string message;
+    K8sEvent() :
+        kind(K8sComponent()),
+        action(K8sAction()),
+        ts(int64_t()),
+        message(std::string())
+        { }
+};
+
+struct _SysFlow_avsc_Union__5__ {
 private:
     size_t idx_;
     boost::any value_;
@@ -380,11 +491,15 @@ public:
     void set_NetworkEvent(const NetworkEvent& v);
     ProcessFlow get_ProcessFlow() const;
     void set_ProcessFlow(const ProcessFlow& v);
-    _SysFlow_avsc_Union__4__();
+    Pod get_Pod() const;
+    void set_Pod(const Pod& v);
+    K8sEvent get_K8sEvent() const;
+    void set_K8sEvent(const K8sEvent& v);
+    _SysFlow_avsc_Union__5__();
 };
 
 struct SysFlow {
-    typedef _SysFlow_avsc_Union__4__ rec_t;
+    typedef _SysFlow_avsc_Union__5__ rec_t;
     rec_t rec;
     SysFlow() :
         rec(rec_t())
@@ -392,21 +507,7 @@ struct SysFlow {
 };
 
 inline
-OID _SysFlow_avsc_Union__0__::get_OID() const {
-    if (idx_ != 1) {
-        throw avro::Exception("Invalid type for union");
-    }
-    return boost::any_cast<OID >(value_);
-}
-
-inline
-void _SysFlow_avsc_Union__0__::set_OID(const OID& v) {
-    idx_ = 1;
-    value_ = v;
-}
-
-inline
-std::string _SysFlow_avsc_Union__1__::get_string() const {
+std::string _SysFlow_avsc_Union__0__::get_string() const {
     if (idx_ != 1) {
         throw avro::Exception("Invalid type for union");
     }
@@ -414,7 +515,21 @@ std::string _SysFlow_avsc_Union__1__::get_string() const {
 }
 
 inline
-void _SysFlow_avsc_Union__1__::set_string(const std::string& v) {
+void _SysFlow_avsc_Union__0__::set_string(const std::string& v) {
+    idx_ = 1;
+    value_ = v;
+}
+
+inline
+OID _SysFlow_avsc_Union__1__::get_OID() const {
+    if (idx_ != 1) {
+        throw avro::Exception("Invalid type for union");
+    }
+    return boost::any_cast<OID >(value_);
+}
+
+inline
+void _SysFlow_avsc_Union__1__::set_OID(const OID& v) {
     idx_ = 1;
     value_ = v;
 }
@@ -434,7 +549,21 @@ void _SysFlow_avsc_Union__2__::set_string(const std::string& v) {
 }
 
 inline
-std::array<uint8_t, 20> _SysFlow_avsc_Union__3__::get_FOID() const {
+std::string _SysFlow_avsc_Union__3__::get_string() const {
+    if (idx_ != 1) {
+        throw avro::Exception("Invalid type for union");
+    }
+    return boost::any_cast<std::string >(value_);
+}
+
+inline
+void _SysFlow_avsc_Union__3__::set_string(const std::string& v) {
+    idx_ = 1;
+    value_ = v;
+}
+
+inline
+std::array<uint8_t, 20> _SysFlow_avsc_Union__4__::get_FOID() const {
     if (idx_ != 1) {
         throw avro::Exception("Invalid type for union");
     }
@@ -442,13 +571,13 @@ std::array<uint8_t, 20> _SysFlow_avsc_Union__3__::get_FOID() const {
 }
 
 inline
-void _SysFlow_avsc_Union__3__::set_FOID(const std::array<uint8_t, 20>& v) {
+void _SysFlow_avsc_Union__4__::set_FOID(const std::array<uint8_t, 20>& v) {
     idx_ = 1;
     value_ = v;
 }
 
 inline
-SFHeader _SysFlow_avsc_Union__4__::get_SFHeader() const {
+SFHeader _SysFlow_avsc_Union__5__::get_SFHeader() const {
     if (idx_ != 0) {
         throw avro::Exception("Invalid type for union");
     }
@@ -456,13 +585,13 @@ SFHeader _SysFlow_avsc_Union__4__::get_SFHeader() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_SFHeader(const SFHeader& v) {
+void _SysFlow_avsc_Union__5__::set_SFHeader(const SFHeader& v) {
     idx_ = 0;
     value_ = v;
 }
 
 inline
-Container _SysFlow_avsc_Union__4__::get_Container() const {
+Container _SysFlow_avsc_Union__5__::get_Container() const {
     if (idx_ != 1) {
         throw avro::Exception("Invalid type for union");
     }
@@ -470,13 +599,13 @@ Container _SysFlow_avsc_Union__4__::get_Container() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_Container(const Container& v) {
+void _SysFlow_avsc_Union__5__::set_Container(const Container& v) {
     idx_ = 1;
     value_ = v;
 }
 
 inline
-Process _SysFlow_avsc_Union__4__::get_Process() const {
+Process _SysFlow_avsc_Union__5__::get_Process() const {
     if (idx_ != 2) {
         throw avro::Exception("Invalid type for union");
     }
@@ -484,13 +613,13 @@ Process _SysFlow_avsc_Union__4__::get_Process() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_Process(const Process& v) {
+void _SysFlow_avsc_Union__5__::set_Process(const Process& v) {
     idx_ = 2;
     value_ = v;
 }
 
 inline
-File _SysFlow_avsc_Union__4__::get_File() const {
+File _SysFlow_avsc_Union__5__::get_File() const {
     if (idx_ != 3) {
         throw avro::Exception("Invalid type for union");
     }
@@ -498,13 +627,13 @@ File _SysFlow_avsc_Union__4__::get_File() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_File(const File& v) {
+void _SysFlow_avsc_Union__5__::set_File(const File& v) {
     idx_ = 3;
     value_ = v;
 }
 
 inline
-ProcessEvent _SysFlow_avsc_Union__4__::get_ProcessEvent() const {
+ProcessEvent _SysFlow_avsc_Union__5__::get_ProcessEvent() const {
     if (idx_ != 4) {
         throw avro::Exception("Invalid type for union");
     }
@@ -512,13 +641,13 @@ ProcessEvent _SysFlow_avsc_Union__4__::get_ProcessEvent() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_ProcessEvent(const ProcessEvent& v) {
+void _SysFlow_avsc_Union__5__::set_ProcessEvent(const ProcessEvent& v) {
     idx_ = 4;
     value_ = v;
 }
 
 inline
-NetworkFlow _SysFlow_avsc_Union__4__::get_NetworkFlow() const {
+NetworkFlow _SysFlow_avsc_Union__5__::get_NetworkFlow() const {
     if (idx_ != 5) {
         throw avro::Exception("Invalid type for union");
     }
@@ -526,13 +655,13 @@ NetworkFlow _SysFlow_avsc_Union__4__::get_NetworkFlow() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_NetworkFlow(const NetworkFlow& v) {
+void _SysFlow_avsc_Union__5__::set_NetworkFlow(const NetworkFlow& v) {
     idx_ = 5;
     value_ = v;
 }
 
 inline
-FileFlow _SysFlow_avsc_Union__4__::get_FileFlow() const {
+FileFlow _SysFlow_avsc_Union__5__::get_FileFlow() const {
     if (idx_ != 6) {
         throw avro::Exception("Invalid type for union");
     }
@@ -540,13 +669,13 @@ FileFlow _SysFlow_avsc_Union__4__::get_FileFlow() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_FileFlow(const FileFlow& v) {
+void _SysFlow_avsc_Union__5__::set_FileFlow(const FileFlow& v) {
     idx_ = 6;
     value_ = v;
 }
 
 inline
-FileEvent _SysFlow_avsc_Union__4__::get_FileEvent() const {
+FileEvent _SysFlow_avsc_Union__5__::get_FileEvent() const {
     if (idx_ != 7) {
         throw avro::Exception("Invalid type for union");
     }
@@ -554,13 +683,13 @@ FileEvent _SysFlow_avsc_Union__4__::get_FileEvent() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_FileEvent(const FileEvent& v) {
+void _SysFlow_avsc_Union__5__::set_FileEvent(const FileEvent& v) {
     idx_ = 7;
     value_ = v;
 }
 
 inline
-NetworkEvent _SysFlow_avsc_Union__4__::get_NetworkEvent() const {
+NetworkEvent _SysFlow_avsc_Union__5__::get_NetworkEvent() const {
     if (idx_ != 8) {
         throw avro::Exception("Invalid type for union");
     }
@@ -568,13 +697,13 @@ NetworkEvent _SysFlow_avsc_Union__4__::get_NetworkEvent() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_NetworkEvent(const NetworkEvent& v) {
+void _SysFlow_avsc_Union__5__::set_NetworkEvent(const NetworkEvent& v) {
     idx_ = 8;
     value_ = v;
 }
 
 inline
-ProcessFlow _SysFlow_avsc_Union__4__::get_ProcessFlow() const {
+ProcessFlow _SysFlow_avsc_Union__5__::get_ProcessFlow() const {
     if (idx_ != 9) {
         throw avro::Exception("Invalid type for union");
     }
@@ -582,8 +711,36 @@ ProcessFlow _SysFlow_avsc_Union__4__::get_ProcessFlow() const {
 }
 
 inline
-void _SysFlow_avsc_Union__4__::set_ProcessFlow(const ProcessFlow& v) {
+void _SysFlow_avsc_Union__5__::set_ProcessFlow(const ProcessFlow& v) {
     idx_ = 9;
+    value_ = v;
+}
+
+inline
+Pod _SysFlow_avsc_Union__5__::get_Pod() const {
+    if (idx_ != 10) {
+        throw avro::Exception("Invalid type for union");
+    }
+    return boost::any_cast<Pod >(value_);
+}
+
+inline
+void _SysFlow_avsc_Union__5__::set_Pod(const Pod& v) {
+    idx_ = 10;
+    value_ = v;
+}
+
+inline
+K8sEvent _SysFlow_avsc_Union__5__::get_K8sEvent() const {
+    if (idx_ != 11) {
+        throw avro::Exception("Invalid type for union");
+    }
+    return boost::any_cast<K8sEvent >(value_);
+}
+
+inline
+void _SysFlow_avsc_Union__5__::set_K8sEvent(const K8sEvent& v) {
+    idx_ = 11;
     value_ = v;
 }
 
@@ -591,7 +748,8 @@ inline _SysFlow_avsc_Union__0__::_SysFlow_avsc_Union__0__() : idx_(0) { }
 inline _SysFlow_avsc_Union__1__::_SysFlow_avsc_Union__1__() : idx_(0) { }
 inline _SysFlow_avsc_Union__2__::_SysFlow_avsc_Union__2__() : idx_(0) { }
 inline _SysFlow_avsc_Union__3__::_SysFlow_avsc_Union__3__() : idx_(0) { }
-inline _SysFlow_avsc_Union__4__::_SysFlow_avsc_Union__4__() : idx_(0), value_(SFHeader()) { }
+inline _SysFlow_avsc_Union__4__::_SysFlow_avsc_Union__4__() : idx_(0) { }
+inline _SysFlow_avsc_Union__5__::_SysFlow_avsc_Union__5__() : idx_(0), value_(SFHeader()) { }
 }
 namespace avro {
 template<> struct codec_traits<sysflow::SFHeader> {
@@ -635,23 +793,54 @@ template<> struct codec_traits<sysflow::SFHeader> {
 
 template<> struct codec_traits<sysflow::ContainerType> {
     static void encode(Encoder& e, sysflow::ContainerType v) {
-		if (v > sysflow::ContainerType::CT_BPM)
-		{
-			std::ostringstream error;
-			error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::ContainerType and cannot be encoded";
-			throw avro::Exception(error.str());
-		}
+        if (v > sysflow::ContainerType::CT_BPM)
+        {
+            std::ostringstream error;
+            error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::ContainerType and cannot be encoded";
+            throw avro::Exception(error.str());
+        }
         e.encodeEnum(static_cast<size_t>(v));
     }
     static void decode(Decoder& d, sysflow::ContainerType& v) {
-		size_t index = d.decodeEnum();
-		if (index > static_cast<size_t>(sysflow::ContainerType::CT_BPM))
-		{
-			std::ostringstream error;
-			error << "enum value " << index << " is out of bound for sysflow::ContainerType and cannot be decoded";
-			throw avro::Exception(error.str());
-		}
+        size_t index = d.decodeEnum();
+        if (index > static_cast<size_t>(sysflow::ContainerType::CT_BPM))
+        {
+            std::ostringstream error;
+            error << "enum value " << index << " is out of bound for sysflow::ContainerType and cannot be decoded";
+            throw avro::Exception(error.str());
+        }
         v = static_cast<sysflow::ContainerType>(index);
+    }
+};
+
+template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__0__> {
+    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__0__ v) {
+        e.encodeUnionIndex(v.idx());
+        switch (v.idx()) {
+        case 0:
+            e.encodeNull();
+            break;
+        case 1:
+            avro::encode(e, v.get_string());
+            break;
+        }
+    }
+    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__0__& v) {
+        size_t n = d.decodeUnionIndex();
+        if (n >= 2) { throw avro::Exception("Union index too big"); }
+        switch (n) {
+        case 0:
+            d.decodeNull();
+            v.set_null();
+            break;
+        case 1:
+            {
+                std::string vv;
+                avro::decode(d, vv);
+                v.set_string(vv);
+            }
+            break;
+        }
     }
 };
 
@@ -663,6 +852,7 @@ template<> struct codec_traits<sysflow::Container> {
         avro::encode(e, v.imageid);
         avro::encode(e, v.type);
         avro::encode(e, v.privileged);
+        avro::encode(e, v.podId);
     }
     static void decode(Decoder& d, sysflow::Container& v) {
         if (avro::ResolvingDecoder *rd =
@@ -689,6 +879,9 @@ template<> struct codec_traits<sysflow::Container> {
                 case 5:
                     avro::decode(d, v.privileged);
                     break;
+                case 6:
+                    avro::decode(d, v.podId);
+                    break;
                 default:
                     break;
                 }
@@ -700,28 +893,29 @@ template<> struct codec_traits<sysflow::Container> {
             avro::decode(d, v.imageid);
             avro::decode(d, v.type);
             avro::decode(d, v.privileged);
+            avro::decode(d, v.podId);
         }
     }
 };
 
 template<> struct codec_traits<sysflow::SFObjectState> {
     static void encode(Encoder& e, sysflow::SFObjectState v) {
-		if (v > sysflow::SFObjectState::REUP)
-		{
-			std::ostringstream error;
-			error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::SFObjectState and cannot be encoded";
-			throw avro::Exception(error.str());
-		}
+        if (v > sysflow::SFObjectState::REUP)
+        {
+            std::ostringstream error;
+            error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::SFObjectState and cannot be encoded";
+            throw avro::Exception(error.str());
+        }
         e.encodeEnum(static_cast<size_t>(v));
     }
     static void decode(Decoder& d, sysflow::SFObjectState& v) {
-		size_t index = d.decodeEnum();
-		if (index > static_cast<size_t>(sysflow::SFObjectState::REUP))
-		{
-			std::ostringstream error;
-			error << "enum value " << index << " is out of bound for sysflow::SFObjectState and cannot be decoded";
-			throw avro::Exception(error.str());
-		}
+        size_t index = d.decodeEnum();
+        if (index > static_cast<size_t>(sysflow::SFObjectState::REUP))
+        {
+            std::ostringstream error;
+            error << "enum value " << index << " is out of bound for sysflow::SFObjectState and cannot be decoded";
+            throw avro::Exception(error.str());
+        }
         v = static_cast<sysflow::SFObjectState>(index);
     }
 };
@@ -755,8 +949,8 @@ template<> struct codec_traits<sysflow::OID> {
     }
 };
 
-template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__0__> {
-    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__0__ v) {
+template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__1__> {
+    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__1__ v) {
         e.encodeUnionIndex(v.idx());
         switch (v.idx()) {
         case 0:
@@ -767,7 +961,7 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__0__> {
             break;
         }
     }
-    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__0__& v) {
+    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__1__& v) {
         size_t n = d.decodeUnionIndex();
         if (n >= 2) { throw avro::Exception("Union index too big"); }
         switch (n) {
@@ -786,8 +980,8 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__0__> {
     }
 };
 
-template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__1__> {
-    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__1__ v) {
+template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__2__> {
+    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__2__ v) {
         e.encodeUnionIndex(v.idx());
         switch (v.idx()) {
         case 0:
@@ -798,7 +992,7 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__1__> {
             break;
         }
     }
-    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__1__& v) {
+    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__2__& v) {
         size_t n = d.decodeUnionIndex();
         if (n >= 2) { throw avro::Exception("Union index too big"); }
         switch (n) {
@@ -901,8 +1095,8 @@ template<> struct codec_traits<sysflow::Process> {
     }
 };
 
-template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__2__> {
-    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__2__ v) {
+template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__3__> {
+    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__3__ v) {
         e.encodeUnionIndex(v.idx());
         switch (v.idx()) {
         case 0:
@@ -913,7 +1107,7 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__2__> {
             break;
         }
     }
-    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__2__& v) {
+    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__3__& v) {
         size_t n = d.decodeUnionIndex();
         if (n >= 2) { throw avro::Exception("Union index too big"); }
         switch (n) {
@@ -1203,8 +1397,8 @@ template<> struct codec_traits<sysflow::FileFlow> {
     }
 };
 
-template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__3__> {
-    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__3__ v) {
+template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__4__> {
+    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__4__ v) {
         e.encodeUnionIndex(v.idx());
         switch (v.idx()) {
         case 0:
@@ -1215,7 +1409,7 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__3__> {
             break;
         }
     }
-    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__3__& v) {
+    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__4__& v) {
         size_t n = d.decodeUnionIndex();
         if (n >= 2) { throw avro::Exception("Union index too big"); }
         switch (n) {
@@ -1411,8 +1605,248 @@ template<> struct codec_traits<sysflow::ProcessFlow> {
     }
 };
 
-template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__4__> {
-    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__4__ v) {
+template<> struct codec_traits<sysflow::Port> {
+    static void encode(Encoder& e, const sysflow::Port& v) {
+        avro::encode(e, v.port);
+        avro::encode(e, v.targetPort);
+        avro::encode(e, v.nodePort);
+        avro::encode(e, v.proto);
+    }
+    static void decode(Decoder& d, sysflow::Port& v) {
+        if (avro::ResolvingDecoder *rd =
+            dynamic_cast<avro::ResolvingDecoder *>(&d)) {
+            const std::vector<size_t> fo = rd->fieldOrder();
+            for (std::vector<size_t>::const_iterator it = fo.begin();
+                it != fo.end(); ++it) {
+                switch (*it) {
+                case 0:
+                    avro::decode(d, v.port);
+                    break;
+                case 1:
+                    avro::decode(d, v.targetPort);
+                    break;
+                case 2:
+                    avro::decode(d, v.nodePort);
+                    break;
+                case 3:
+                    avro::decode(d, v.proto);
+                    break;
+                default:
+                    break;
+                }
+            }
+        } else {
+            avro::decode(d, v.port);
+            avro::decode(d, v.targetPort);
+            avro::decode(d, v.nodePort);
+            avro::decode(d, v.proto);
+        }
+    }
+};
+
+template<> struct codec_traits<sysflow::Service> {
+    static void encode(Encoder& e, const sysflow::Service& v) {
+        avro::encode(e, v.name);
+        avro::encode(e, v.id);
+        avro::encode(e, v.namespace_);
+        avro::encode(e, v.portList);
+        avro::encode(e, v.clusterIP);
+    }
+    static void decode(Decoder& d, sysflow::Service& v) {
+        if (avro::ResolvingDecoder *rd =
+            dynamic_cast<avro::ResolvingDecoder *>(&d)) {
+            const std::vector<size_t> fo = rd->fieldOrder();
+            for (std::vector<size_t>::const_iterator it = fo.begin();
+                it != fo.end(); ++it) {
+                switch (*it) {
+                case 0:
+                    avro::decode(d, v.name);
+                    break;
+                case 1:
+                    avro::decode(d, v.id);
+                    break;
+                case 2:
+                    avro::decode(d, v.namespace_);
+                    break;
+                case 3:
+                    avro::decode(d, v.portList);
+                    break;
+                case 4:
+                    avro::decode(d, v.clusterIP);
+                    break;
+                default:
+                    break;
+                }
+            }
+        } else {
+            avro::decode(d, v.name);
+            avro::decode(d, v.id);
+            avro::decode(d, v.namespace_);
+            avro::decode(d, v.portList);
+            avro::decode(d, v.clusterIP);
+        }
+    }
+};
+
+template<> struct codec_traits<sysflow::Pod> {
+    static void encode(Encoder& e, const sysflow::Pod& v) {
+        avro::encode(e, v.ts);
+        avro::encode(e, v.id);
+        avro::encode(e, v.name);
+        avro::encode(e, v.nodeName);
+        avro::encode(e, v.hostIP);
+        avro::encode(e, v.internalIP);
+        avro::encode(e, v.namespace_);
+        avro::encode(e, v.restartCount);
+        avro::encode(e, v.labels);
+        avro::encode(e, v.selectors);
+        avro::encode(e, v.services);
+    }
+    static void decode(Decoder& d, sysflow::Pod& v) {
+        if (avro::ResolvingDecoder *rd =
+            dynamic_cast<avro::ResolvingDecoder *>(&d)) {
+            const std::vector<size_t> fo = rd->fieldOrder();
+            for (std::vector<size_t>::const_iterator it = fo.begin();
+                it != fo.end(); ++it) {
+                switch (*it) {
+                case 0:
+                    avro::decode(d, v.ts);
+                    break;
+                case 1:
+                    avro::decode(d, v.id);
+                    break;
+                case 2:
+                    avro::decode(d, v.name);
+                    break;
+                case 3:
+                    avro::decode(d, v.nodeName);
+                    break;
+                case 4:
+                    avro::decode(d, v.hostIP);
+                    break;
+                case 5:
+                    avro::decode(d, v.internalIP);
+                    break;
+                case 6:
+                    avro::decode(d, v.namespace_);
+                    break;
+                case 7:
+                    avro::decode(d, v.restartCount);
+                    break;
+                case 8:
+                    avro::decode(d, v.labels);
+                    break;
+                case 9:
+                    avro::decode(d, v.selectors);
+                    break;
+                case 10:
+                    avro::decode(d, v.services);
+                    break;
+                default:
+                    break;
+                }
+            }
+        } else {
+            avro::decode(d, v.ts);
+            avro::decode(d, v.id);
+            avro::decode(d, v.name);
+            avro::decode(d, v.nodeName);
+            avro::decode(d, v.hostIP);
+            avro::decode(d, v.internalIP);
+            avro::decode(d, v.namespace_);
+            avro::decode(d, v.restartCount);
+            avro::decode(d, v.labels);
+            avro::decode(d, v.selectors);
+            avro::decode(d, v.services);
+        }
+    }
+};
+
+template<> struct codec_traits<sysflow::K8sComponent> {
+    static void encode(Encoder& e, sysflow::K8sComponent v) {
+        if (v > sysflow::K8sComponent::K8S_UNKNOWN)
+        {
+            std::ostringstream error;
+            error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::K8sComponent and cannot be encoded";
+            throw avro::Exception(error.str());
+        }
+        e.encodeEnum(static_cast<size_t>(v));
+    }
+    static void decode(Decoder& d, sysflow::K8sComponent& v) {
+        size_t index = d.decodeEnum();
+        if (index > static_cast<size_t>(sysflow::K8sComponent::K8S_UNKNOWN))
+        {
+            std::ostringstream error;
+            error << "enum value " << index << " is out of bound for sysflow::K8sComponent and cannot be decoded";
+            throw avro::Exception(error.str());
+        }
+        v = static_cast<sysflow::K8sComponent>(index);
+    }
+};
+
+template<> struct codec_traits<sysflow::K8sAction> {
+    static void encode(Encoder& e, sysflow::K8sAction v) {
+        if (v > sysflow::K8sAction::K8S_COMPONENT_UNKNOWN)
+        {
+            std::ostringstream error;
+            error << "enum value " << static_cast<unsigned>(v) << " is out of bound for sysflow::K8sAction and cannot be encoded";
+            throw avro::Exception(error.str());
+        }
+        e.encodeEnum(static_cast<size_t>(v));
+    }
+    static void decode(Decoder& d, sysflow::K8sAction& v) {
+        size_t index = d.decodeEnum();
+        if (index > static_cast<size_t>(sysflow::K8sAction::K8S_COMPONENT_UNKNOWN))
+        {
+            std::ostringstream error;
+            error << "enum value " << index << " is out of bound for sysflow::K8sAction and cannot be decoded";
+            throw avro::Exception(error.str());
+        }
+        v = static_cast<sysflow::K8sAction>(index);
+    }
+};
+
+template<> struct codec_traits<sysflow::K8sEvent> {
+    static void encode(Encoder& e, const sysflow::K8sEvent& v) {
+        avro::encode(e, v.kind);
+        avro::encode(e, v.action);
+        avro::encode(e, v.ts);
+        avro::encode(e, v.message);
+    }
+    static void decode(Decoder& d, sysflow::K8sEvent& v) {
+        if (avro::ResolvingDecoder *rd =
+            dynamic_cast<avro::ResolvingDecoder *>(&d)) {
+            const std::vector<size_t> fo = rd->fieldOrder();
+            for (std::vector<size_t>::const_iterator it = fo.begin();
+                it != fo.end(); ++it) {
+                switch (*it) {
+                case 0:
+                    avro::decode(d, v.kind);
+                    break;
+                case 1:
+                    avro::decode(d, v.action);
+                    break;
+                case 2:
+                    avro::decode(d, v.ts);
+                    break;
+                case 3:
+                    avro::decode(d, v.message);
+                    break;
+                default:
+                    break;
+                }
+            }
+        } else {
+            avro::decode(d, v.kind);
+            avro::decode(d, v.action);
+            avro::decode(d, v.ts);
+            avro::decode(d, v.message);
+        }
+    }
+};
+
+template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__5__> {
+    static void encode(Encoder& e, sysflow::_SysFlow_avsc_Union__5__ v) {
         e.encodeUnionIndex(v.idx());
         switch (v.idx()) {
         case 0:
@@ -1445,11 +1879,17 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__4__> {
         case 9:
             avro::encode(e, v.get_ProcessFlow());
             break;
+        case 10:
+            avro::encode(e, v.get_Pod());
+            break;
+        case 11:
+            avro::encode(e, v.get_K8sEvent());
+            break;
         }
     }
-    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__4__& v) {
+    static void decode(Decoder& d, sysflow::_SysFlow_avsc_Union__5__& v) {
         size_t n = d.decodeUnionIndex();
-        if (n >= 10) { throw avro::Exception("Union index too big"); }
+        if (n >= 12) { throw avro::Exception("Union index too big"); }
         switch (n) {
         case 0:
             {
@@ -1519,6 +1959,20 @@ template<> struct codec_traits<sysflow::_SysFlow_avsc_Union__4__> {
                 sysflow::ProcessFlow vv;
                 avro::decode(d, vv);
                 v.set_ProcessFlow(vv);
+            }
+            break;
+        case 10:
+            {
+                sysflow::Pod vv;
+                avro::decode(d, vv);
+                v.set_Pod(vv);
+            }
+            break;
+        case 11:
+            {
+                sysflow::K8sEvent vv;
+                avro::decode(d, vv);
+                v.set_K8sEvent(vv);
             }
             break;
         }

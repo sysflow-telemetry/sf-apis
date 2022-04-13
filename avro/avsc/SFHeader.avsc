@@ -5,7 +5,7 @@
   "fields" : [ {
     "name" : "version",
     "type" : "long",
-    "default" : 3
+    "default" : 4
   }, {
     "name" : "exporter",
     "type" : "string"

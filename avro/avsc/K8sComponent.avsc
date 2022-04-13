@@ -1,0 +1,6 @@
+{
+  "type" : "enum",
+  "name" : "K8sComponent",
+  "namespace" : "sysflow.type",
+  "symbols" : [ "K8S_NODES", "K8S_NAMESPACES", "K8S_PODS", "K8S_REPLICATIONCONTROLLERS", "K8S_SERVICES", "K8S_EVENTS", "K8S_REPLICASETS", "K8S_DAEMONSETS", "K8S_DEPLOYMENTS", "K8S_UNKNOWN" ]
+}
