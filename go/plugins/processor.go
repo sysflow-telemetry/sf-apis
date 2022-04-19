@@ -28,7 +28,7 @@ import (
 type SFProcessor interface {
 	Register(pc SFPluginCache)
 	Init(conf map[string]interface{}) error
-	Process(ch interface{}, wg *sync.WaitGroup)
+	Process(ch []interface{}, wg *sync.WaitGroup)
 	GetName() string
 	SetOutChan(ch []interface{})
 	Cleanup()
