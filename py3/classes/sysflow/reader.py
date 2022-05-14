@@ -228,7 +228,7 @@ class FlattenedSFReader(SFReader):
                 self.conts[key] = rec
                 if self.retEntities:
                     pod = None
-                    if rec.podId is not None:
+                    if hasattr(rec, 'podId') and rec.podId is not None:
                         if not rec.podId in self.pods:
                             print(
                                 "ERROR: Cannot find pod object for record. This should not happen. Cont Pod Id: {0}".format(

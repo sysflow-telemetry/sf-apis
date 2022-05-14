@@ -58,6 +58,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
     :type interpreter: sysflow.SfqlInterpreter
     """
 
+    _rules = {}
     _macros = {}
     _lists = {}
     _criteria = None
@@ -139,12 +140,33 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             return reader
         return filter(lambda t: self._criteria(t), reader)
 
+    def enrich(self, t: T):
+        """Process flattened sysflow record t based on policies."""
+        tags = ()  # ([], set(), 0))
+        for n, r in self._rules.items():
+            if r.criteria(t):
+                t0 = tags[0] if tags else []
+                t1 = tags[1] if tags else set()
+                t2 = tags[2] if tags else 0
+                tags = (t0 + [r.name], t1.union(set(r.tags)), max(t2, r.getPriorityValue()))
+        return tags
+
     def getAttributes(self):
         """Return list of attributes supported by sfql."""
         return dict(self.mapper._mapper)
 
     def exitF_query(self, ctx: sfqlParser.F_queryContext):
         self._criteria = self.visitExpression(ctx.expression())
+
+    def exitF_rule(self, ctx: sfqlParser.F_ruleContext):
+        self._rules[ctx.text(0).getText()] = Rule(
+            ctx.text(0).getText(),
+            ctx.text(1).getText(),
+            self.visitExpression(ctx.expression()),
+            self._getItems(ctx.items(0).getText()),
+            ctx.SEVERITY().getText(),
+            self._getItems(ctx.items(1).getText()),
+        )
 
     def exitF_macro(self, ctx: sfqlParser.F_macroContext):
         self._macros[ctx.ID().getText()] = ctx.expression()
@@ -229,6 +251,9 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
         return lambda t: False
 
+    def _getItems(self, l: str) -> list:
+        return l[1:-1].split(',')
+
     def _getList(self, ctx: sfqlParser.TermContext) -> list:
         lst = []
         for item in ctx.atom()[1:]:
@@ -272,15 +297,22 @@ class SfqlMapper(Generic[T]):
         return SfqlMapper._rgetattr(hd, attr)
 
     @staticmethod
+    def _getPodAttr(t: T, attr: str):
+        pod = t[2]
+        if not pod:
+            return None
+        return SfqlMapper._rgetattr(pod, attr)
+
+    @staticmethod
     def _getContAttr(t: T, attr: str):
-        cont = t[2]
+        cont = t[3]
         if not cont:
             return None
         return SfqlMapper._rgetattr(cont, attr)
 
     @staticmethod
     def _getEvtFlowAttr(t: T, attr: str):
-        evflow = t[6] or t[7]
+        evflow = t[7] or t[8]
         if not evflow:
             return None
         if attr == 'opflags':
@@ -290,7 +322,7 @@ class SfqlMapper(Generic[T]):
 
     @staticmethod
     def _getProcAttr(t: T, attr: str):
-        proc = t[4]
+        proc = t[5]
         if not proc:
             return None
         elif attr == 'cmdline':
@@ -301,6 +333,8 @@ class SfqlMapper(Generic[T]):
         elif attr == 'aname':
             aname = SfqlMapper._getProcAncestry(proc.oid, 'exe', [proc.exe])
             return ','.join(aname)
+        elif attr == 'name':
+            return SfqlMapper._getPathBasename(SfqlMapper._rgetattr(proc, 'exe'))
         else:
             return SfqlMapper._rgetattr(proc, attr)
 
@@ -312,23 +346,25 @@ class SfqlMapper(Generic[T]):
 
     @staticmethod
     def _getPProcAttr(t: T, attr: str):
-        proc = t[3]
+        proc = t[4]
         if not proc:
             return None
         elif attr == 'cmdline':
             return proc.exe + ' ' + proc.exeArgs
+        elif attr == 'name':
+            return SfqlMapper._getPathBasename(SfqlMapper._rgetattr(proc, 'exe'))
         else:
             return SfqlMapper._rgetattr(proc, attr)
 
     @staticmethod
     def _getFileAttr(t: T, attr: str):
-        files = t[5]
+        files = t[6]
         if not files:
             return None
         if attr == 'name':
-            return SfqlMapper._getPathBasename(SfqlMapper._rgetattr(files[0], attr))
+            return SfqlMapper._getPathBasename(SfqlMapper._rgetattr(files[0], 'path'))
         elif attr == 'dir':
-            return os.path.dirname(SfqlMapper._rgetattr(files[0], attr))
+            return os.path.dirname(SfqlMapper._rgetattr(files[0], 'path'))
         elif attr == 'restype':
             return chr(SfqlMapper._rgetattr(files[0], attr))
         elif attr == 'newpath':
@@ -338,23 +374,23 @@ class SfqlMapper(Generic[T]):
 
     @staticmethod
     def _getFileFlowAttr(t: T, attr: str):
-        evflow = t[6] or t[7]
+        evflow = t[7] or t[8]
         if t[0] != ObjectTypes.FILE_FLOW or not evflow:
             return None
         if attr == 'openFlags':
             return ','.join(utils.getOpenFlags(SfqlMapper._rgetattr(evflow, attr)))
         elif attr == 'openwrite':
             ops = utils.getOpenFlags(SfqlMapper._rgetattr(evflow, 'openFlags'))
-            return str(any(o in ops for o in ['WRONLY', 'RDWR']))
+            return str(any(o in ops for o in ['WRONLY', 'RDWR'])).lower()
         elif attr == 'openread':
             ops = utils.getOpenFlags(SfqlMapper._rgetattr(evflow, 'openFlags'))
-            return str(any(o in ops for o in ['RDONLY', 'RDWR']))
+            return str(any(o in ops for o in ['RDONLY', 'RDWR'])).lower()
         else:
             return SfqlMapper._rgetattr(evflow, attr)
 
     @staticmethod
     def _getNetFlowAttr(t: T, attr: str):
-        evflow = t[6] or t[7]
+        evflow = t[7] or t[8]
         if t[0] != ObjectTypes.NET_FLOW or not evflow:
             return None
         if attr == 'ip':
@@ -371,7 +407,7 @@ class SfqlMapper(Generic[T]):
         'ts': partial(_getEvtFlowAttr.__func__, attr='ts'),
         'endts': partial(_getEvtFlowAttr.__func__, attr='endTs'),
         'proc.pid': partial(_getProcAttr.__func__, attr='oid.hpid'),
-        'proc.name': partial(_getProcAttr.__func__, attr='exe'),
+        'proc.name': partial(_getProcAttr.__func__, attr='name'),
         'proc.exe': partial(_getProcAttr.__func__, attr='exe'),
         'proc.args': partial(_getProcAttr.__func__, attr='exeArgs'),
         'proc.uid': partial(_getProcAttr.__func__, attr='uid'),
@@ -386,7 +422,7 @@ class SfqlMapper(Generic[T]):
         'proc.aname': partial(_getProcAttr.__func__, attr='aname'),
         'proc.apid': partial(_getProcAttr.__func__, attr='apid'),
         'pproc.pid': partial(_getPProcAttr.__func__, attr='oid.hpid'),
-        'pproc.name': partial(_getPProcAttr.__func__, attr='exe'),
+        'pproc.name': partial(_getPProcAttr.__func__, attr='name'),
         'pproc.exe': partial(_getPProcAttr.__func__, attr='exe'),
         'pproc.args': partial(_getPProcAttr.__func__, attr='exeArgs'),
         'pproc.uid': partial(_getPProcAttr.__func__, attr='uid'),
@@ -429,13 +465,13 @@ class SfqlMapper(Generic[T]):
         'node.id': partial(_getHeaderAttr.__func__, attr='exporter'),
         'node.ip': partial(_getHeaderAttr.__func__, attr='ip'),
         'schema': partial(_getHeaderAttr.__func__, attr='version'),
-        'pod.id': partial(_getHeaderAttr.__func__, attr='id'),
-        'pod.name': partial(_getHeaderAttr.__func__, attr='name'),
-        'pod.nname': partial(_getHeaderAttr.__func__, attr='nodeName'),
-        'pod.hostip': partial(_getHeaderAttr.__func__, attr='hostIP'),
-        'pod.internalip': partial(_getHeaderAttr.__func__, attr='internalIP'),
-        'pod.ns': partial(_getHeaderAttr.__func__, attr='namespace'),
-        'pod.rstrtcnt': partial(_getHeaderAttr.__func__, attr='restartCount'),
+        'pod.id': partial(_getPodAttr.__func__, attr='id'),
+        'pod.name': partial(_getPodAttr.__func__, attr='name'),
+        'pod.nname': partial(_getPodAttr.__func__, attr='nodeName'),
+        'pod.hostip': partial(_getPodAttr.__func__, attr='hostIP'),
+        'pod.internalip': partial(_getPodAttr.__func__, attr='internalIP'),
+        'pod.ns': partial(_getPodAttr.__func__, attr='namespace'),
+        'pod.rstrtcnt': partial(_getPodAttr.__func__, attr='restartCount'),
         'filename': partial(_getHeaderAttr.__func__, attr='filename'),
     }
 
@@ -446,9 +482,23 @@ class SfqlMapper(Generic[T]):
         return attr in self._mapper
 
     def getAttr(self, t: T, attr: str):
-        if self.hasAttr(attr):
-            if t[4]:
-                self._ptree[frozendict(vars(t[4].oid))] = t[3]
-            return self._mapper[attr](t)
+        _attr = attr[3:] if attr.startswith('sf.') else attr
+        if self.hasAttr(_attr):
+            if t[5]:
+                self._ptree[frozendict(vars(t[5].oid))] = t[4]
+            return self._mapper[_attr](t)
         else:
             return attr.strip('\"')
+
+
+class Rule:
+    def __init__(self, name, desc, criteria, actions, priority, tags):
+        self.name = name
+        self.desc = desc
+        self.criteria = criteria
+        self.actions = actions
+        self.priority = priority
+        self.tags = tags
+
+    def getPriorityValue(self):
+        return {'none': 0, 'low': 1, 'medium': 2, 'high': 3}[self.priority]
