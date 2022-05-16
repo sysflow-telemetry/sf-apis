@@ -16,7 +16,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FROM jupyter/scipy-notebook
+ARG JUPYTER_VERSION=lab-3.4.0
+FROM jupyter/scipy-notebook:${JUPYTER_VERSION}
 
 # Build args
 ARG VERSION=dev
@@ -29,30 +30,18 @@ LABEL "maintainer"="The SysFlow team"
 LABEL "documentation"="https://sysflow.readthedocs.io"
 LABEL "version"="${VERSION}"
 LABEL "release"="${RELEASE}"
+LABEL "jupyter.version"="${JUPYTER_VERSION}"
 LABEL "summary"="The SysFlow Notebook is a pre-configured Jupyter Notebook based on scipy-notebook for SysFlow."
 LABEL "description"="The SysFlow Notebook is a pre-configured Jupyter Notebook based on scipy-notebook for SysFlow."
 LABEL "io.k8s.display-name"="SysFlow Notebook"
 LABEL "io.k8s.description"="The SysFlow Notebook is a pre-configured Jupyter Notebook based on scipy-notebook for SysFlow."
 
-# Install  graphviz python bindings
-RUN conda install -y graphviz
-
-# Change user to root
-USER root
-
-# Install graphviz
-RUN apt-get update -yqq && \
-    apt-get install -yqq \
-        graphviz && \
-    apt-get clean -yqq && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/apt/archive/*
+# Install graphviz python bindings and rise
+RUN conda install -y graphviz && conda install -y -c conda-forge rise
 
 # Copy sources
 COPY --chown=$NB_UID:$NB_UID py3 /tmp/build
 COPY --chown=$NB_UID:$NB_UID pynb/requirements.txt /tmp/build/requirements.pynb.txt
-
-# Switch back to jovyan to avoid accidental container runs as root
-USER $NB_UID
 
 # Install sysflow API
 RUN cd /tmp/build && pip install --user -r requirements.pynb.txt && pip install --user . && rm -r /tmp/build

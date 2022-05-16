@@ -1,7 +1,4 @@
 plotly>=5.5.0
-stix2>=3.0.1
-stix2-patterns>=2.0.0
-attackcti==0.3.6
-taxii2-client>=2.3.0
+mitreattack-python>=1.5.7
 graphviz>=0.17
 matplotlib>=3.4.3
