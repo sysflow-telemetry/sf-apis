@@ -206,7 +206,7 @@ jobs:
           readme_file: "README.md"
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  pypi-sysprint:
+  pypi-sysflow-tools:
     needs: lint-python-api
     runs-on: ubuntu-latest
     steps:
