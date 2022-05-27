@@ -39,12 +39,13 @@ Please see the SysFlow Python API reference documents for more information on th
 `sysprint` is a tool written using the SysFlow Python API that will print out SysFlow traces from a file into several different formats including JSON, CSV, and tabular pretty print form.  Not only will sysprint help you interact with SysFlow, it is also a good example for how to write new analytics tools using the SysFlow API.   
 
 ```
-usage: sysprint [-h] [-i {local,s3}] [-o {str,json,csv}] [-w FILE]
-                [-f FIELDS] [-c S3ENDPOINT] [-p S3PORT] [-a S3ACCESSKEY]
-                [-s S3SECRETKEY] [-l S3LOCATION] [--secure [SECURE]]
+usage: sysprint [-h] [-i {local,s3}] [-o {str,flatjson,json,csv}] [-w FILE]
+                [-c FIELDS] [-f FILTER] [-l] [-e S3ENDPOINT] [-p S3PORT]
+                [-a S3ACCESSKEY] [-s S3SECRETKEY] [-k] [-A]
+                [--secure [SECURE]]
                 path [path ...]
 
-sysprint: a human-readable printer for Sysflow captures.
+sysprint: a human-readable printer and format converter for Sysflow captures.
 
 positional arguments:
   path                  list of paths or bucket names from where to read trace
@@ -54,12 +55,15 @@ optional arguments:
   -h, --help            show this help message and exit
   -i {local,s3}, --input {local,s3}
                         input type
-  -o {str,json,csv}, --output {str,json,csv}
+  -o {str,flatjson,json,csv}, --output {str,flatjson,json,csv}
                         output format
   -w FILE, --file FILE  output file path
-  -f FIELDS, --fields FIELDS
+  -c FIELDS, --fields FIELDS
                         comma-separated list of sysflow fields to be printed
-  -c S3ENDPOINT, --s3endpoint S3ENDPOINT
+  -f FILTER, --filter FILTER
+                        filter expression
+  -l, --list            list available record attributes
+  -e S3ENDPOINT, --s3endpoint S3ENDPOINT
                         s3 server address from where to read sysflows
   -p S3PORT, --s3port S3PORT
                         s3 server port
@@ -67,7 +71,7 @@ optional arguments:
                         s3 access key
   -s S3SECRETKEY, --s3secretkey S3SECRETKEY
                         s3 secret key
-  -l S3LOCATION, --s3location S3LOCATION
-                        target data bucket location
+  -k, --k8s             add pod related fields to output
+  -A, --allfields       add all available fields to output
   --secure [SECURE]     indicates if SSL connection
 ```

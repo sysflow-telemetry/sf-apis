@@ -6,23 +6,23 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.4.0`, `latest`](https://github.com/sysflow-telemetry/sf-apis/blob/0.4.0/Dockerfile), [`edge`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile), [`dev`](https://github.com/sysflow-telemetry/sf-apis/blob/dev/Dockerfile)
+-	[`0.4.1`, `latest`](https://github.com/sysflow-telemetry/sf-apis/blob/0.4.1/Dockerfile), [`edge`](https://github.com/sysflow-telemetry/sf-apis/blob/master/Dockerfile), [`dev`](https://github.com/sysflow-telemetry/sf-apis/blob/dev/Dockerfile)
 
 # Quick reference
 
--	**Documentation**:  
+-	**Documentation**:
 	[the SysFlow Documentation](https://sysflow.readthedocs.io)
-  
--	**Where to get help**:  
+
+-	**Where to get help**:
 	[the SysFlow Community Slack](https://join.slack.com/t/sysflow-telemetry/shared_invite/enQtODA5OTA3NjE0MTAzLTlkMGJlZDQzYTc3MzhjMzUwNDExNmYyNWY0NWIwODNjYmRhYWEwNGU0ZmFkNGQ2NzVmYjYxMWFjYTM1MzA5YWQ)
 
--	**Where to file issues**:  
+-	**Where to file issues**:
 	[the github issue tracker](https://github.com/sysflow-telemetry/sysflow/issues) (include the `sf-apis` tag)
 
--	**Source of this description**:  
+-	**Source of this description**:
 	[repo's readme](https://github.com/sysflow-telemetry/sf-apis/edit/master/README.md) ([history](https://github.com/sysflow-telemetry/sf-apis/commits/master))
 
--	**Docker images**:  
+-	**Docker images**:
 	[docker hub](https://hub.docker.com/u/sysflowtelemetry) | [GHCR](https://github.com/orgs/sysflow-telemetry/packages)
 
 # What is SysFlow?
@@ -44,7 +44,7 @@ This repository packages two images:
 
 - **sysprint**, which reads, prints, and converts SysFlow traces to human-readale outputs, including console, JSON, and CSV formats. It supports reading traces from local disk and from S3-compliant object stores. Please check [Sysflow APIs](https://sysflow.readthedocs.io/en/latest/api-utils.html) for programmatic APIs and more information about sysprint.
 
-- **sfnb**, a Jupyter Notebook for performing data exploration and analytics with SysFlow. It includes data manipulation using Pandas dataframes  and a native query language (`sfql`) with macro support. 
+- **sfnb**, a Jupyter Notebook for performing data exploration and analytics with SysFlow. It includes data manipulation using Pandas dataframes  and a native query language (`sfql`) with macro support.
 
 Please check [Sysflow APIs](https://sysflow.readthedocs.io/en/latest/api-utils.html) for programmatic APIs and more information about sysprint.
 

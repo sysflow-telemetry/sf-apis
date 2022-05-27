@@ -26,6 +26,15 @@ class sfqlListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by sfqlParser#f_rule.
+    def enterF_rule(self, ctx:sfqlParser.F_ruleContext):
+        pass
+
+    # Exit a parse tree produced by sfqlParser#f_rule.
+    def exitF_rule(self, ctx:sfqlParser.F_ruleContext):
+        pass
+
+
     # Enter a parse tree produced by sfqlParser#f_macro.
     def enterF_macro(self, ctx:sfqlParser.F_macroContext):
         pass
@@ -104,6 +113,15 @@ class sfqlListener(ParseTreeListener):
 
     # Exit a parse tree produced by sfqlParser#atom.
     def exitAtom(self, ctx:sfqlParser.AtomContext):
+        pass
+
+
+    # Enter a parse tree produced by sfqlParser#text.
+    def enterText(self, ctx:sfqlParser.TextContext):
+        pass
+
+    # Exit a parse tree produced by sfqlParser#text.
+    def exitText(self, ctx:sfqlParser.TextContext):
         pass
 
 

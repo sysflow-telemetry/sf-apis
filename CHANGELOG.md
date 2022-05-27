@@ -15,6 +15,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2022-05-26
+
+### Added
+
+- Updated avdl, c++, and go bindings to support k8s events and metadata (preparation for 0.5.0)
+
+### Changed
+
+- Bumped sysprint UBI to 8.6-751
+- Updated pynb requirements.txt
+- Updated query/policy language syntax to support rules and tagging
+
+### Fixed
+
+- Minor bug fixes in py3 APIs
+
 ## [0.4.0] - 2022-02-18
 
 ### Added
@@ -127,7 +143,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 - Several bug fixes in formatting API.
-- Proper handling of keyboard interrupts in sysprint. 
+- Proper handling of keyboard interrupts in sysprint.
 
 ## [0.1-rc2] - 2019-11-08
 
@@ -141,8 +157,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - First release candidate with basic set of SysFlow APIs (C++ and Python).
 
-[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.0-rc1...HEAD
-[0.4.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.3.1...0.4.0-rc1
+[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.1...HEAD
+[0.4.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.0...0.4.1
+[0.4.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.2.2...0.3.0
 [0.2.2]: https://github.com/sysflow-telemetry/sf-apis/compare/0.2.1...0.2.2

@@ -68,7 +68,7 @@ jobs:
           black --check -S -l 120 py3/utils/sysprint
       - name: Check imports
         run: |
-          unimport --check --exclude "__init__.py|grammar|schema_classes.py" py3/classes/sysflow
+          unimport --check --exclude "__init__.py|grammar" py3/classes/sysflow
           unimport --check --exclude __init__.py py3/utils/sysprint
   docker-sfnb:
     needs: lint-python-api
@@ -206,7 +206,7 @@ jobs:
           readme_file: "README.md"
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  pypi-sysprint:
+  pypi-sysflow-tools:
     needs: lint-python-api
     runs-on: ubuntu-latest
     steps:
@@ -228,7 +228,7 @@ jobs:
           packages_dir: py3/dist/
           skip_existing: true
   release:
-    needs: [docker-sfnb,docker-sysprint,pypi-sysprint]
+    needs: [docker-sfnb,docker-sysprint,pypi-sysflow-tools]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:

@@ -1,0 +1,44 @@
+{
+  "type" : "record",
+  "name" : "Service",
+  "namespace" : "sysflow.entity",
+  "fields" : [ {
+    "name" : "name",
+    "type" : "string"
+  }, {
+    "name" : "id",
+    "type" : "string"
+  }, {
+    "name" : "namespace",
+    "type" : "string"
+  }, {
+    "name" : "portList",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "Port",
+        "fields" : [ {
+          "name" : "port",
+          "type" : "int"
+        }, {
+          "name" : "targetPort",
+          "type" : "int"
+        }, {
+          "name" : "nodePort",
+          "type" : "int"
+        }, {
+          "name" : "proto",
+          "type" : "string"
+        } ]
+      }
+    }
+  }, {
+    "name" : "clusterIP",
+    "type" : {
+      "type" : "array",
+      "items" : "long",
+      "logicalType" : "ipaddr"
+    }
+  } ]
+}

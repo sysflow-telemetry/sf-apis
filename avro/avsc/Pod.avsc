@@ -1,0 +1,98 @@
+{
+  "type" : "record",
+  "name" : "Pod",
+  "namespace" : "sysflow.entity",
+  "fields" : [ {
+    "name" : "ts",
+    "type" : "long"
+  }, {
+    "name" : "id",
+    "type" : "string"
+  }, {
+    "name" : "name",
+    "type" : "string"
+  }, {
+    "name" : "nodeName",
+    "type" : "string"
+  }, {
+    "name" : "hostIP",
+    "type" : {
+      "type" : "array",
+      "items" : "long",
+      "logicalType" : "ipaddr"
+    }
+  }, {
+    "name" : "internalIP",
+    "type" : {
+      "type" : "array",
+      "items" : "long",
+      "logicalType" : "ipaddr"
+    }
+  }, {
+    "name" : "namespace",
+    "type" : "string"
+  }, {
+    "name" : "restartCount",
+    "type" : "long"
+  }, {
+    "name" : "labels",
+    "type" : {
+      "type" : "map",
+      "values" : "string"
+    }
+  }, {
+    "name" : "selectors",
+    "type" : {
+      "type" : "map",
+      "values" : "string"
+    }
+  }, {
+    "name" : "services",
+    "type" : {
+      "type" : "array",
+      "items" : {
+        "type" : "record",
+        "name" : "Service",
+        "fields" : [ {
+          "name" : "name",
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "type" : "string"
+        }, {
+          "name" : "namespace",
+          "type" : "string"
+        }, {
+          "name" : "portList",
+          "type" : {
+            "type" : "array",
+            "items" : {
+              "type" : "record",
+              "name" : "Port",
+              "fields" : [ {
+                "name" : "port",
+                "type" : "int"
+              }, {
+                "name" : "targetPort",
+                "type" : "int"
+              }, {
+                "name" : "nodePort",
+                "type" : "int"
+              }, {
+                "name" : "proto",
+                "type" : "string"
+              } ]
+            }
+          }
+        }, {
+          "name" : "clusterIP",
+          "type" : {
+            "type" : "array",
+            "items" : "long",
+            "logicalType" : "ipaddr"
+          }
+        } ]
+      }
+    }
+  } ]
+}

@@ -1,17 +1,26 @@
 grammar sfql;
 
 QUERY: 'sfql';
+RULE: 'rule';
 MACRO: 'macro';
 LIST: 'list';
 ITEMS: 'items';
 COND: 'condition';
+DESC: 'desc' ;
+ACTION: 'action';
+PRIORITY: 'priority';
+TAGS: 'tags';
 
 definitions
-	: (f_macro | f_list)* (f_query)? (EOF)?
+	: (f_macro | f_list | f_rule)* (f_query)? (EOF)?
 	;
 
 f_query
 	: DECL QUERY DEF expression
+	;
+
+f_rule
+	: DECL RULE DEF text DESC DEF text COND DEF expression ACTION DEF items PRIORITY DEF SEVERITY TAGS DEF items 
 	;
 
 f_macro
@@ -55,9 +64,15 @@ atom
 	: ID
 	| PATH
 	| NUMBER
+	| TAG			
 	| STRING
 	| '<' /* event direction */
 	| '>' /* event direction */
+	;
+
+text
+	//: ({(self._input.LA(1) not in ['desc', 'condition', 'action', 'priority', 'tags'])}? .)+
+	: (  .)+?
 	;
 
 binary_operator 
@@ -165,11 +180,10 @@ DEF
 	;
 
 SEVERITY
-	: 'DEBUG'
-	| 'INFO'
-	| 'NOTICE'
-	| 'WARNING'
-	| 'ERROR'
+	: 'high'
+	| 'medium'
+	| 'low'	
+	| 'none'
 	;
 
 ID
@@ -181,7 +195,11 @@ NUMBER
 	;
 	
 PATH
-	:  ('a'..'z' | 'A'..'Z' | '/' ) ('a'..'z' | 'A'..'Z' | '0'..'9' | '_' | '-' | '.' | '/' | '*' )*	
+	: ('a'..'z' | 'A'..'Z' | '/' ) ('a'..'z' | 'A'..'Z' | '0'..'9' | '_' | '-' | '.' | '/' | '*' )*	
+	;
+
+TAG
+	: (ID ':' ID)	
 	;
 
 STRING 
