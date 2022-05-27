@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- Bumped sysprint UBI to 8.6-751
 - Updated pynb requirements.txt
 - Updated query/policy language syntax to support rules and tagging
 
