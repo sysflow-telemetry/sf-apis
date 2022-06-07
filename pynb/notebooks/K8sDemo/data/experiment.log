@@ -1,0 +1,38 @@
+2022-03-17 18:48:40,736 main INFO     ----- starting experiment
+2022-03-17 18:48:40,736 main INFO     ----- create project robot-shop
+2022-03-17 18:48:40,736 main INFO     kubectl create namespace robot-shop
+namespace/robot-shop created
+2022-03-17 18:48:40,991 main INFO     ... waiting for 60 seconds
+2022-03-17 18:49:41,047 main INFO     ----- install robot shop
+NAME: robot-shop
+LAST DEPLOYED: Thu Mar 17 18:49:41 2022
+NAMESPACE: robot-shop
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+2022-03-17 18:49:42,531 main INFO     ... waiting for 900 seconds
+2022-03-17 19:04:42,632 main INFO     resolve url of robot-shop
+2022-03-17 19:04:47,423 main INFO     robot-shop url is http://192.168.59.100:31907
+2022-03-17 19:04:47,423 main INFO     ----- kill container mongodb
+2022-03-17 19:04:47,423 main INFO     Identify container mongodb
+2022-03-17 19:04:48,073 main INFO     Kill container mongodb-67c5456f4-d4bgv with cmd "kubectl delete pod mongodb-67c5456f4-d4bgv -n robot-shop"
+pod "mongodb-67c5456f4-d4bgv" deleted
+2022-03-17 19:04:53,940 main INFO     ... waiting for 300 seconds
+2022-03-17 19:09:53,947 main INFO     ----- kill container web
+2022-03-17 19:09:53,947 main INFO     Identify container web
+2022-03-17 19:09:54,217 main INFO     Kill container web-77486f858f-gpfrn with cmd "kubectl delete pod web-77486f858f-gpfrn -n robot-shop"
+pod "web-77486f858f-gpfrn" deleted
+2022-03-17 19:10:02,620 main INFO     ... waiting for 300 seconds
+2022-03-17 19:15:02,660 main INFO     ----- kill container user
+2022-03-17 19:15:02,661 main INFO     Identify container user
+2022-03-17 19:15:03,314 main INFO     Kill container user-899b6c7ff-c7wnj with cmd "kubectl delete pod user-899b6c7ff-c7wnj -n robot-shop"
+pod "user-899b6c7ff-c7wnj" deleted
+2022-03-17 19:15:36,016 main INFO     ... waiting for 300 seconds
+2022-03-17 19:20:36,117 main INFO     ----- delete robot shop
+release "robot-shop" uninstalled
+2022-03-17 19:20:37,534 main INFO     ... waiting for 300 seconds
+2022-03-17 19:25:37,627 main INFO     ----- delete project robot-shop
+2022-03-17 19:25:37,628 main INFO     kubectl delete namespace robot-shop
+namespace "robot-shop" deleted
+2022-03-17 19:25:50,305 main INFO     ... waiting for 300 seconds
+2022-03-17 19:30:50,346 main INFO     ----- experiment ends
