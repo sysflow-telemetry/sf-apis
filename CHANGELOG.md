@@ -23,7 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- Removed unused containers packaged from Go APIs
+- Removed unused container package from Go APIs
 
 ## [0.4.1] - 2022-05-26
 
