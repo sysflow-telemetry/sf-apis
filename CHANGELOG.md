@@ -21,6 +21,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Bumped SysFlow version to 0.4.2
 
+### Removed
+
+- Removed unused containers packaged from Go APIs
+
 ## [0.4.1] - 2022-05-26
 
 ### Added
