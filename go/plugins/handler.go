@@ -32,6 +32,8 @@ type SFHandler interface {
 	IsEntityEnabled() bool
 	HandleHeader(sf *CtxSysFlow, hdr *sfgo.SFHeader) error
 	HandleContainer(sf *CtxSysFlow, cont *sfgo.Container) error
+	HandlePod(sf *CtxSysFlow, cont *sfgo.Pod) error
+	HandleK8sEvt(sf *CtxSysFlow, cont *sfgo.K8sEvent) error
 	HandleProcess(sf *CtxSysFlow, proc *sfgo.Process) error
 	HandleFile(sf *CtxSysFlow, file *sfgo.File) error
 	HandleNetFlow(sf *CtxSysFlow, nf *sfgo.NetworkFlow) error

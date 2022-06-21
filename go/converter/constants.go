@@ -92,6 +92,27 @@ const (
 	cNumThreadsExited = "numThreadsExited"
 	cNumCloneErrors   = "numCloneErrors"
 
+	cPod             = "sysflow.entity.Pod"
+	cPodID           = "podId"
+	cPodName         = "name"
+	cNodeName        = "nodeName"
+	cHostIP          = "hostIP"
+	cInternalIP      = "internalIP"
+	cNamespace       = "namespace"
+	cPodRestartCount = "restartCount"
+	cLabels          = "labels"
+	cSelectors       = "selectors"
+	cServices        = "services"
+
+	cService     = "sysflow.entity.Service"
+	cServiceName = "name"
+	cClusterIP   = "clusterIP"
+
+	cK8sEvent = "sysflow.event.K8sEvent"
+	cKind     = "kind"
+	cAction   = "action"
+	cMessage  = "message"
+
 	cObjectID     = "sysflow.type.OID"
 	cFileObjectID = "sysflow.type.FOID"
 

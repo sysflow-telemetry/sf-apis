@@ -4,6 +4,7 @@
 // Authors:
 // Frederico Araujo <frederico.araujo@ibm.com>
 // Teryl Taylor <terylt@ibm.com>
+// Andreas Schade <san@zurich.ibm.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +22,7 @@
 package converter
 
 import (
+	"strings"
 	"time"
 
 	"github.com/sysflow-telemetry/sf-apis/go/logger"
@@ -67,6 +69,18 @@ func (s *SFObjectConverter) createContainer(cont map[string]interface{}) *sfgo.C
 	} else {
 		sfcont.Type = ct
 	}
+        if val, ok := cont[cPodID]; ok && val != nil {
+                unionString := val.(map[string]interface{})
+                if v, o := unionString[cString]; o {
+                        podID := &sfgo.PodIdUnion{
+                                String:    v.(string),
+                                UnionType: sfgo.PodIdUnionTypeEnumString,
+                        }
+                        sfcont.PodId = podID
+                }
+        } else {
+                sfcont.PodId = sfgo.NewPodIdUnion()
+        }
 
 	return sfcont
 }
@@ -269,6 +283,85 @@ func (s *SFObjectConverter) createNetFlow(netFlow map[string]interface{}) *sfgo.
 	return sfnetFlow
 }
 
+func (s *SFObjectConverter) createPod(pod map[string]interface{}) *sfgo.Pod {
+	sfpod := &sfgo.Pod{
+		Ts:           s.getTimestamp(pod[cTs]),
+		Id:           pod[cID].(string),
+		Name:         pod[cPodName].(string),
+		NodeName:     pod[cNodeName].(string),
+		Namespace:    pod[cNamespace].(string),
+		RestartCount: pod[cPodRestartCount].(int64),
+	}
+	if pod[cHostIP] != nil {
+		ips := pod[cHostIP].([]interface{})
+		sfpod.HostIP = make([]int64, len(ips))
+		for i, ip := range ips {
+			sfpod.HostIP[i] = ip.(int64)
+		}
+	}
+	if pod[cInternalIP] != nil {
+		ips := pod[cInternalIP].([]interface{})
+		sfpod.InternalIP = make([]int64, len(ips))
+		for i, ip := range ips {
+			sfpod.InternalIP[i] = ip.(int64)
+		}
+	}
+	if pod[cLabels] != nil {
+		sfpod.Labels = make(map[string]string)
+		for k, v := range pod[cLabels].(map[string]interface{}) {
+			sfpod.Labels[k] = v.(string)
+		}
+	}
+	if pod[cSelectors] != nil {
+		sfpod.Selectors = make(map[string]string)
+		for k, v := range pod[cSelectors].(map[string]interface{}) {
+			sfpod.Selectors[k] = v.(string)
+		}
+	}
+	if pod[cServices] != nil {
+		srvs := pod[cServices].([]interface{})
+		sfpod.Services = make([]*sfgo.Service, len(srvs))
+		for i, srv := range srvs {
+			sfpod.Services[i] = s.createService(srv.(map[string]interface{}))
+		}
+
+	}
+
+	return sfpod
+}
+
+func (s *SFObjectConverter) createService(srv map[string]interface{}) *sfgo.Service {
+	sfsrv := &sfgo.Service{
+		Name:         srv[cServiceName].(string),
+		Id:           srv[cID].(string),
+		Namespace:    srv[cNamespace].(string),
+	}
+	if srv[cClusterIP] != nil {
+		ips := srv[cClusterIP].([]interface{})
+		sfsrv.ClusterIP = make([]int64, len(ips))
+		for i, ip := range ips {
+			sfsrv.ClusterIP[i] = ip.(int64)
+		}
+	}
+
+	return sfsrv
+}
+
+func (s *SFObjectConverter) createK8sEvent(ke map[string]interface{}) *sfgo.K8sEvent {
+	sfke := &sfgo.K8sEvent{
+		Ts:           s.getTimestamp(ke[cTs]),
+		Message:      strings.TrimRight(ke[cMessage].(string), "\n\x00"),
+	}
+	if a, e := sfgo.NewK8sActionValue(ke[cAction].(string)); e == nil {
+		sfke.Action = a
+	}
+	if k, e := sfgo.NewK8sComponentValue(ke[cKind].(string)); e == nil {
+		sfke.Kind = k
+	}
+
+	return sfke
+}
+
 // ConvertToSysFlow takes a datum from an OCFReader.Read() function and converts it
 // into an sfgo.SysFlow object.
 func (s *SFObjectConverter) ConvertToSysFlow(datum interface{}) *sfgo.SysFlow {
@@ -306,6 +399,12 @@ func (s *SFObjectConverter) ConvertToSysFlow(datum interface{}) *sfgo.SysFlow {
 		case cProcessFlow:
 			sFlow.Rec.ProcessFlow = s.createProcFlow(obj)
 			sFlow.Rec.UnionType = sfgo.SF_PROC_FLOW
+		case cPod:
+			sFlow.Rec.Pod = s.createPod(obj)
+			sFlow.Rec.UnionType = sfgo.SF_POD
+		case cK8sEvent:
+			sFlow.Rec.K8sEvent = s.createK8sEvent(obj)
+			sFlow.Rec.UnionType = sfgo.SF_K8S_EVT
 		default:
 			logger.Error.Printf("Type: %s is currently not handled by the processor.\n", key)
 

@@ -29,6 +29,7 @@ const (
 type sftypes struct {
 	Int64  int64
 	String string
+	Any    interface{}
 }
 
 // Zeros is a zero-initialized struct used to obtain zero values for types used during flattening.
@@ -42,6 +43,7 @@ type FlatRecord struct {
 	Sources    []Source
 	Ints       [][]int64
 	Strs       [][]string
+	Anys       [][]interface{}
 	Ptree      []*Process
 	GraphletID uint64
 }

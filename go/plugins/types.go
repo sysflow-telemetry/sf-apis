@@ -29,6 +29,8 @@ type CtxSysFlow struct {
 	*sfgo.SysFlow
 	Header     *sfgo.SFHeader
 	Container  *sfgo.Container
+	Pod        *sfgo.Pod
+	K8sEvent   *sfgo.K8sEvent
 	Process    *sfgo.Process
 	File       *sfgo.File
 	NewFile    *sfgo.File
