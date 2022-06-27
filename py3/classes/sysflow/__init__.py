@@ -18,3 +18,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from importlib.metadata import version, PackageNotFoundError
+
+__version__ = ''
+try:
+    __version__ = version('sysflow-tools')
+except PackageNotFoundError:
+    # package is not installed
+    pass
