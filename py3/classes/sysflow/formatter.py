@@ -136,7 +136,7 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'k8s.msg': ('K8s EV Msg', 100, 'K8s Event Message', False),
     'node.id': ('Node ID', 12, 'Node identifier', False),
     'node.ip': ('Node IP', 16, 'Node IP address', False),
-    'tags': ('Tags', 10, 'Enrichment tags', True),
+    'tags': ('Tags', 10, 'Enrichment tags', False),
     'schema': ('SF Schema', 8, 'SysFlow schema version', False),
     'version': ('API version', 8, 'SysFlow JSON schema version', False),
     'filename': ('File name', 15, 'SysFlow trace file name', False),
@@ -174,30 +174,23 @@ class SFFormatter(object):
         self.reader = reader
         self.sfqlint = SfqlInterpreter()
         self.defs = defs
-        self.k8sEvents = False
         self.allFields = False
 
-    def enableK8sEvents(self):
-        self.k8sEvents = True
-
-    def enablePodFields(self):
-        """Enables fields related to pods to be added to the output by default."""
+    def enableK8sEventFields(self):
+        """Enables fields related to k8s events be added to the output by default."""
         global _default_fields
         _default_fields = [
             'ts_uts',
             'type',
-            'proc.exe',
-            'proc.args',
-            'pproc.pid',
-            'proc.pid',
-            'proc.tid',
-            'opflags',
-            'res',
-            'flow.rbytes',
-            'flow.wbytes',
-            'container.id',
-            'pod.name',
+            'k8s.action',
+            'k8s.kind',
+            'k8s.msg',
         ]
+
+    def enablePodFields(self):
+        """Enables fields related to pods to be added to the output by default."""
+        global _default_fields
+        _default_fields.append('pod.name')
 
     def enableAllFields(self):
         """Enables all available fields to be added to the output by default."""
