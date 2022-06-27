@@ -21,6 +21,7 @@
 import logging, sys, os, argparse, tempfile
 
 sys.path.append('.')
+from sysflow import __version__
 from sysflow.reader import FlattenedSFReader
 from sysflow.formatter import SFFormatter
 from minio import Minio
@@ -128,6 +129,23 @@ class _ListAction(argparse.Action):
         print('-' * 30)
         parser.exit()
 
+class _VersionAction(argparse.Action):
+    def __init__(self,
+                 option_strings,
+                 dest=argparse.SUPPRESS,
+                 default=argparse.SUPPRESS,
+                 help=None):
+        super(_VersionAction, self).__init__(
+            option_strings=option_strings,
+            dest=dest,
+            default=default,
+            nargs=0,
+            help=help)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        print(__version__)
+        parser.exit()
+
 
 if __name__ == '__main__':
 
@@ -151,11 +169,12 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--s3port', help='s3 server port', default=443)
     parser.add_argument('-a', '--s3accesskey', help='s3 access key', default=None)
     parser.add_argument('-s', '--s3secretkey', help='s3 secret key', default=None)
-    parser.add_argument('-k', '--k8s', help='add pod related fields to output', action='store_true')
-    parser.add_argument('-A', '--allfields', help='add all available fields to output', action='store_true')
     parser.add_argument(
         '--secure', help='indicates if SSL connection', type=str2bool, nargs='?', const=True, default=True
     )
+    parser.add_argument('-k', '--k8s', help='add pod related fields to output', action='store_true')
+    parser.add_argument('-A', '--allfields', help='add all available fields to output', action='store_true')
+    parser.add_argument('-v', '--version', help='print version information', action=_VersionAction)
 
     # parse args and configuration
     args = parser.parse_args()
