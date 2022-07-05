@@ -107,6 +107,11 @@ const (
 	cService     = "sysflow.entity.Service"
 	cServiceName = "name"
 	cClusterIP   = "clusterIP"
+	cPortList    = "portList"
+	cPort        = "port"
+	cTargetPort  = "targetPort"
+	cNodePort    = "nodePort"
+	cProto       = "proto"
 
 	cK8sEvent = "sysflow.event.K8sEvent"
 	cKind     = "kind"
@@ -116,7 +121,7 @@ const (
 	cObjectID     = "sysflow.type.OID"
 	cFileObjectID = "sysflow.type.FOID"
 
-	cIPIdx            = 2
+	cIPIdx = 2
 	// cContImageRepoIdx = 6
-	cPrcEntryIdx      = 12
+	cPrcEntryIdx = 12
 )

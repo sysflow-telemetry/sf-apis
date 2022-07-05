@@ -69,18 +69,18 @@ func (s *SFObjectConverter) createContainer(cont map[string]interface{}) *sfgo.C
 	} else {
 		sfcont.Type = ct
 	}
-        if val, ok := cont[cPodID]; ok && val != nil {
-                unionString := val.(map[string]interface{})
-                if v, o := unionString[cString]; o {
-                        podID := &sfgo.PodIdUnion{
-                                String:    v.(string),
-                                UnionType: sfgo.PodIdUnionTypeEnumString,
-                        }
-                        sfcont.PodId = podID
-                }
-        } else {
-                sfcont.PodId = sfgo.NewPodIdUnion()
-        }
+	if val, ok := cont[cPodID]; ok && val != nil {
+		unionString := val.(map[string]interface{})
+		if v, o := unionString[cString]; o {
+			podID := &sfgo.PodIdUnion{
+				String:    v.(string),
+				UnionType: sfgo.PodIdUnionTypeEnumString,
+			}
+			sfcont.PodId = podID
+		}
+	} else {
+		sfcont.PodId = sfgo.NewPodIdUnion()
+	}
 
 	return sfcont
 }
@@ -330,11 +330,21 @@ func (s *SFObjectConverter) createPod(pod map[string]interface{}) *sfgo.Pod {
 	return sfpod
 }
 
+func (s *SFObjectConverter) createPort(port map[string]interface{}) *sfgo.Port {
+	sfport := &sfgo.Port{
+		Port:       port[cPort].(int32),
+		TargetPort: port[cTargetPort].(int32),
+		NodePort:   port[cNodePort].(int32),
+		Proto:      port[cProto].(string),
+	}
+	return sfport
+}
+
 func (s *SFObjectConverter) createService(srv map[string]interface{}) *sfgo.Service {
 	sfsrv := &sfgo.Service{
-		Name:         srv[cServiceName].(string),
-		Id:           srv[cID].(string),
-		Namespace:    srv[cNamespace].(string),
+		Name:      srv[cServiceName].(string),
+		Id:        srv[cID].(string),
+		Namespace: srv[cNamespace].(string),
 	}
 	if srv[cClusterIP] != nil {
 		ips := srv[cClusterIP].([]interface{})
@@ -343,14 +353,21 @@ func (s *SFObjectConverter) createService(srv map[string]interface{}) *sfgo.Serv
 			sfsrv.ClusterIP[i] = ip.(int64)
 		}
 	}
-
+	if srv[cPortList] != nil {
+		ports := srv[cPortList].([]interface{})
+		sfsrv.PortList = make([]*sfgo.Port, len(ports))
+		for i, port := range ports {
+			p := port.(map[string]interface{})
+			sfsrv.PortList[i] = s.createPort(p)
+		}
+	}
 	return sfsrv
 }
 
 func (s *SFObjectConverter) createK8sEvent(ke map[string]interface{}) *sfgo.K8sEvent {
 	sfke := &sfgo.K8sEvent{
-		Ts:           s.getTimestamp(ke[cTs]),
-		Message:      strings.TrimRight(ke[cMessage].(string), "\n\x00"),
+		Ts:      s.getTimestamp(ke[cTs]),
+		Message: strings.TrimRight(ke[cMessage].(string), "\n\x00"),
 	}
 	if a, e := sfgo.NewK8sActionValue(ke[cAction].(string)); e == nil {
 		sfke.Action = a
