@@ -17,6 +17,8 @@ const (
 	TyFFStr      string = "FF"
 	TyNEStr      string = "NE"
 	TyNFStr      string = "NF"
+	TyPDStr      string = "PD"
+	TyKEStr      string = "KE"
 	TyUnknownStr string = ""
 )
 
@@ -32,7 +34,9 @@ const (
 	SF_FILE_EVT  SFObjectType = RecUnionTypeEnumFileEvent
 	SF_NET_EVT   SFObjectType = RecUnionTypeEnumNetworkEvent
 	SF_PROC_FLOW SFObjectType = RecUnionTypeEnumProcessFlow
-	SF_UNKNOWN   SFObjectType = RecUnionTypeEnumProcessFlow + 1
+	SF_POD       SFObjectType = RecUnionTypeEnumPod
+	SF_K8S_EVT   SFObjectType = RecUnionTypeEnumK8sEvent
+	SF_UNKNOWN   SFObjectType = RecUnionTypeEnumK8sEvent + 1
 
 	HEADER    int64 = int64(RecUnionTypeEnumSFHeader)
 	CONT      int64 = int64(RecUnionTypeEnumContainer)
@@ -44,10 +48,12 @@ const (
 	FILE_EVT  int64 = int64(RecUnionTypeEnumFileEvent)
 	NET_EVT   int64 = int64(RecUnionTypeEnumNetworkEvent)
 	PROC_FLOW int64 = int64(RecUnionTypeEnumProcessFlow)
+	POD       int64 = int64(RecUnionTypeEnumPod)
+	K8S_EVT   int64 = int64(RecUnionTypeEnumK8sEvent)
 )
 
 func (s SFObjectType) String() string {
-	return [...]string{TyHStr, TyCStr, TyPStr, TyFStr, TyPEStr, TyNFStr, TyFFStr, TyFEStr, TyNEStr, TyPFStr, TyUnknownStr}[s]
+	return [...]string{TyHStr, TyCStr, TyPStr, TyFStr, TyPEStr, TyNFStr, TyFFStr, TyFEStr, TyNEStr, TyPFStr, TyPDStr, TyKEStr, TyUnknownStr}[s]
 }
 
 // ParseRecordTypeStr converts a valide string rtype into its enum type.
@@ -73,6 +79,10 @@ func ParseRecordTypeStr(rtype string) (SFObjectType, error) {
 		return SF_HEADER, nil
 	case TyNEStr:
 		return SF_NET_EVT, nil
+	case TyPDStr:
+		return SF_POD, nil
+	case TyKEStr:
+		return SF_K8S_EVT, nil
 	default:
 		return SF_UNKNOWN, errors.New("unrecognized string rtype")
 	}
