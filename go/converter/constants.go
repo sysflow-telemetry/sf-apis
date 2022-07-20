@@ -104,7 +104,6 @@ const (
 	cSelectors       = "selectors"
 	cServices        = "services"
 
-	cService     = "sysflow.entity.Service"
 	cServiceName = "name"
 	cClusterIP   = "clusterIP"
 	cPortList    = "portList"
