@@ -15,6 +15,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.4.4] - 2022-08-01
+
+### Changed
+
+- Bump UBI to 8.6-855
+
 ## [0.4.3] - 2022-08-01
 
 ### Changed
