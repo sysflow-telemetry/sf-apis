@@ -15,12 +15,28 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [0.5.0] - 2022-07-31
+## [0.5.0] - 2022-10-17
 
 ### Added
 
 - Add k8s pod and event object support to sysflow spec and APIs
 - Add enumeration of sysflow types in C++ API.
+
+### Changed
+
+- Bump UBI to 8.6-941
+
+## [0.4.4] - 2022-08-01
+
+### Changed
+
+- Bump UBI to 8.6-855
+
+## [0.4.3] - 2022-08-01
+
+### Changed
+
+- Bumped SysFlow version to 0.4.4
 
 ## [0.4.3] - 2022-06-21
 
@@ -180,8 +196,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - First release candidate with basic set of SysFlow APIs (C++ and Python).
 
-[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.5.0-rc1...HEAD
-[0.5.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.3...0.5.0-rc1
+[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.4...0.5.0
+[0.4.4]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.2...0.4.3
 [0.4.2]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.1...0.4.2
 [0.4.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.0...0.4.1
