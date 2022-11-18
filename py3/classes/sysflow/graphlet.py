@@ -54,6 +54,39 @@ tqdm.__init__ = partialmethod(tqdm.__init__, disable=True)
 
 INFSYMB = '&infin;'
 
+FLOW_FIELDS = [
+    'ts_uts',
+    'endts_uts',
+    'type',
+    'opflags',
+    'proc.pid',
+    'proc.tid',
+    'pproc.pid',
+    'proc.exe',
+    'proc.args',
+    'pproc.exe',
+    'pproc.args',
+    'res',
+    'flow.rbytes',
+    'flow.rops',
+    'flow.wbytes',
+    'flow.wops',
+    'container.id',
+    'tags',
+]
+EVT_FIELDS = [
+    'ts_uts',
+    'type',
+    'opflags',
+    'proc.pid',
+    'proc.tid',
+    'pproc.pid',
+    'proc.exe',
+    'proc.args',
+    'pproc.exe',
+    'tags',
+]
+
 
 class Graphlet(object):
     """
