@@ -72,7 +72,7 @@ class Graphlet(object):
          g1 = Graphlet('data/', ioc1, ['policies/ttps.yaml'])
          g1.view()
 
-    :param graphlet: A compact provenance graph representation based on sysflow traces
+    :param graphlet: A compact provenance graph representation based on sysflow traces.
     :type graphlet: sysflow.Graphlet
     """
 
@@ -83,15 +83,15 @@ class Graphlet(object):
     defend_data = {}
 
     def __init__(self, path, expr=None, defs=[]):
-        """Create a sfql interpreter and optionally pre-compiles input expressions.
+        """Create graphlet object from raw sysflow with optional filters and policy taggers.
 
         :param path: a path to a sysflow trace or directory containing sysflow traces.
         :type path: str
 
-        :param expr: sfql query.
+        :param expr: sfql style filter.
         :type expr: str
 
-        :param defs: a list of paths for yaml policies that enrich or filter sysflow records.
+        :param defs: a list of paths for yaml policies that enrich graph nodes.
         :type defs: list
         """
         if os.path.isfile(path):
@@ -326,7 +326,7 @@ class Graphlet(object):
     def df(self, oid=None):
         """Returns a dataframe containing a summary of the graph node IDs and process metadata associated with them.
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
         """
         data = OrderedDict()
@@ -338,7 +338,7 @@ class Graphlet(object):
     def data(self, oid=None):
         """Returns a dataframe containing the underlying data (sysflow records) of the graph.
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
         """
         df = pd.DataFrame()
@@ -352,7 +352,7 @@ class Graphlet(object):
     def tags(self, oid=None):
         """Returns a dataframe containing the set of (enrichment) tags in the graph.
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
         """
         df = pd.DataFrame()
@@ -367,10 +367,10 @@ class Graphlet(object):
     def ttps(self, oid=None, details=False):
         """Returns a dataframe containing the set of MITRE TTP tags in the graph (e.g., as enriched by the ttps.yaml policy provided with the SysFlow processor).
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
 
-        :param details: indicates whether to include complete TTP metadata in the dataframe
+        :param details: indicates whether to include complete TTP metadata in the dataframe.
         :type details: boolean
         """
         df = self.tags(oid)
@@ -389,7 +389,7 @@ class Graphlet(object):
     def associatedMitigations(self, oid=None):
         """Returns a dataframe containing the set of MITRE mitigations associated with TTPs annotated in the graph.
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
         """
         mitigations = pd.DataFrame()
@@ -403,7 +403,7 @@ class Graphlet(object):
     def mitigations(self, oid=None, details=False):
         """Returns a dataframe containing the summary set of MITRE mitigations associated with TTPs annotated in the graph.
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
         """
         mitigations = pd.DataFrame()
@@ -419,7 +419,7 @@ class Graphlet(object):
     def countermeasures(self, oid=None):
         """Returns a dataframe containing the set of MITRE d3fend defenses associated with TTPs annotated in the graph.
 
-        :param oid: a node ID filter
+        :param oid: a node ID filter.
         :type oid: object ID string
         """
         countermeasures = pd.DataFrame()
@@ -435,20 +435,20 @@ class Graphlet(object):
     def view(self, withoid=False, peek=True, peeksize=3, flows=True, ttps=False):
         """Visualizes the graph in dot format.
 
-        :param withoid: indicates whether to show the node ID
+        :param withoid: indicates whether to show the node ID.
         :type withoid: boolean
 
-        :param withoid: indicates whether to show details about the records associated with the nodes
-        :type withoid: boolean
+        :param peek: indicates whether to show details about the records associated with the nodes.
+        :type peek: boolean
 
-        :param withoid: the number of node records to show
-        :type withoid: integer
+        :param peeksize: the number of underlying sysflow records to show in the node.
+        :type peeksize: integer
 
-        :param withoid: indicates whether to show flow nodes
-        :type withoid: boolean
+        :param flows: indicates whether to show flow nodes.
+        :type flows: boolean
 
-        :param withoid: indicates whether to show tags
-        :type withoid: boolean
+        :param ttps: indicates whether to show tags.
+        :type ttps: boolean
         """
         graph_attr = {'splines': 'true', 'overlap': 'scale', 'rankdir': 'TD'}
         node_attr = {'shape': 'Mrecord', 'fontsize': '9'}
@@ -491,20 +491,20 @@ class Graphlet(object):
     def compare(self, other, withoid=False, peek=True, peeksize=3, flows=True, ttps=False):
         """Compares the graph to another graph (using a simple graph difference), returning a graph slice.
 
-        :param withoid: indicates whether to show the node ID
+        :param withoid: indicates whether to show the node ID.
         :type withoid: boolean
 
-        :param withoid: indicates whether to show details about the records associated with the nodes
-        :type withoid: boolean
+        :param peek: indicates whether to show details about the records associated with the nodes.
+        :type peek: boolean
 
-        :param withoid: the number of node records to show
-        :type withoid: integer
+        :param peeksize: the number of node records to show.
+        :type peeksize: integer
 
-        :param withoid: indicates whether to show flow nodes
-        :type withoid: boolean
+        :param flows: indicates whether to show flow nodes.
+        :type flows: boolean
 
-        :param withoid: indicates whether to show tags
-        :type withoid: boolean
+        :param ttps: indicates whether to show tags.
+        :type ttps: boolean
         """
         lndiff = set(self.nodes) - set(other.nodes)
         lediff = set(self.edges) - set(other.edges)
@@ -585,6 +585,14 @@ class Graphlet(object):
 
 
 class Edge(object):
+    """
+    **Edge**
+
+    This class represents a graph edge, and acts as a super class for specific edges.
+
+    :param edge: an abstract edge object.
+    :type edge: sysflow.Edge
+    """
     def __init__(self, n1, n2, label):
         super().__init__()
         self.n1 = n1
@@ -593,6 +601,15 @@ class Edge(object):
 
 
 class EvtEdge(Edge):
+    """
+    **EvtEdge**
+
+    This class represents a graph event edge. It is used
+    for sysflow event objects and subclasses Edge.
+
+    :param evtedge: an edge object representing a sysflow evt.
+    :type evtedge: sysflow.EvtEdge
+    """
     def __init__(self, n1, n2, label):
         super().__init__(n1, n2, label)
 
@@ -621,6 +638,15 @@ class EvtEdge(Edge):
 
 
 class FlowEdge(Edge):
+    """
+    **FlowEdge**
+
+    This class represents a graph flow edge. It is used
+    for sysflow flow objects and subclasses Edge.
+
+    :param flowedge: an edge object representing a sysflow flow.
+    :type flowedge: sysflow.FlowEdge
+    """
     def __init__(self, n1, n2, label):
         super().__init__(n1, n2, label)
 
@@ -649,12 +675,28 @@ class FlowEdge(Edge):
 
 
 class Node(object):
+    """
+    **Node**
+
+    This class represents a graph node, and acts as a super class for specific nodes.
+
+    :param node: an abstract node object.
+    :type node: sysflow.Node
+    """
     def __init__(self, oid):
         super().__init__()
         self.oid = oid
 
 
 class ProcessNode(Node):
+    """
+    **ProcessNode**
+
+    This class represents a process node.
+
+    :param proc: a process node object.
+    :type proc: sysflow.ProcessNode
+    """
     def __init__(self, oid, exe, args, uid, user, gid, group, tty):
         super().__init__(oid)
         self.type = 'P'
@@ -745,6 +787,14 @@ class ProcessNode(Node):
 
 
 class FileFlowNode(Node):
+    """
+    **FileFlowNode**
+
+    This class represents a fileflow node.
+
+    :param ff: a fileflow node object.
+    :type ff: sysflow.FileFlow
+    """
     def __init__(self, oid, exe, args):
         super().__init__(oid)
         self.type = 'FF'
@@ -846,6 +896,14 @@ class FileFlowNode(Node):
 
 
 class NetFlowNode(Node):
+    """
+    **NetFlowNode**
+
+    This class represents a netflow node.
+
+    :param nf: a netflow node object.
+    :type nf: sysflow.NetFlow
+    """
     def __init__(self, oid, exe, args):
         super().__init__(oid)
         self.type = 'NF'
