@@ -37,7 +37,9 @@ LABEL "io.k8s.description"="The SysFlow Printer is a command-line utility for in
 
 # Install Python environment
 RUN microdnf install -y --disableplugin=subscription-manager \
-        python38 && \
+        gcc \
+        python38-devel \
+        libffi-devel && \
     microdnf -y clean all && rm -rf /var/cache/dnf && \
     mkdir -p /usr/local/lib/python3.8/site-packages
 
