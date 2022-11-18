@@ -18,6 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
 from sysflow.objtypes import ObjectTypes, OBJ_NAME_MAP
 from fastavro import reader
 from types import SimpleNamespace
@@ -230,8 +231,8 @@ class FlattenedSFReader(SFReader):
                     pod = None
                     if hasattr(rec, 'podId') and rec.podId is not None:
                         if not rec.podId in self.pods:
-                            print(
-                                "ERROR: Cannot find pod object for record. This should not happen. Cont Pod Id: {0}".format(
+                            logging.debug(
+                                "Cannot find pod object for record. This should not happen. Cont Pod Id: {0}".format(
                                     rec.podId
                                 )
                             )
@@ -245,14 +246,14 @@ class FlattenedSFReader(SFReader):
                     container = None
                     if rec.containerId is not None:
                         if not rec.containerId in self.conts:
-                            print("WARN: Cannot find container object for record. This should not happen.")
+                            logging.debug("Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[rec.containerId]
                     pod = None
                     if container is not None and hasattr(container, 'podId') and container.podId is not None:
                         if not container.podId in self.pods:
-                            print(
-                                "ERROR: Cannot find pod object for record. This should not happen. Proc Pod Id: {0}".format(
+                            logging.debug(
+                                "Cannot find pod object for record. This should not happen. Proc Pod Id: {0}".format(
                                     container.podId
                                 )
                             )
@@ -266,14 +267,14 @@ class FlattenedSFReader(SFReader):
                     container = None
                     if rec.containerId is not None:
                         if not rec.containerId in self.conts:
-                            print("WARN: Cannot find container object for record. This should not happen.")
+                            logging.debug("Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[rec.containerId]
                     pod = None
                     if container is not None and hasattr(container, 'podId') and container.podId is not None:
                         if not container.podId in self.pods:
-                            print(
-                                "ERROR: Cannot find pod object for record. This should not happen. File Pod Id: {0}".format(
+                            logging.debug(
+                                "Cannot find pod object for record. This should not happen. File Pod Id: {0}".format(
                                     container.podId
                                 )
                             )
@@ -293,20 +294,20 @@ class FlattenedSFReader(SFReader):
                 evt = None
                 flow = None
                 if not procOID in self.processes:
-                    print("WARN: Cannot find process object for record. This should not happen.")
+                    logging.debug("Cannot find process object for record. This should not happen.")
                 else:
                     proc = self.processes[procOID]
                     pproc = self.getProcess(proc.poid) if proc.poid is not None else None
                 if proc is not None:
                     if proc.containerId is not None:
                         if not proc.containerId in self.conts:
-                            print("WARN: Cannot find container object for record. This should not happen.")
+                            logging.debug("Cannot find container object for record. This should not happen.")
                         else:
                             container = self.conts[proc.containerId]
                     if container is not None and hasattr(container, 'podId') and container.podId is not None:
                         if not container.podId in self.pods:
-                            print(
-                                "ERROR: Cannot find pod object for record. This should not happen. Evt Pod Id: {0}".format(
+                            logging.debug(
+                                "Cannot find pod object for record. This should not happen. Evt Pod Id: {0}".format(
                                     container.podId
                                 )
                             )
@@ -316,13 +317,13 @@ class FlattenedSFReader(SFReader):
                     fileOID = rec.fileOID
                     evt = rec
                     if not fileOID in self.files:
-                        print("WARN: Cannot find file object for record. This should not happen.")
+                        logging.debug("Cannot find file object for record. This should not happen.")
                     else:
                         file1 = self.files[fileOID]
                     fileOID2 = rec.newFileOID
                     if fileOID2 is not None:
                         if not fileOID2 in self.files:
-                            print("WARN: Cannot find file object for record. This should not happen.")
+                            logging.debug("Cannot find file object for record. This should not happen.")
                         else:
                             file2 = self.files[fileOID2]
 
@@ -330,7 +331,7 @@ class FlattenedSFReader(SFReader):
                     fileOID = rec.fileOID
                     flow = rec
                     if not fileOID in self.files:
-                        print("WARN: Cannot find file object for record. This should not happen.")
+                        logging.debug("Cannot find file object for record. This should not happen.")
                     else:
                         file1 = self.files[fileOID]
                 elif objtype == ObjectTypes.PROC_EVT:
