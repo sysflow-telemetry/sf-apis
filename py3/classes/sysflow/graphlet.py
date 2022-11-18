@@ -626,6 +626,7 @@ class Edge(object):
     :param edge: an abstract edge object.
     :type edge: sysflow.Edge
     """
+
     def __init__(self, n1, n2, label):
         super().__init__()
         self.n1 = n1
@@ -643,6 +644,7 @@ class EvtEdge(Edge):
     :param evtedge: an edge object representing a sysflow evt.
     :type evtedge: sysflow.EvtEdge
     """
+
     def __init__(self, n1, n2, label):
         super().__init__(n1, n2, label)
 
@@ -680,6 +682,7 @@ class FlowEdge(Edge):
     :param flowedge: an edge object representing a sysflow flow.
     :type flowedge: sysflow.FlowEdge
     """
+
     def __init__(self, n1, n2, label):
         super().__init__(n1, n2, label)
 
@@ -716,6 +719,7 @@ class Node(object):
     :param node: an abstract node object.
     :type node: sysflow.Node
     """
+
     def __init__(self, oid):
         super().__init__()
         self.oid = oid
@@ -730,6 +734,7 @@ class ProcessNode(Node):
     :param proc: a process node object.
     :type proc: sysflow.ProcessNode
     """
+
     def __init__(self, oid, exe, args, uid, user, gid, group, tty):
         super().__init__(oid)
         self.type = 'P'
@@ -828,6 +833,7 @@ class FileFlowNode(Node):
     :param ff: a fileflow node object.
     :type ff: sysflow.FileFlow
     """
+
     def __init__(self, oid, exe, args):
         super().__init__(oid)
         self.type = 'FF'
@@ -937,6 +943,7 @@ class NetFlowNode(Node):
     :param nf: a netflow node object.
     :type nf: sysflow.NetFlow
     """
+
     def __init__(self, oid, exe, args):
         super().__init__(oid)
         self.type = 'NF'
