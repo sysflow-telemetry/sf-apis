@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.5.1] - 2022-12-20
+
 ### Added
 
 - Add Python graph API to process and visualize sysflow traces
@@ -200,7 +202,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - First release candidate with basic set of SysFlow APIs (C++ and Python).
 
-[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/sysflow-telemetry/sf-apis/compare/0.5.1...HEAD
+[0.5.1]: https://github.com/sysflow-telemetry/sf-apis/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.4...0.5.0
 [0.4.4]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/sysflow-telemetry/sf-apis/compare/0.4.2...0.4.3
