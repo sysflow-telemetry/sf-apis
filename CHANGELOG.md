@@ -21,6 +21,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Add Python graph API to process and visualize sysflow traces
 
+### Fixed
+
+- Fix import of importlib metadata package for Python 3.7
+
 ## [0.5.0] - 2022-10-17
 
 ### Added
