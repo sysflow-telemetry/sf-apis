@@ -40,3 +40,4 @@ dist
 .vscode
 *.ipynb_checkpoints/
 pynb/**/.env
+pynb/**/.venv
