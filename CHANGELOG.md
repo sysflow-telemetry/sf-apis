@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Add Python graph API to process and visualize sysflow traces
+- Add k8s demo notebook
 
 ### Fixed
 
