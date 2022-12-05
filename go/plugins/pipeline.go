@@ -32,5 +32,6 @@ type SFPipeline interface {
 	GetNumProcessors() int
 	GetNumHandlers() int
 	GetPluginCache() SFPluginCache
+	GetChannel(name string)(interface{}, error)
 	Print()
 }

@@ -22,7 +22,7 @@ package plugins
 
 // SFDriver is an interface representing a telemetry driver.
 type SFDriver interface {
-	Init(pipeline SFPipeline) error
+	Init(pipeline SFPipeline, config map[string]interface{}) error
 	Run(path string, running *bool) error
 	GetName() string
 	Register(pc SFPluginCache)
