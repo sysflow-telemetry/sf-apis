@@ -1,6 +1,6 @@
 module github.com/sysflow-telemetry/sf-apis/go
 
-go 1.17
+go 1.19
 
 require (
 	github.com/actgardner/gogen-avro/v7 v7.3.1
