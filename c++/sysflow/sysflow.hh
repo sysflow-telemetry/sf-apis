@@ -152,6 +152,7 @@ struct Process {
     int64_t ts;
     std::string exe;
     std::string exeArgs;
+    std::string cwd;
     int32_t uid;
     std::string userName;
     int32_t gid;
@@ -166,6 +167,7 @@ struct Process {
         ts(int64_t()),
         exe(std::string()),
         exeArgs(std::string()),
+        cwd(std::string()),
         uid(int32_t()),
         userName(std::string()),
         gid(int32_t()),
@@ -509,7 +511,7 @@ struct SysFlow {
 inline
 std::string _SysFlow_avsc_Union__0__::get_string() const {
     if (idx_ != 1) {
-        throw avro::Exception(std::string("Invalid type for union. Expected string index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<std::string >(value_);
 }
@@ -523,7 +525,7 @@ void _SysFlow_avsc_Union__0__::set_string(const std::string& v) {
 inline
 OID _SysFlow_avsc_Union__1__::get_OID() const {
     if (idx_ != 1) {
-        throw avro::Exception(std::string("Invalid type for union. Expected OID index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<OID >(value_);
 }
@@ -537,7 +539,7 @@ void _SysFlow_avsc_Union__1__::set_OID(const OID& v) {
 inline
 std::string _SysFlow_avsc_Union__2__::get_string() const {
     if (idx_ != 1) {
-        throw avro::Exception(std::string("Invalid type for union. Expected string index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<std::string >(value_);
 }
@@ -551,7 +553,7 @@ void _SysFlow_avsc_Union__2__::set_string(const std::string& v) {
 inline
 std::string _SysFlow_avsc_Union__3__::get_string() const {
     if (idx_ != 1) {
-        throw avro::Exception(std::string("Invalid type for union. Expected string index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<std::string >(value_);
 }
@@ -565,7 +567,7 @@ void _SysFlow_avsc_Union__3__::set_string(const std::string& v) {
 inline
 std::array<uint8_t, 20> _SysFlow_avsc_Union__4__::get_FOID() const {
     if (idx_ != 1) {
-        throw avro::Exception(std::string("Invalid type for union. Expected FOID index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<std::array<uint8_t, 20> >(value_);
 }
@@ -579,7 +581,7 @@ void _SysFlow_avsc_Union__4__::set_FOID(const std::array<uint8_t, 20>& v) {
 inline
 SFHeader _SysFlow_avsc_Union__5__::get_SFHeader() const {
     if (idx_ != 0) {
-        throw avro::Exception(std::string("Invalid type for union. Expected header index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<SFHeader >(value_);
 }
@@ -593,7 +595,7 @@ void _SysFlow_avsc_Union__5__::set_SFHeader(const SFHeader& v) {
 inline
 Container _SysFlow_avsc_Union__5__::get_Container() const {
     if (idx_ != 1) {
-        throw avro::Exception(std::string("Invalid type for union. Expected container index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<Container >(value_);
 }
@@ -607,7 +609,7 @@ void _SysFlow_avsc_Union__5__::set_Container(const Container& v) {
 inline
 Process _SysFlow_avsc_Union__5__::get_Process() const {
     if (idx_ != 2) {
-        throw avro::Exception(std::string("Invalid type for union. Expected process index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<Process >(value_);
 }
@@ -621,7 +623,7 @@ void _SysFlow_avsc_Union__5__::set_Process(const Process& v) {
 inline
 File _SysFlow_avsc_Union__5__::get_File() const {
     if (idx_ != 3) {
-        throw avro::Exception(std::string("Invalid type for union. Expected file index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<File >(value_);
 }
@@ -635,7 +637,7 @@ void _SysFlow_avsc_Union__5__::set_File(const File& v) {
 inline
 ProcessEvent _SysFlow_avsc_Union__5__::get_ProcessEvent() const {
     if (idx_ != 4) {
-        throw avro::Exception(std::string("Invalid type for union. Expected PE index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<ProcessEvent >(value_);
 }
@@ -649,7 +651,7 @@ void _SysFlow_avsc_Union__5__::set_ProcessEvent(const ProcessEvent& v) {
 inline
 NetworkFlow _SysFlow_avsc_Union__5__::get_NetworkFlow() const {
     if (idx_ != 5) {
-        throw avro::Exception(std::string("Invalid type for union. Expected NF index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<NetworkFlow >(value_);
 }
@@ -663,7 +665,7 @@ void _SysFlow_avsc_Union__5__::set_NetworkFlow(const NetworkFlow& v) {
 inline
 FileFlow _SysFlow_avsc_Union__5__::get_FileFlow() const {
     if (idx_ != 6) {
-        throw avro::Exception(std::string("Invalid type for union. Expected FF index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<FileFlow >(value_);
 }
@@ -677,7 +679,7 @@ void _SysFlow_avsc_Union__5__::set_FileFlow(const FileFlow& v) {
 inline
 FileEvent _SysFlow_avsc_Union__5__::get_FileEvent() const {
     if (idx_ != 7) {
-        throw avro::Exception(std::string("Invalid type for union. Expected FE index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<FileEvent >(value_);
 }
@@ -691,7 +693,7 @@ void _SysFlow_avsc_Union__5__::set_FileEvent(const FileEvent& v) {
 inline
 NetworkEvent _SysFlow_avsc_Union__5__::get_NetworkEvent() const {
     if (idx_ != 8) {
-        throw avro::Exception(std::string("Invalid type for union. Expected NE index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<NetworkEvent >(value_);
 }
@@ -705,7 +707,7 @@ void _SysFlow_avsc_Union__5__::set_NetworkEvent(const NetworkEvent& v) {
 inline
 ProcessFlow _SysFlow_avsc_Union__5__::get_ProcessFlow() const {
     if (idx_ != 9) {
-        throw avro::Exception(std::string("Invalid type for union. Expected PF index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<ProcessFlow >(value_);
 }
@@ -719,7 +721,7 @@ void _SysFlow_avsc_Union__5__::set_ProcessFlow(const ProcessFlow& v) {
 inline
 Pod _SysFlow_avsc_Union__5__::get_Pod() const {
     if (idx_ != 10) {
-        throw avro::Exception(std::string("Invalid type for union. Expected pod index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<Pod >(value_);
 }
@@ -733,7 +735,7 @@ void _SysFlow_avsc_Union__5__::set_Pod(const Pod& v) {
 inline
 K8sEvent _SysFlow_avsc_Union__5__::get_K8sEvent() const {
     if (idx_ != 11) {
-        throw avro::Exception(std::string("Invalid type for union. Expected KE index, got index ") + std::to_string(idx_));
+        throw avro::Exception("Invalid type for union");
     }
     return boost::any_cast<K8sEvent >(value_);
 }
@@ -1019,6 +1021,7 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.ts);
         avro::encode(e, v.exe);
         avro::encode(e, v.exeArgs);
+        avro::encode(e, v.cwd);
         avro::encode(e, v.uid);
         avro::encode(e, v.userName);
         avro::encode(e, v.gid);
@@ -1053,24 +1056,27 @@ template<> struct codec_traits<sysflow::Process> {
                     avro::decode(d, v.exeArgs);
                     break;
                 case 6:
-                    avro::decode(d, v.uid);
+                    avro::decode(d, v.cwd);
                     break;
                 case 7:
-                    avro::decode(d, v.userName);
+                    avro::decode(d, v.uid);
                     break;
                 case 8:
-                    avro::decode(d, v.gid);
+                    avro::decode(d, v.userName);
                     break;
                 case 9:
-                    avro::decode(d, v.groupName);
+                    avro::decode(d, v.gid);
                     break;
                 case 10:
-                    avro::decode(d, v.tty);
+                    avro::decode(d, v.groupName);
                     break;
                 case 11:
-                    avro::decode(d, v.containerId);
+                    avro::decode(d, v.tty);
                     break;
                 case 12:
+                    avro::decode(d, v.containerId);
+                    break;
+                case 13:
                     avro::decode(d, v.entry);
                     break;
                 default:
@@ -1084,6 +1090,7 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.ts);
             avro::decode(d, v.exe);
             avro::decode(d, v.exeArgs);
+            avro::decode(d, v.cwd);
             avro::decode(d, v.uid);
             avro::decode(d, v.userName);
             avro::decode(d, v.gid);
