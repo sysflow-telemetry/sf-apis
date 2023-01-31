@@ -152,7 +152,6 @@ struct Process {
     int64_t ts;
     std::string exe;
     std::string exeArgs;
-    std::string cwd;
     int32_t uid;
     std::string userName;
     int32_t gid;
@@ -160,6 +159,7 @@ struct Process {
     bool tty;
     containerId_t containerId;
     bool entry;
+    std::string cwd;
     Process() :
         state(SFObjectState()),
         oid(OID()),
@@ -167,14 +167,14 @@ struct Process {
         ts(int64_t()),
         exe(std::string()),
         exeArgs(std::string()),
-        cwd(std::string()),
         uid(int32_t()),
         userName(std::string()),
         gid(int32_t()),
         groupName(std::string()),
         tty(bool()),
         containerId(containerId_t()),
-        entry(bool())
+        entry(bool()),
+        cwd(std::string())
         { }
 };
 
@@ -1021,7 +1021,6 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.ts);
         avro::encode(e, v.exe);
         avro::encode(e, v.exeArgs);
-        avro::encode(e, v.cwd);
         avro::encode(e, v.uid);
         avro::encode(e, v.userName);
         avro::encode(e, v.gid);
@@ -1029,6 +1028,7 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.tty);
         avro::encode(e, v.containerId);
         avro::encode(e, v.entry);
+        avro::encode(e, v.cwd);
     }
     static void decode(Decoder& d, sysflow::Process& v) {
         if (avro::ResolvingDecoder *rd =
@@ -1056,28 +1056,28 @@ template<> struct codec_traits<sysflow::Process> {
                     avro::decode(d, v.exeArgs);
                     break;
                 case 6:
-                    avro::decode(d, v.cwd);
-                    break;
-                case 7:
                     avro::decode(d, v.uid);
                     break;
-                case 8:
+                case 7:
                     avro::decode(d, v.userName);
                     break;
-                case 9:
+                case 8:
                     avro::decode(d, v.gid);
                     break;
-                case 10:
+                case 9:
                     avro::decode(d, v.groupName);
                     break;
-                case 11:
+                case 10:
                     avro::decode(d, v.tty);
                     break;
-                case 12:
+                case 11:
                     avro::decode(d, v.containerId);
                     break;
-                case 13:
+                case 12:
                     avro::decode(d, v.entry);
+                    break;
+                case 13:
+                    avro::decode(d, v.cwd);
                     break;
                 default:
                     break;
@@ -1090,7 +1090,6 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.ts);
             avro::decode(d, v.exe);
             avro::decode(d, v.exeArgs);
-            avro::decode(d, v.cwd);
             avro::decode(d, v.uid);
             avro::decode(d, v.userName);
             avro::decode(d, v.gid);
@@ -1098,6 +1097,7 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.tty);
             avro::decode(d, v.containerId);
             avro::decode(d, v.entry);
+            avro::decode(d, v.cwd);
         }
     }
 };

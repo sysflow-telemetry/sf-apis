@@ -27,7 +27,6 @@ record Process {
   long ts;
   string exe;
   string exeArgs;
-  string cwd;
   int uid;
   string userName;
   int gid;
@@ -35,5 +34,6 @@ record Process {
   boolean tty;
   union{null, string} containerId;
   boolean entry = false; 
+  string cwd;
 }
 }
