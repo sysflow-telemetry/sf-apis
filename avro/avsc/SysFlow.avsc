@@ -93,9 +93,6 @@
         "name" : "exeArgs",
         "type" : "string"
       }, {
-        "name" : "cwd",
-        "type" : "string"
-      }, {
         "name" : "uid",
         "type" : "int"
       }, {
@@ -117,6 +114,9 @@
         "name" : "entry",
         "type" : "boolean",
         "default" : false
+      }, {
+        "name" : "cwd",
+        "type" : "string"
       } ]
     }, {
       "type" : "record",
