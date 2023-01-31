@@ -35,5 +35,6 @@ record Process {
   union{null, string} containerId;
   boolean entry = false; 
   string cwd;
+  array<string> env;
 }
 }
