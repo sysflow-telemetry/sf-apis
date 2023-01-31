@@ -31,6 +31,10 @@
 *.out
 *.app
 
+# Avro tools
+avro/avro-cpp
+avro/avro-tools
+
 # Misc
 *.DS_Store
 build

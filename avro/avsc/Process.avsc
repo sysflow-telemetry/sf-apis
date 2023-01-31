@@ -37,6 +37,9 @@
     "name" : "exeArgs",
     "type" : "string"
   }, {
+    "name" : "cwd",
+    "type" : "string"
+  }, {
     "name" : "uid",
     "type" : "int"
   }, {

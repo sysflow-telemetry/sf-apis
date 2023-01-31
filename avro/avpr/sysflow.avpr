@@ -296,6 +296,9 @@
       "name" : "exeArgs",
       "type" : "string"
     }, {
+      "name" : "cwd",
+      "type" : "string"
+    }, {
       "name" : "uid",
       "type" : "int"
     }, {
@@ -325,7 +328,7 @@
     "fields" : [ {
       "name" : "version",
       "type" : "long",
-      "default" : 4
+      "default" : 5
     }, {
       "name" : "exporter",
       "type" : "string"
