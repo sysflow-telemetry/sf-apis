@@ -160,6 +160,7 @@ struct Process {
     containerId_t containerId;
     bool entry;
     std::string cwd;
+    std::vector<std::string > env;
     Process() :
         state(SFObjectState()),
         oid(OID()),
@@ -174,7 +175,8 @@ struct Process {
         tty(bool()),
         containerId(containerId_t()),
         entry(bool()),
-        cwd(std::string())
+        cwd(std::string()),
+        env(std::vector<std::string >())
         { }
 };
 
@@ -1029,6 +1031,7 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.containerId);
         avro::encode(e, v.entry);
         avro::encode(e, v.cwd);
+        avro::encode(e, v.env);
     }
     static void decode(Decoder& d, sysflow::Process& v) {
         if (avro::ResolvingDecoder *rd =
@@ -1079,6 +1082,9 @@ template<> struct codec_traits<sysflow::Process> {
                 case 13:
                     avro::decode(d, v.cwd);
                     break;
+                case 14:
+                    avro::decode(d, v.env);
+                    break;
                 default:
                     break;
                 }
@@ -1098,6 +1104,7 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.containerId);
             avro::decode(d, v.entry);
             avro::decode(d, v.cwd);
+            avro::decode(d, v.env);
         }
     }
 };

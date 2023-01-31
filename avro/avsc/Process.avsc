@@ -61,5 +61,11 @@
   }, {
     "name" : "cwd",
     "type" : "string"
+  }, {
+    "name" : "env",
+    "type" : {
+      "type" : "array",
+      "items" : "string"
+    }
   } ]
 }
