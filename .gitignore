@@ -45,3 +45,4 @@ dist
 *.ipynb_checkpoints/
 pynb/**/.env
 pynb/**/.venv
+c++/sysflow/avsc_sysflow.hh
