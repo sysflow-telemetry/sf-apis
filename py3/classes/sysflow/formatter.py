@@ -74,11 +74,13 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'proc.group': ('Group', 8, 'Process group name', False),
     'proc.apid': ('A. PIDs', 20, 'Process ancestors PIDs (query only)', True),
     'proc.aname': ('A. Proc. Names', 20, 'Process ancestors names (query only)', True),
+    'proc.cwd': ('Cwd', 20, 'Current working directory ', False),
     'proc.exe': ('Cmd', 20, 'Process command/filename', False),
     'proc.args': ('Args', 20, 'Process command arguments', False),
     'proc.name': ('Proc. Name', 20, 'Process name (query only)', True),
     'proc.cmdline': ('Cmd Line', 20, 'Process command line (query only)', True),
     'proc.tty': ('TTY', 5, 'Process TTY status', False),
+    'proc.env': ('Env', 30, 'Process environment variables', False),
     'proc.entry': ('Entry', 5, 'Process container entrypoint', False),
     'proc.createts': ('Proc. Creation Time', 21, 'Process creation timestamp', False),
     'pproc.pid': ('PPID', 8, 'Parent process ID', False),
@@ -86,8 +88,10 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'pproc.uid': ('PUID', 5, 'Parent process user ID', False),
     'pproc.group': ('PGroup', 8, 'Parent process group name', False),
     'pproc.tty': ('PTTY', 5, 'Parent process TTY status', False),
+    'pproc.env': ('PEnv', 30, 'Parent process environment variables', False),
     'pproc.entry': ('PEntry', 5, 'Parent process container entry', False),
     'pproc.user': ('PUser', 8, 'Parent process user name', False),
+    'pproc.cwd': ('PCwd', 20, 'Parent current working directory ', False),
     'pproc.exe': ('PCmd', 20, 'Parent process command/filename', False),
     'pproc.args': ('PArgs', 20, 'Parent process command arguments', False),
     'pproc.name': ('PProc. Name', 20, 'Parent process name (query only)', True),
@@ -402,10 +406,12 @@ class SFFormatter(object):
         _flat_map['proc.user'] = proc.userName if proc else ''
         _flat_map['proc.gid'] = int(proc.gid) if proc else None
         _flat_map['proc.group'] = proc.groupName if proc else ''
+        _flat_map['proc.cwd'] = proc.cwd if proc and hasattr(proc, 'cwd') else ''
         _flat_map['proc.exe'] = proc.exe if proc else ''
         _flat_map['proc.args'] = proc.exeArgs if proc else ''
         _flat_map['proc.tty'] = proc.tty if proc else ''
         _flat_map['proc.entry'] = proc.entry if proc and hasattr(proc, 'entry') else ''
+        _flat_map['proc.env'] = utils.getEnvStr(proc.env) if proc and hasattr(proc, 'env') else ''
         _flat_map['proc.createts'] = int(proc.oid.createTS) if proc else None
         _flat_map['pproc.pid'] = int(pproc.oid.hpid) if pproc else None
         _flat_map['pproc.gid'] = int(pproc.gid) if pproc else None
@@ -413,7 +419,9 @@ class SFFormatter(object):
         _flat_map['pproc.group'] = pproc.groupName if pproc else ''
         _flat_map['pproc.tty'] = pproc.tty if pproc else ''
         _flat_map['pproc.entry'] = pproc.entry if pproc and hasattr(pproc, 'entry') else ''
+        _flat_map['pproc.env'] = utils.getEnvStr(pproc.env) if pproc and hasattr(pproc, 'env') else ''
         _flat_map['pproc.user'] = pproc.userName if pproc else ''
+        _flat_map['pproc.cwd'] = pproc.cwd if pproc and hasattr(pproc, 'cwd') else ''
         _flat_map['pproc.exe'] = pproc.exe if pproc else ''
         _flat_map['pproc.args'] = pproc.exeArgs if pproc else ''
         _flat_map['pproc.createts'] = pproc.oid.createTS if pproc else ''

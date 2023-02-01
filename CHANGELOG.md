@@ -15,12 +15,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [0.5.1] - 2022-12-20
+## [0.5.1] - 2023-02-15
 
 ### Added
 
 - Add Python graph API to process and visualize sysflow traces
 - Add k8s demo notebook
+- Add attributes cwd and env to process object
+
+### Changed
+
+- Improve exception handling in sysprint
 
 ### Fixed
 
