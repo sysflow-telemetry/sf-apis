@@ -1,28 +1,46 @@
 #!/bin/bash
 
+# usage
 if [ -z "$1" ]
 then
     echo "Missing argument. Usage: ./geberateCClasses.sh <version>"
     exit
 fi
 
-source ./manifest
-
+# pre-requisites
 if ! command -v java &> /dev/null
 then
     echo "java could not be found"
     exit
 fi
 
+if ! command -v unzip &> /dev/null
+then
+    echo "unzip could not be found"
+    exit
+fi
+
+if ! command -v wget &> /dev/null
+then
+    echo "wget could not be found"
+    exit
+fi
+
+# source version metadata
+source ./manifest
+
+# install avro-tools
 wget -N -P avro-tools/ ${AVRO_TOOLS_URL}
 
+# install avrogencpp
 if ! command -v avrogencpp &> /dev/null 
 then
     sudo apt-get install -y build-essential libboost-all-dev libsnappy-dev
     wget -N -P avro-cpp/ ${AVRO_GENCPP_URL}
-    cd avro-cpp && tar -xzf avro-cpp-${AVRO_VERSION}.tar.gz && cd avro-cpp-${AVRO_VERSION} && sudo ./build.sh install && cd ../..
+    cd avro-cpp && unzip -o release-${AVRO_VERSION}.zip && cd avro-release-${AVRO_VERSION}/lang/c++ && sudo ./build.sh install && cd ../../../..
 fi
 
+# generate avsc
 java -jar avro-tools/avro-tools-${AVRO_VERSION}.jar idl avdl/sysflow.avdl ./avpr/sysflow.avpr
 java -jar avro-tools/avro-tools-${AVRO_VERSION}.jar idl2schemata ./avdl/sysflow.avdl avsc/
 
