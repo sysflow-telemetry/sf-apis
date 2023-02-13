@@ -21,7 +21,6 @@
 package ioutils
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -34,18 +33,66 @@ func ListFilePaths(path string, fileExts ...string) ([]string, error) {
 	if fi, err := os.Stat(path); os.IsNotExist(err) {
 		return paths, err
 	} else if fi.IsDir() {
-		for _, fileExt := range fileExts {
-			var files []os.FileInfo
-			var err error
-			if files, err = ioutil.ReadDir(path); err != nil {
-				return paths, err
+		var entries []os.DirEntry
+		var err error
+		if entries, err = os.ReadDir(path); err != nil {
+			return paths, err
+		}
+		for _, entry := range entries {
+			if entry.IsDir() {
+				continue
 			}
-			for _, file := range files {
-				if filepath.Ext(file.Name()) == fileExt {
-					f := path + "/" + file.Name()
-					paths = append(paths, f)
+			if len(fileExts) > 0 {
+				for _, fileExt := range fileExts {
+					if filepath.Ext(entry.Name()) == fileExt {
+						f := path + "/" + entry.Name()
+						paths = append(paths, f)
+					}
 				}
+			} else {
+				f := path + "/" + entry.Name()
+				paths = append(paths, f)
 			}
+		}
+	} else {
+		for _, fileExt := range fileExts {
+			if filepath.Ext(path) == fileExt {
+				return append(paths, path), nil
+			}
+		}
+	}
+	return paths, nil
+}
+
+// ListRecursiveFilePaths recursively lists file paths with extension
+// fileExt in path if path is a valid directory, otherwise, it returns
+// path if path is a valid path and has extension fileExt.
+func ListRecursiveFilePaths(path string, fileExts ...string) ([]string, error) {
+	var paths []string
+	if fi, err := os.Stat(path); os.IsNotExist(err) {
+		return paths, err
+	} else if fi.IsDir() {
+		err := filepath.Walk(path,
+			func(p string, info os.FileInfo, err error) error {
+				if err != nil {
+					return err
+				}
+				if info.IsDir() {
+					return nil
+				}
+				if len(fileExts) > 0 {
+					for _, fileExt := range fileExts {
+						if filepath.Ext(info.Name()) == fileExt {
+							paths = append(paths, p)
+						}
+					}
+				} else {
+					paths = append(paths, p)
+				}
+				return nil
+			})
+		if err != nil {
+			return paths, err
 		}
 	} else {
 		for _, fileExt := range fileExts {
