@@ -23,7 +23,6 @@ package logger
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -41,6 +40,9 @@ const (
 	HEALTH
 	QUIET
 )
+
+// Perf logger string.
+const perf string = "Perf"
 
 func (d LogLevel) String() string {
 	return [...]string{"Trace", "Info", "Warn", "Error", "Health", "Quiet"}[d]
@@ -62,7 +64,15 @@ var (
 	Warn   *log.Logger
 	Error  *log.Logger
 	Health *log.Logger
+	Perf   *log.Logger
 )
+
+// EnablePerfLogger enables performance logger. This logger is independent of log levels.
+func EnablePerfLogger() {
+	Perf = log.New(os.Stdout,
+		fmt.Sprintf("[%s] ", perf),
+		log.Ldate|log.Ltime|log.Lshortfile)
+}
 
 // InitLoggers initialize utility loggers with default i/o streams.
 func InitLoggers(level LogLevel) {
@@ -70,17 +80,17 @@ func InitLoggers(level LogLevel) {
 	case TRACE:
 		initLoggers(os.Stdout, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	case INFO:
-		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	case WARN:
-		initLoggers(ioutil.Discard, ioutil.Discard, os.Stdout, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, io.Discard, os.Stdout, os.Stderr, os.Stdout)
 	case ERROR:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, io.Discard, io.Discard, os.Stderr, os.Stdout)
 	case HEALTH:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stdout)
+		initLoggers(io.Discard, io.Discard, io.Discard, io.Discard, os.Stdout)
 	case QUIET:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard)
+		initLoggers(io.Discard, io.Discard, io.Discard, io.Discard, io.Discard)
 	default:
-		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	}
 }
 
@@ -109,5 +119,9 @@ func initLoggers(
 
 	Health = log.New(healthHandle,
 		fmt.Sprintf("[%s] ", HEALTH),
+		log.Ldate|log.Ltime|log.Lshortfile)
+
+	Perf = log.New(io.Discard,
+		fmt.Sprintf("[%s] ", perf),
 		log.Ldate|log.Ltime|log.Lshortfile)
 }
