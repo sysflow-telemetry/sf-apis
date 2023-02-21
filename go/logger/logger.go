@@ -67,13 +67,6 @@ var (
 	Perf   *log.Logger
 )
 
-// EnablePerfLogger enables performance logger. This logger is independent of log levels.
-func EnablePerfLogger() {
-	Perf = log.New(os.Stdout,
-		fmt.Sprintf("[%s] ", perf),
-		log.Ldate|log.Ltime|log.Lshortfile)
-}
-
 // InitLoggers initialize utility loggers with default i/o streams.
 func InitLoggers(level LogLevel) {
 	switch level {
@@ -121,7 +114,18 @@ func initLoggers(
 		fmt.Sprintf("[%s] ", HEALTH),
 		log.Ldate|log.Ltime|log.Lshortfile)
 
-	Perf = log.New(io.Discard,
+	SetPerfLogger(false)
+}
+
+// SetPerfLogger changes the state of the performance logger. This logger is independent of log levels (default: disabled).
+func SetPerfLogger(enabled bool) {
+	var iowriter io.Writer
+	if enabled {
+		iowriter = os.Stdout
+	} else {
+		iowriter = io.Discard
+	}
+	Perf = log.New(iowriter,
 		fmt.Sprintf("[%s] ", perf),
 		log.Ldate|log.Ltime|log.Lshortfile)
 }
