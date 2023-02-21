@@ -129,3 +129,8 @@ func SetPerfLogger(enabled bool) {
 		fmt.Sprintf("[%s] ", perf),
 		log.Ldate|log.Ltime|log.Lshortfile)
 }
+
+// IsEnabled checks whether a logger is enabled.
+func IsEnabled(logger *log.Logger) bool {
+	return logger == nil || logger.Writer() == io.Discard
+}
