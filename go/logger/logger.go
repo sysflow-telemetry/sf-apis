@@ -132,5 +132,5 @@ func SetPerfLogger(enabled bool) {
 
 // IsEnabled checks whether a logger is enabled.
 func IsEnabled(logger *log.Logger) bool {
-	return logger == nil || logger.Writer() == io.Discard
+	return logger != nil && logger.Writer() != io.Discard
 }
