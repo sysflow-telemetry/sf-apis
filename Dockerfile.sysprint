@@ -16,7 +16,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-ARG UBI_VER=8.6-941
+ARG UBI_VER=8.7-1085.1679482090
 FROM registry.access.redhat.com/ubi8/ubi-minimal:${UBI_VER}
 
 # Build args
@@ -38,10 +38,10 @@ LABEL "io.k8s.description"="The SysFlow Printer is a command-line utility for in
 # Install Python environment
 RUN microdnf install -y --disableplugin=subscription-manager \
         gcc \
-        python38-devel \
+        python39-devel \
         libffi-devel && \
     microdnf -y clean all && rm -rf /var/cache/dnf && \
-    mkdir -p /usr/local/lib/python3.8/site-packages
+    mkdir -p /usr/local/lib/python3.9/site-packages
 
 # sources
 COPY py3 /tmp/build
