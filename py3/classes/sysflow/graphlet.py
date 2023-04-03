@@ -150,44 +150,86 @@ class Graphlet(object):
                 r = self.fmt._flatten(objtype, header, pod, cont, pproc, proc, files, evt, flow, None, tags=tags)
                 opflag = utils.getOpFlagsStr(evt.opFlags)
 
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty) and v.hasProc(
-                    pproc.oid.hpid, pproc.oid.createTS
-                )
+                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                ) and v.hasProc(pproc.oid.hpid, pproc.oid.createTS)
                 if opflag == utils.getOpFlagsStr(opflags.OP_CLONE):
-                    #and (proc.exe, proc.exeArgs) == (
-                    #pproc.exe,
-                    #pproc.exeArgs,
-                    #):
+                    # and (proc.exe, proc.exeArgs) == (
+                    # pproc.exe,
+                    # pproc.exeArgs,
+                    # ):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) != (proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty) and v.hasProc(
-                    proc.oid.hpid, proc.oid.createTS
-                )
+                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) != (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
                 if opflag == utils.getOpFlagsStr(opflags.OP_EXEC):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty) and v.hasProc(
-                    proc.oid.hpid, proc.oid.createTS
-                )
+                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
                 if opflag == utils.getOpFlagsStr(opflags.OP_EXIT):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
             if objtype == ObjectTypes.FILE_FLOW and files[0].path != proc.exe:
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty) and v.hasProc(
-                    proc.oid.hpid, proc.oid.createTS
-                )
+                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
                 r = self.fmt._flatten(objtype, header, pod, cont, pproc, proc, files, evt, flow, None, tags=tags)
                 self.__addFileFlowEdge(proc, pproc, r, filt)
 
             if objtype == ObjectTypes.NET_FLOW:
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty) and v.hasProc(
-                    proc.oid.hpid, proc.oid.createTS
-                )
+                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
                 r = self.fmt._flatten(objtype, header, pod, cont, pproc, proc, files, evt, flow, None, tags=tags)
                 self.__addNetFlowEdge(proc, pproc, r, filt)
 
     def __addProcEvtEdge(self, opflag, proc, pproc, r, filt):
-        n1_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, pproc.exe, pproc.exeArgs))
+        n1_k = _hash(
+            (
+                proc.exe,
+                proc.exeArgs,
+                proc.uid,
+                proc.userName,
+                proc.gid,
+                proc.groupName,
+                proc.tty,
+                pproc.exe,
+                pproc.exeArgs,
+            )
+        )
         if n1_k in self.nodes:
             n1_v = self.nodes[n1_k]
         else:
@@ -215,20 +257,48 @@ class Graphlet(object):
                 n2_k = _hash((p.exe, p.exeArgs, p.uid, p.userName, p.gid, p.groupName, p.tty, pp.exe, pp.exeArgs))
             else:
                 n2_k = _hash((p.exe, p.exeArgs, p.uid, p.userName, p.gid, p.groupName, p.tty))
-            
+
             if n2_k in self.nodes:
                 n2_v = self.nodes[n2_k]
             else:
                 n2_v = ProcessNode(n2_k, p.exe, p.exeArgs, p.uid, p.userName, p.gid, p.groupName, p.tty)
-            n2_v.addProc(p.oid.hpid, p.oid.createTS, self.fmt._flatten(ObjectTypes.PROC, None, None, None, pp, p, None, None, None, None, None))
+            n2_v.addProc(
+                p.oid.hpid,
+                p.oid.createTS,
+                self.fmt._flatten(ObjectTypes.PROC, None, None, None, pp, p, None, None, None, None, None),
+            )
             self.nodes[n2_k] = n2_v
         self.edges.add(EvtEdge(n2_k, n1_k, opflag))
 
     def __addFileFlowEdge(self, proc, pproc, r, filt):
         if pproc:
-            n1_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, OBJECT_MAP[ObjectTypes.FILE_FLOW], pproc.exe, pproc.exeArgs))
+            n1_k = _hash(
+                (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                    OBJECT_MAP[ObjectTypes.FILE_FLOW],
+                    pproc.exe,
+                    pproc.exeArgs,
+                )
+            )
         else:
-            n1_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, OBJECT_MAP[ObjectTypes.FILE_FLOW]))
+            n1_k = _hash(
+                (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                    OBJECT_MAP[ObjectTypes.FILE_FLOW],
+                )
+            )
         new = False
         if n1_k in self.nodes:
             n1_v = self.nodes[n1_k]
@@ -244,25 +314,65 @@ class Graphlet(object):
                 pp = None
                 if key in self.reader.processes:
                     pp = self.reader.processes[key]
-                    n2_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, pp.exe, pp.exeArgs))
+                    n2_k = _hash(
+                        (
+                            proc.exe,
+                            proc.exeArgs,
+                            proc.uid,
+                            proc.userName,
+                            proc.gid,
+                            proc.groupName,
+                            proc.tty,
+                            pp.exe,
+                            pp.exeArgs,
+                        )
+                    )
                 else:
                     n2_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty))
-                
+
                 if n2_k in self.nodes:
                     n2_v = self.nodes[n2_k]
                 else:
                     n2_v = ProcessNode(
                         n2_k, proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty
                     )
-                n2_v.addProc(proc.oid.hpid, proc.oid.createTS, self.fmt._flatten(ObjectTypes.PROC, None, None, None, pp, proc, None, None, None, None, None))
+                n2_v.addProc(
+                    proc.oid.hpid,
+                    proc.oid.createTS,
+                    self.fmt._flatten(ObjectTypes.PROC, None, None, None, pp, proc, None, None, None, None, None),
+                )
                 self.nodes[n2_k] = n2_v
             self.edges.add(FlowEdge(n2_k, n1_k, OBJECT_MAP[ObjectTypes.FILE_FLOW]))
 
     def __addNetFlowEdge(self, proc, pproc, r, filt):
         if pproc:
-            n1_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, OBJECT_MAP[ObjectTypes.NET_FLOW], pproc.exe, pproc.exeArgs))
+            n1_k = _hash(
+                (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                    OBJECT_MAP[ObjectTypes.NET_FLOW],
+                    pproc.exe,
+                    pproc.exeArgs,
+                )
+            )
         else:
-            n1_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, OBJECT_MAP[ObjectTypes.NET_FLOW]))
+            n1_k = _hash(
+                (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                    OBJECT_MAP[ObjectTypes.NET_FLOW],
+                )
+            )
         new = False
         if n1_k in self.nodes:
             n1_v = self.nodes[n1_k]
@@ -278,7 +388,19 @@ class Graphlet(object):
                 pp = None
                 if key in self.reader.processes:
                     pp = self.reader.processes[key]
-                    n2_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty, pp.exe, pp.exeArgs))
+                    n2_k = _hash(
+                        (
+                            proc.exe,
+                            proc.exeArgs,
+                            proc.uid,
+                            proc.userName,
+                            proc.gid,
+                            proc.groupName,
+                            proc.tty,
+                            pp.exe,
+                            pp.exeArgs,
+                        )
+                    )
                 else:
                     n2_k = _hash((proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty))
                 if n2_k in self.nodes:
@@ -287,7 +409,11 @@ class Graphlet(object):
                     n2_v = ProcessNode(
                         n2_k, proc.exe, proc.exeArgs, proc.uid, proc.userName, proc.gid, proc.groupName, proc.tty
                     )
-                n2_v.addProc(proc.oid.hpid, proc.oid.createTS, self.fmt._flatten(ObjectTypes.PROC, None, None, None, pp, proc, None, None, None, None, None))
+                n2_v.addProc(
+                    proc.oid.hpid,
+                    proc.oid.createTS,
+                    self.fmt._flatten(ObjectTypes.PROC, None, None, None, pp, proc, None, None, None, None, None),
+                )
                 self.nodes[n2_k] = n2_v
             self.edges.add(FlowEdge(n2_k, n1_k, OBJECT_MAP[ObjectTypes.NET_FLOW]))
 

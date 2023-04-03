@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging, sys
+import logging
 from sysflow.objtypes import ObjectTypes, OBJ_NAME_MAP
 from fastavro import reader
 from types import SimpleNamespace
