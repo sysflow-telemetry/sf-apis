@@ -317,6 +317,15 @@
       "name" : "entry",
       "type" : "boolean",
       "default" : false
+    }, {
+      "name" : "cwd",
+      "type" : "string"
+    }, {
+      "name" : "env",
+      "type" : {
+        "type" : "array",
+        "items" : "string"
+      }
     } ]
   }, {
     "type" : "record",
@@ -325,7 +334,7 @@
     "fields" : [ {
       "name" : "version",
       "type" : "long",
-      "default" : 4
+      "default" : 5
     }, {
       "name" : "exporter",
       "type" : "string"

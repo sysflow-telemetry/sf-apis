@@ -25,7 +25,6 @@ record Process {
   sysflow.type.OID oid; // monotonic process creation time + host PID
   union{null, sysflow.type.OID} poid;
   long ts;
-  //int hpid;
   string exe;
   string exeArgs;
   int uid;
@@ -33,11 +32,9 @@ record Process {
   int gid;
   string groupName;
   boolean tty;
-  //int hostId;
-  //int duration;
-  //int threadCount;
-  //int childCount;
   union{null, string} containerId;
   boolean entry = false; 
+  string cwd;
+  array<string> env;
 }
 }

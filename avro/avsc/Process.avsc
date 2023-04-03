@@ -58,5 +58,14 @@
     "name" : "entry",
     "type" : "boolean",
     "default" : false
+  }, {
+    "name" : "cwd",
+    "type" : "string"
+  }, {
+    "name" : "env",
+    "type" : {
+      "type" : "array",
+      "items" : "string"
+    }
   } ]
 }

@@ -205,7 +205,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             if var in self._macros:
                 return self.visitExpression(self._macros[var])
             else:
-                raise Exception('SFQL error: unrecognized reference {0}'.format(var))
+                raise Exception('SFQL error: unrecognized attribute "{0}"'.format(var))
         elif ctx.NOT():
             return lambda t: not self.visitTerm(ctx.getChild(1))(t)
         elif ctx.unary_operator():
@@ -213,7 +213,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             if ctx.unary_operator().EXISTS():
                 return lambda t: not not self._getAttr(t, lop)
             else:
-                raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
+                raise Exception('SFQL syntax error: unrecognized term "{0}"'.format(ctx.getText()))
         elif ctx.binary_operator():
             lop = ctx.atom(0).getText()
             rop = lambda t: self.mapper.getAttr(t, ctx.atom(1).getText())
@@ -236,7 +236,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             elif ctx.binary_operator().LE():
                 return lambda t: self._evalPred(t, lop, lambda s: int(s) >= int(rop(t)))
             else:
-                raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
+                raise Exception('SFQL syntax error: unrecognized term "{0}"'.format(ctx.getText()))
         elif ctx.expression():
             return self.visitExpression(ctx.expression())
         elif ctx.IN():
@@ -248,7 +248,7 @@ class SfqlInterpreter(sfqlListener, Generic[T]):
             rop = self._getList(ctx)
             return lambda t: any(self._evalPred(t, lop, lambda s: e in s) for e in rop)
         else:
-            raise Exception('SFQL syntax error: unrecognized term {0}'.format(ctx.getText()))
+            raise Exception('SFQL syntax error: unrecognized term "{0}"'.format(ctx.getText()))
         return lambda t: False
 
     def _getItems(self, l: str) -> list:
@@ -408,6 +408,7 @@ class SfqlMapper(Generic[T]):
         'endts': partial(_getEvtFlowAttr.__func__, attr='endTs'),
         'proc.pid': partial(_getProcAttr.__func__, attr='oid.hpid'),
         'proc.name': partial(_getProcAttr.__func__, attr='name'),
+        'proc.cwd': partial(_getProcAttr.__func__, attr='cwd'),
         'proc.exe': partial(_getProcAttr.__func__, attr='exe'),
         'proc.args': partial(_getProcAttr.__func__, attr='exeArgs'),
         'proc.uid': partial(_getProcAttr.__func__, attr='uid'),
@@ -418,11 +419,13 @@ class SfqlMapper(Generic[T]):
         'proc.createts': partial(_getProcAttr.__func__, attr='oid.createTS'),
         'proc.tty': partial(_getProcAttr.__func__, attr='tty'),
         'proc.entry': partial(_getProcAttr.__func__, attr='entry'),
+        'proc.env': partial(_getProcAttr.__func__, attr='env'),
         'proc.cmdline': partial(_getProcAttr.__func__, attr='cmdline'),
         'proc.aname': partial(_getProcAttr.__func__, attr='aname'),
         'proc.apid': partial(_getProcAttr.__func__, attr='apid'),
         'pproc.pid': partial(_getPProcAttr.__func__, attr='oid.hpid'),
         'pproc.name': partial(_getPProcAttr.__func__, attr='name'),
+        'pproc.cwd': partial(_getPProcAttr.__func__, attr='cwd'),
         'pproc.exe': partial(_getPProcAttr.__func__, attr='exe'),
         'pproc.args': partial(_getPProcAttr.__func__, attr='exeArgs'),
         'pproc.uid': partial(_getPProcAttr.__func__, attr='uid'),
@@ -432,6 +435,7 @@ class SfqlMapper(Generic[T]):
         'pproc.createts': partial(_getPProcAttr.__func__, attr='oid.createTS'),
         'pproc.tty': partial(_getPProcAttr.__func__, attr='tty'),
         'pproc.entry': partial(_getPProcAttr.__func__, attr='entry'),
+        'pproc.env': partial(_getPProcAttr.__func__, attr='env'),
         'pproc.cmdline': partial(_getPProcAttr.__func__, attr='cmdline'),
         'file.name': partial(_getFileAttr.__func__, attr='name'),
         'file.path': partial(_getFileAttr.__func__, attr='path'),

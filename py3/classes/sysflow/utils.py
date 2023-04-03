@@ -284,3 +284,16 @@ def getIpIntStr(ipInt):
     :return: A string representation of the IP address
     """
     return ".".join(map(lambda n: str(ipInt >> n & 0xFF), [0, 8, 16, 24]))
+
+
+def getEnvStr(env):
+    """
+    Converts an array of environment variables into a string representation.
+
+    :param env: An array of environment variables.
+    :type env: str[]
+
+    :rtype: str
+    :return: A concatenated string representation of the environment variables array.
+    """
+    return ';'.join([str(e) for e in env if e and e != '='])
