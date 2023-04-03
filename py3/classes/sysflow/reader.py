@@ -18,7 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging
+import logging, sys
 from sysflow.objtypes import ObjectTypes, OBJ_NAME_MAP
 from fastavro import reader
 from types import SimpleNamespace
@@ -202,8 +202,8 @@ class FlattenedSFReader(SFReader):
             return None
 
     def getProcessKey(self, oid):
-        hpid = oid.hpid
-        createTS = oid.createTS
+        hpid = oid.hpid if oid.hpid > 0 else 0
+        createTS = oid.createTS if oid.createTS > 0 else 0
         key = hpid.to_bytes((hpid.bit_length() + 7) // 8, byteorder='little')
         key += createTS.to_bytes((createTS.bit_length() + 7) // 8, byteorder='little')
         return key
