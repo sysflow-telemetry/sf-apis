@@ -193,6 +193,6 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit):
         pass
     except Exception as e:
-        logging.error('Error while executing sysprint. (' +  str(e) + ')')
+        logging.error('Error while executing sysprint. (' + str(e) + ')')
     else:
         sys.exit(0)
