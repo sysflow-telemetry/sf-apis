@@ -159,11 +159,23 @@ class Graphlet(object):
                     proc.groupName,
                     proc.tty,
                 ) and v.hasProc(pproc.oid.hpid, pproc.oid.createTS)
-                if opflag == utils.getOpFlagsStr(opflags.OP_CLONE):
-                    # and (proc.exe, proc.exeArgs) == (
-                    # pproc.exe,
-                    # pproc.exeArgs,
-                    # ):
+                if opflag == utils.getOpFlagsStr(opflags.OP_CLONE) and (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                    proc.tty,
+                ) == (
+                    pproc.exe,
+                    pproc.exeArgs,
+                    pproc.uid,
+                    pproc.userName,
+                    pproc.gid,
+                    pproc.groupName,
+                    pproc.tty,
+                ):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
                 filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) != (
