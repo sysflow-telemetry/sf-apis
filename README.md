@@ -6,7 +6,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.5.0`, `latest`](https://github.com/sysflow-telemetry/sf-apis/tree/0.5.0), [`edge`](https://github.com/sysflow-telemetry/sf-apis/tree/master), [`dev`](https://github.com/sysflow-telemetry/sf-apis/tree/dev)
+-	[`0.5.1`, `latest`](https://github.com/sysflow-telemetry/sf-apis/tree/0.5.1), [`edge`](https://github.com/sysflow-telemetry/sf-apis/tree/master), [`dev`](https://github.com/sysflow-telemetry/sf-apis/tree/dev)
 
 # Quick reference
 
