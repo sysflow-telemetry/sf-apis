@@ -223,8 +223,8 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
-          packages_dir: py3/dist/
-          skip_existing: true
+          packages-dir: py3/dist/
+          skip-existing: true
   release:
     needs: [docker-sfnb,docker-sysprint,pypi-sysflow-tools]
     if: startsWith(github.ref, 'refs/tags/')
@@ -238,18 +238,18 @@ jobs:
         id: tag_name
         shell: bash
         run: |
-          GHREF=${GITHUB_REF#refs/tags/}; echo ::set-output name=current_version::${GHREF%-*}
-          echo ::set-output name=current_tag::${GITHUB_REF#refs/tags/}
+          GHREF=${GITHUB_REF#refs/tags/}; echo "CURRENT_VERSION=${GHREF%%-*}" >> $GITHUB_ENV
+          echo "CURRENT_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
         with:
-          version: ${{ steps.tag_name.outputs.current_version }}
+          version: ${{ env.CURRENT_VERSION }}
           path: ./CHANGELOG.md
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           body: ${{ steps.changelog_reader.outputs.changes }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: ( contains(steps.tag_name.outputs.current_version, '-rc') || contains(steps.tag_name.outputs.current_version, '-alpha') || contains(steps.tag_name.outputs.current_version, '-beta') )
+          prerelease: ( contains(env.CURRENT_VERSION, '-rc') || contains(env.CURRENT_VERSION, '-alpha') || contains(env.CURRENT_VERSION, '-beta') )
           draft: true
