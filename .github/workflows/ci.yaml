@@ -115,8 +115,8 @@ jobs:
         id: args
         shell: bash
         run: |
-          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/*/})"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "BRANCH=$(echo ${GITHUB_REF#refs/*/})" >> $GITHUB_ENV
+          echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
@@ -126,8 +126,8 @@ jobs:
           tags: "${{ steps.metasfnb.outputs.tags }}"
           labels: "${{ steps.metasfnb.outputs.labels }}"
           build-args: |
-            VERSION=${{ steps.args.outputs.branch }}
-            RELEASE=${{ steps.args.outputs.sha_short }}
+            VERSION=${{ env.BRANCH }}
+            RELEASE=${{ env.SHA_SHORT }}
       - name: push README to Dockerhub
         uses: christian-korneck/update-container-description-action@v1
         if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
@@ -185,8 +185,8 @@ jobs:
         id: args
         shell: bash
         run: |
-          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/*/})"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "BRANCH=$(echo ${GITHUB_REF#refs/*/})" >> $GITHUB_ENV
+          echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
@@ -196,8 +196,8 @@ jobs:
           tags: "${{ steps.metasysprint.outputs.tags }}"
           labels: "${{ steps.metasysprint.outputs.labels }}"
           build-args: |
-            VERSION=${{ steps.args.outputs.branch }}
-            RELEASE=${{ steps.args.outputs.sha_short }}
+            VERSION=${{ env.BRANCH }}
+            RELEASE=${{ env.SHA_SHORT }}
       - name: push README to Dockerhub
         uses: christian-korneck/update-container-description-action@v1
         if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
