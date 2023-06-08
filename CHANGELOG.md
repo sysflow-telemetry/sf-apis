@@ -15,13 +15,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## [0.5.1] - 2023-05-30
+## [0.5.1] - 2023-06-07
 
 ### Added
 
 - Add Python graph API to process and visualize sysflow traces
 - Add k8s demo notebook
-- Add attributes cwd and env to process object
+- Add attributes cwd and env to process object (schema v5)
 
 ### Changed
 
