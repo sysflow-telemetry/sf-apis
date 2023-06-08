@@ -26,7 +26,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Improve exception handling in sysprint
-- Bump sysprint base image to ubi8/ubi-minimal:8.7-1085.1679482090
+- Bump sysprint base image to ubi8/ubi-minimal:8.8-860
 - Bump sysprint docker image to use Python 3.9 (fix toml issue)
 
 ### Fixed
