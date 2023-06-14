@@ -166,7 +166,6 @@ class Graphlet(object):
                     proc.userName,
                     proc.gid,
                     proc.groupName,
-                    proc.tty,
                 ) == (
                     pproc.exe,
                     pproc.exeArgs,
@@ -174,20 +173,33 @@ class Graphlet(object):
                     pproc.userName,
                     pproc.gid,
                     pproc.groupName,
-                    pproc.tty,
                 ):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) != (
+                filt = lambda v: (v.exe, v.args, v.tty) != (
                     proc.exe,
                     proc.exeArgs,
+                    proc.tty,
+                ) and (v.uid, v.user, v.gid, v.group) == (
                     proc.uid,
                     proc.userName,
                     proc.gid,
                     proc.groupName,
-                    proc.tty,
                 ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
                 if opflag == utils.getOpFlagsStr(opflags.OP_EXEC):
+                    self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
+                    
+                filt = lambda v: (v.exe, v.args, v.tty) == (
+                    proc.exe,
+                    proc.exeArgs,
+                    proc.tty,
+                ) and (v.uid, v.user, v.gid, v.group) != (
+                    proc.uid,
+                    proc.userName,
+                    proc.gid,
+                    proc.groupName,
+                ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
+                if opflag == utils.getOpFlagsStr(opflags.OP_SETUID):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
                 filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (
@@ -251,14 +263,11 @@ class Graphlet(object):
         n1_v.addProc(proc.oid.hpid, proc.oid.createTS, r)
         self.nodes[n1_k] = n1_v
 
-        if opflag == utils.getOpFlagsStr(opflags.OP_EXEC):
-            p = pproc
-            n2_k, n2_v = self.__findNode(filt)
-        if opflag == utils.getOpFlagsStr(opflags.OP_CLONE):
-            p = pproc
-            n2_k, n2_v = self.__findNode(filt)
         if opflag == utils.getOpFlagsStr(opflags.OP_EXIT):
             p = proc
+            n2_k, n2_v = self.__findNode(filt)
+        else: # OP_CLONE, OP_EXEC, OP_SETUID
+            p = pproc
             n2_k, n2_v = self.__findNode(filt)
 
         if not n2_k:
