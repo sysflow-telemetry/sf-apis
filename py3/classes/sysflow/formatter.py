@@ -425,7 +425,7 @@ class SFFormatter(object):
         _flat_map['pproc.exe'] = pproc.exe if pproc else ''
         _flat_map['pproc.args'] = pproc.exeArgs if pproc else ''
         _flat_map['pproc.createts'] = pproc.oid.createTS if pproc else ''
-        _flat_map['file.fd'] = flow.fd if flow and objtype != ObjectTypes.PROC_FLOW else ''
+        _flat_map['file.fd'] = evflow.fd if evflow and 'fd' in vars(evflow) else ''
         _flat_map['file.path'] = files[0].path if files and files[0] else ''
         _flat_map['file.newpath'] = files[1].path if files and files[1] else ''
         _flat_map['file.type'] = chr(files[0].restype) if files and files[0] else ''

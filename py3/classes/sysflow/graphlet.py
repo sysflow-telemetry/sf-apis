@@ -166,7 +166,6 @@ class Graphlet(object):
                     proc.userName,
                     proc.gid,
                     proc.groupName,
-                    proc.tty,
                 ) == (
                     pproc.exe,
                     pproc.exeArgs,
@@ -174,20 +173,45 @@ class Graphlet(object):
                     pproc.userName,
                     pproc.gid,
                     pproc.groupName,
-                    pproc.tty,
                 ):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
-                filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) != (
-                    proc.exe,
-                    proc.exeArgs,
-                    proc.uid,
-                    proc.userName,
-                    proc.gid,
-                    proc.groupName,
-                    proc.tty,
-                ) and v.hasProc(proc.oid.hpid, proc.oid.createTS)
+                filt = (
+                    lambda v: (v.exe, v.args, v.tty)
+                    != (
+                        proc.exe,
+                        proc.exeArgs,
+                        proc.tty,
+                    )
+                    and (v.uid, v.user, v.gid, v.group)
+                    == (
+                        proc.uid,
+                        proc.userName,
+                        proc.gid,
+                        proc.groupName,
+                    )
+                    and v.hasProc(proc.oid.hpid, proc.oid.createTS)
+                )
                 if opflag == utils.getOpFlagsStr(opflags.OP_EXEC):
+                    self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
+
+                filt = (
+                    lambda v: (v.exe, v.args, v.tty)
+                    == (
+                        proc.exe,
+                        proc.exeArgs,
+                        proc.tty,
+                    )
+                    and (v.uid, v.user, v.gid, v.group)
+                    != (
+                        proc.uid,
+                        proc.userName,
+                        proc.gid,
+                        proc.groupName,
+                    )
+                    and v.hasProc(proc.oid.hpid, proc.oid.createTS)
+                )
+                if opflag == utils.getOpFlagsStr(opflags.OP_SETUID):
                     self.__addProcEvtEdge(opflag, proc, pproc, r, filt)
 
                 filt = lambda v: (v.exe, v.args, v.uid, v.user, v.gid, v.group, v.tty) == (
@@ -251,14 +275,11 @@ class Graphlet(object):
         n1_v.addProc(proc.oid.hpid, proc.oid.createTS, r)
         self.nodes[n1_k] = n1_v
 
-        if opflag == utils.getOpFlagsStr(opflags.OP_EXEC):
-            p = pproc
-            n2_k, n2_v = self.__findNode(filt)
-        if opflag == utils.getOpFlagsStr(opflags.OP_CLONE):
-            p = pproc
-            n2_k, n2_v = self.__findNode(filt)
         if opflag == utils.getOpFlagsStr(opflags.OP_EXIT):
             p = proc
+            n2_k, n2_v = self.__findNode(filt)
+        else:  # OP_CLONE, OP_EXEC, OP_SETUID
+            p = pproc
             n2_k, n2_v = self.__findNode(filt)
 
         if not n2_k:
@@ -764,6 +785,168 @@ class Graphlet(object):
                     g.edge(str(e.nfrom()), str(e.nto()), label=label, style='dashed')
         return g
 
+    def intersection(self, other, withoid=False, peek=True, peeksize=3, flows=True, ttps=False):
+        """Computes the intersection of a graph with another graph, returning the graph corresponding to the intersection of the two graphs.
+
+        :param other: the other graphlet to compute the intersection.
+        :type other: Graphlet
+        """
+        lndiff = set(self.nodes) - set(other.nodes)
+        lediff = set(self.edges) - set(other.edges)
+        g = self.__clone()
+        for n in lndiff:
+            del g.nodes[n]
+        for e in lediff:
+            g.edges.remove(e)
+        return g
+
+    def __tag(self, n, label):
+        if not label:
+            return
+        if len(n.data) > 0:
+            tags = n.data[0]['tags']
+            t0 = tags[0] if tags else []
+            t1 = tags[1] if tags else set()
+            t2 = tags[2] if tags else 0
+            hasTag = any(e for e in [t == label for t in t0])
+            if not hasTag:
+                n.data[0]['tags'] = (t0 + [label], t1.union(set([label])), max(t2, 1))
+
+    def __prune(self):
+        for e in self.edges.copy():
+            nto = self.nodes[e.nto()]
+            nfrom = self.nodes[e.nfrom()]
+            if not nto.tainted or not nfrom.tainted:
+                self.edges.remove(e)
+        for k, v in self.nodes.copy().items():
+            if not v.tainted:
+                del self.nodes[k]
+
+    def __bt(self, fringe, label):
+        tnodes = set()
+        for n in fringe:
+            for e in self.edges:
+                if e.nto() == n:
+                    nfrom = self.nodes[e.nfrom()]
+                    self.__tag(nfrom, label)
+                    if not nfrom.tainted:
+                        nfrom.tainted = True
+                        tnodes.add(e.nfrom())
+        if len(tnodes) > 0:
+            self.__bt(tnodes, label)
+
+    def bt(self, cond, prune=True, label=None):
+        """Performs a backward traversal on the graph from nodes matching a condition.
+
+        Example Usage::
+            def passwd(df):
+                return len(df[(df['file.path'].str.contains('passwd'))])>0
+            cond = lambda n: passwd(n.df())
+            g.bt(cond, prune=True, label='discovery').view()
+
+        :param cond: a lambda describing a predicate over node properties.
+        :type cond: a lambda predicate that received a node object as argument and returns True or False.
+
+        :param prune: if true, nodes outside the dominance paths of matched nodes are pruned.
+        :type prune: boolean
+
+        :param label: if set, add a label to nodes in the dominance paths of matched nodes.
+        :type label: string
+        """
+        g = self.__clone()
+        for k, v in g.nodes.items():
+            v.tainted = False
+        for k, v in reversed(g.nodes.items()):
+            if cond(v):
+                if label:
+                    g.__tag(v, label)
+                v.tainted = True
+                self.__bt({v.oid}, label)
+        if prune:
+            g.__prune()
+        return g
+
+    def __ft(self, fringe, label):
+        tnodes = set()
+        for n in fringe:
+            for e in self.edges:
+                if e.nfrom() == n:
+                    nto = self.nodes[e.nto()]
+                    self.__tag(nto, label)
+                    if not nto.tainted:
+                        nto.tainted = True
+                        tnodes.add(e.nto())
+        if len(tnodes) > 0:
+            self.__ft(tnodes, label)
+
+    def ft(self, cond, prune=True, label=None):
+        """Performs a forward traversal on the graph from nodes matching a condition.
+
+        Example Usage::
+            def scp(df):
+                return len(df[(df['proc.exe'].str.contains('scp'))])>0
+            cond = lambda n: scp(n.df())
+            g.ft(cond, prune=True, label='remotecopy').view()
+
+        :param cond: a lambda describing a predicate over node properties.
+        :type cond: a lambda predicate that received a node object as argument and returns True or False.
+
+        :param prune: if true, nodes outside the dominated paths of matched nodes are pruned.
+        :type prune: boolean
+
+        :param label: if set, add a label to nodes in the dominated paths of matched nodes.
+        :type label: string
+        """
+        g = self.__clone()
+        for k, v in g.nodes.items():
+            v.tainted = False
+        for k, v in g.nodes.items():
+            if cond(v):
+                g.__tag(v, label)
+                v.tainted = True
+                self.__ft({v.oid}, label)
+        if prune:
+            g.__prune()
+        return g
+
+    def findPaths(self, source, sink, prune=True, label=None):
+        """Finds paths from source to sink nodes matching conditions.
+
+        Example Usage::
+            def scp(df):
+                return len(df[(df['proc.exe'].str.contains('scp'))])>0
+            source = lambda n: scp(n.df())
+            def passwd(df):
+                return len(df[(df['file.path'].str.contains('passwd'))])>0
+            sink = lambda n: passwd(n.df())
+            g.findPaths(source, sink, prune=True, label='exfil').view()
+
+        :param source: a lambda describing a predicate over node properties.
+        :type source: a lambda predicate that received a node object as argument and returns True or False.
+
+        :param sink: a lambda describing a predicate over node properties.
+        :type sink: a lambda predicate that received a node object as argument and returns True or False.
+
+        :param prune: if true, nodes outside the paths connecting matched nodes are pruned.
+        :type prune: boolean
+
+        :param label: if set, add a label to nodes in the paths connecting matched nodes.
+        :type label: string
+        """
+        g1 = self.bt(sink, prune=True)
+        g2 = self.ft(source, prune=True)
+        g = g2.intersection(g1)
+        if label:
+            for k, v in g.nodes.items():
+                g.__tag(v, label)
+        return g if prune else self
+
+    def __clone(self):
+        g = Graphlet.__new__(Graphlet)
+        g.nodes = self.nodes.copy()
+        g.edges = self.edges.copy()
+        return g
+
     def __str__(self):
         nodes = reduce(lambda s1, s2: str(s1) + str(s2) + '\n', self.nodes.values(), '')
         edges = reduce(lambda s1, s2: str(s1) + str(s2) + '\n', self.edges, '')
@@ -876,6 +1059,7 @@ class Node(object):
     def __init__(self, oid):
         super().__init__()
         self.oid = oid
+        self.tainted = False
 
 
 class ProcessNode(Node):
