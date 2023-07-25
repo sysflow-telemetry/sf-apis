@@ -6,7 +6,7 @@
 
 # Supported tags and respective `Dockerfile` links
 
--	[`0.5.1`, `latest`](https://github.com/sysflow-telemetry/sf-apis/tree/0.5.1), [`edge`](https://github.com/sysflow-telemetry/sf-apis/tree/master), [`dev`](https://github.com/sysflow-telemetry/sf-apis/tree/dev)
+-	[`0.5.2`, `latest`](https://github.com/sysflow-telemetry/sf-apis/tree/0.5.2), [`edge`](https://github.com/sysflow-telemetry/sf-apis/tree/master), [`dev`](https://github.com/sysflow-telemetry/sf-apis/tree/dev)
 
 # Quick reference
 
@@ -80,6 +80,12 @@ Note: If classic Jupyter notebook is preferred, run:
 
 ```
 docker run --rm -d --name sfnb -v $(pwd)/pynb:/home/jovyan/work -p 8888:8888 -e DOCKER_STACKS_JUPYTER_CMD=notebook sysflowtelemetry/sfnb
+```
+
+Permission-specific configurations when volume mounting a directory:
+
+```
+docker run --rm -d --name sfnb -e NB_USER=<USER> --user root -e CHOWN_HOME=yes -e NB_UID=$(id -u) -e NB_GID=$(id -g) -e CHOWN_HOME_OPTS=‘-R’ -w /home/<USER>/ -v $(pwd)/pynb:/home/<USER>/work sysflowtelemetry/sfnb
 ```
 
 # License
