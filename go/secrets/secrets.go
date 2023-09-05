@@ -23,7 +23,6 @@ package secrets
 import (
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -76,7 +75,7 @@ func (s *Secrets) read(secret string) (string, error) {
 	if v, ok := s.secrets[secret]; ok {
 		return v, nil
 	}
-	buf, err := ioutil.ReadFile(s.secretsDir + "/" + secret)
+	buf, err := os.ReadFile(s.secretsDir + "/" + secret)
 	if err != nil {
 		return sfgo.Zeros.String, fmt.Errorf("secret %s does not exist or cannot be read: %v", secret, err)
 	}
@@ -88,9 +87,9 @@ func (s *Secrets) read(secret string) (string, error) {
 // Checks if the given path is a directory. Returns nil if directory.
 func isDir(path string) error {
 	if fi, err := os.Stat(path); os.IsNotExist(err) {
-		return fmt.Errorf("Path %s not found", path)
+		return fmt.Errorf("path %s not found", path)
 	} else if !fi.Mode().IsDir() {
-		return fmt.Errorf("Path %s is not a directory", path)
+		return fmt.Errorf("path %s is not a directory", path)
 	}
 	return nil
 }
