@@ -38,12 +38,7 @@ type CtxSysFlow struct {
 	GraphletID uint64
 }
 
-// CtxSFChannel defines a Contextual SysFlow channel for data transfer.
-type CtxSFChannel struct {
-	In chan *CtxSysFlow
-}
-
-// SFChannel defines a SysFlow channel for data transfer.
-type SFChannel struct {
-	In chan *sfgo.SysFlow
+// Channel type
+type Channel[R any] struct {
+	In chan R
 }
