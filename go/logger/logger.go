@@ -23,7 +23,6 @@ package logger
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -41,6 +40,9 @@ const (
 	HEALTH
 	QUIET
 )
+
+// Perf logger string.
+const perf string = "Perf"
 
 func (d LogLevel) String() string {
 	return [...]string{"Trace", "Info", "Warn", "Error", "Health", "Quiet"}[d]
@@ -62,6 +64,7 @@ var (
 	Warn   *log.Logger
 	Error  *log.Logger
 	Health *log.Logger
+	Perf   *log.Logger
 )
 
 // InitLoggers initialize utility loggers with default i/o streams.
@@ -70,17 +73,17 @@ func InitLoggers(level LogLevel) {
 	case TRACE:
 		initLoggers(os.Stdout, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	case INFO:
-		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	case WARN:
-		initLoggers(ioutil.Discard, ioutil.Discard, os.Stdout, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, io.Discard, os.Stdout, os.Stderr, os.Stdout)
 	case ERROR:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, io.Discard, io.Discard, os.Stderr, os.Stdout)
 	case HEALTH:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, os.Stdout)
+		initLoggers(io.Discard, io.Discard, io.Discard, io.Discard, os.Stdout)
 	case QUIET:
-		initLoggers(ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard, ioutil.Discard)
+		initLoggers(io.Discard, io.Discard, io.Discard, io.Discard, io.Discard)
 	default:
-		initLoggers(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
+		initLoggers(io.Discard, os.Stdout, os.Stdout, os.Stderr, os.Stdout)
 	}
 }
 
@@ -110,4 +113,24 @@ func initLoggers(
 	Health = log.New(healthHandle,
 		fmt.Sprintf("[%s] ", HEALTH),
 		log.Ldate|log.Ltime|log.Lshortfile)
+
+	SetPerfLogger(false)
+}
+
+// SetPerfLogger changes the state of the performance logger. This logger is independent of log levels (default: disabled).
+func SetPerfLogger(enabled bool) {
+	var iowriter io.Writer
+	if enabled {
+		iowriter = os.Stdout
+	} else {
+		iowriter = io.Discard
+	}
+	Perf = log.New(iowriter,
+		fmt.Sprintf("[%s] ", perf),
+		log.Ldate|log.Ltime|log.Lshortfile)
+}
+
+// IsEnabled checks whether a logger is enabled.
+func IsEnabled(logger *log.Logger) bool {
+	return logger != nil && logger.Writer() != io.Discard
 }

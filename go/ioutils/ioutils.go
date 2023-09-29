@@ -21,7 +21,6 @@
 package ioutils
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -29,32 +28,83 @@ import (
 // ListFilePaths lists file paths with extension fileExt in path if
 // path is a valid directory, otherwise, it returns path if path is
 // a valid path and has extension fileExt.
-func ListFilePaths(path string, fileExt string) ([]string, error) {
+func ListFilePaths(path string, fileExts ...string) ([]string, error) {
 	var paths []string
 	if fi, err := os.Stat(path); os.IsNotExist(err) {
 		return paths, err
 	} else if fi.IsDir() {
-		var files []os.FileInfo
+		var entries []os.DirEntry
 		var err error
-		if files, err = ioutil.ReadDir(path); err != nil {
+		if entries, err = os.ReadDir(path); err != nil {
 			return paths, err
 		}
-		for _, file := range files {
-			if filepath.Ext(file.Name()) == fileExt {
-				f := path + "/" + file.Name()
+		for _, entry := range entries {
+			if entry.IsDir() {
+				continue
+			}
+			if len(fileExts) > 0 {
+				for _, fileExt := range fileExts {
+					if filepath.Ext(entry.Name()) == fileExt {
+						f := path + "/" + entry.Name()
+						paths = append(paths, f)
+					}
+				}
+			} else {
+				f := path + "/" + entry.Name()
 				paths = append(paths, f)
 			}
 		}
-		return paths, nil
 	} else {
-		if filepath.Ext(path) == fileExt {
-			return append(paths, path), nil
+		for _, fileExt := range fileExts {
+			if filepath.Ext(path) == fileExt {
+				return append(paths, path), nil
+			}
 		}
-		return paths, nil
 	}
+	return paths, nil
 }
 
-//FileExists checks whether a file exists and whether it is a directory.
+// ListRecursiveFilePaths recursively lists file paths with extension
+// fileExt in path if path is a valid directory, otherwise, it returns
+// path if path is a valid path and has extension fileExt.
+func ListRecursiveFilePaths(path string, fileExts ...string) ([]string, error) {
+	var paths []string
+	if fi, err := os.Stat(path); os.IsNotExist(err) {
+		return paths, err
+	} else if fi.IsDir() {
+		err := filepath.Walk(path,
+			func(p string, info os.FileInfo, err error) error {
+				if err != nil {
+					return err
+				}
+				if info.IsDir() {
+					return nil
+				}
+				if len(fileExts) > 0 {
+					for _, fileExt := range fileExts {
+						if filepath.Ext(info.Name()) == fileExt {
+							paths = append(paths, p)
+						}
+					}
+				} else {
+					paths = append(paths, p)
+				}
+				return nil
+			})
+		if err != nil {
+			return paths, err
+		}
+	} else {
+		for _, fileExt := range fileExts {
+			if filepath.Ext(path) == fileExt {
+				return append(paths, path), nil
+			}
+		}
+	}
+	return paths, nil
+}
+
+// FileExists checks whether a file exists and whether it is a directory.
 func FileExists(filename string) (bool, bool) {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
