@@ -57,7 +57,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.x'
+          python-version: '3.11'
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
@@ -219,7 +219,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.x'
+          python-version: '3.11'
       - name: Build package
         shell: bash
         run: cd py3 && python -m pip install build && python -m build --wheel
