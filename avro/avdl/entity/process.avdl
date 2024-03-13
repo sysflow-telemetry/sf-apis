@@ -36,5 +36,7 @@ record Process {
   boolean entry = false; 
   string cwd;
   array<string> env;
+  long sid;
+  string selabel;
 }
 }

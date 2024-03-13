@@ -67,5 +67,11 @@
       "type" : "array",
       "items" : "string"
     }
+  }, {
+    "name" : "sid",
+    "type" : "long"
+  }, {
+    "name" : "selabel",
+    "type" : "string"
   } ]
 }

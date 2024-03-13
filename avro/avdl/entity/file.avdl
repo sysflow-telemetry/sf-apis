@@ -27,5 +27,7 @@ record File {
   int restype; 
   string path;
   union{null, string} containerId;
+  long sid;
+  string selabel;
 }
 }

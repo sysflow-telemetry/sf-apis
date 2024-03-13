@@ -123,6 +123,12 @@
           "type" : "array",
           "items" : "string"
         }
+      }, {
+        "name" : "sid",
+        "type" : "long"
+      }, {
+        "name" : "selabel",
+        "type" : "string"
       } ]
     }, {
       "type" : "record",
@@ -151,6 +157,12 @@
       }, {
         "name" : "containerId",
         "type" : [ "null", "string" ]
+      }, {
+        "name" : "sid",
+        "type" : "long"
+      }, {
+        "name" : "selabel",
+        "type" : "string"
       } ]
     }, {
       "type" : "record",

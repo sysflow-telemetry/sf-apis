@@ -52,7 +52,11 @@ _default_fields = [
     'res',
     'flow.rbytes',
     'flow.wbytes',
-    'container.id',
+    'file.sid',
+    'file.selabel',
+    'proc.sid',
+    'proc.selabel',
+    #'container.id',
 ]
 
 _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query_only>)
@@ -83,6 +87,8 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'proc.env': ('Env', 30, 'Process environment variables', False),
     'proc.entry': ('Entry', 5, 'Process container entrypoint', False),
     'proc.createts': ('Proc. Creation Time', 21, 'Process creation timestamp', False),
+    'proc.sid': ('ProcSID', 5, 'PSE Linux SID', False),
+    'proc.selabel': ('ProcSELabel', 10, 'PSE Linux Label', False),
     'pproc.pid': ('PPID', 8, 'Parent process ID', False),
     'pproc.gid': ('PGID', 5, 'Parent process group ID', False),
     'pproc.uid': ('PUID', 5, 'Parent process user ID', False),
@@ -106,6 +112,8 @@ _fields = {  #   '<key>': (<columnn name>, <column width>, <description>, <query
     'file.is_open_write': ('W', 5, 'File open with write flag (query only)', True),
     'file.is_open_read': ('R', 5, 'File open with read flag (query only)', True),
     'file.openflags': ('Open Flags', 5, 'File open flags', False),
+    'file.sid': ('SID', 5, 'FSE Linux SID', False),
+    'file.selabel': ('SELabel', 10, 'FSE Linux Label', False),
     'net.proto': ('Proto', 5, 'Network protocol', False),
     'net.sport': ('SPort', 5, 'Source port', False),
     'net.dport': ('DPort', 5, 'Destination port', False),
@@ -413,6 +421,8 @@ class SFFormatter(object):
         _flat_map['proc.entry'] = proc.entry if proc and hasattr(proc, 'entry') else ''
         _flat_map['proc.env'] = utils.getEnvStr(proc.env) if proc and hasattr(proc, 'env') else ''
         _flat_map['proc.createts'] = int(proc.oid.createTS) if proc else None
+        _flat_map['proc.sid'] = int(proc.sid) if proc else None
+        _flat_map['proc.selabel'] = str(proc.selabel) if proc else None
         _flat_map['pproc.pid'] = int(pproc.oid.hpid) if pproc else None
         _flat_map['pproc.gid'] = int(pproc.gid) if pproc else None
         _flat_map['pproc.uid'] = int(pproc.uid) if pproc else None
@@ -429,6 +439,8 @@ class SFFormatter(object):
         _flat_map['file.path'] = files[0].path if files and files[0] else ''
         _flat_map['file.newpath'] = files[1].path if files and files[1] else ''
         _flat_map['file.type'] = chr(files[0].restype) if files and files[0] else ''
+        _flat_map['file.sid'] = files[0].sid if files and files[0] else -1
+        _flat_map['file.selabel'] = files[0].selabel if files and files[0] else ''
         _flat_map['file.openflags'] = flow.openFlags if objtype == ObjectTypes.FILE_FLOW else ''
         _flat_map['net.proto'] = evflow.proto if objtype == ObjectTypes.NET_FLOW else ''
         _flat_map['net.sport'] = int(evflow.sport) if objtype == ObjectTypes.NET_FLOW else None

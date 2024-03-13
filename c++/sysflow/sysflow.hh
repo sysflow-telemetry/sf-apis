@@ -161,6 +161,8 @@ struct Process {
     bool entry;
     std::string cwd;
     std::vector<std::string > env;
+    int64_t sid;
+    std::string selabel;
     Process() :
         state(SFObjectState()),
         oid(OID()),
@@ -176,7 +178,9 @@ struct Process {
         containerId(containerId_t()),
         entry(bool()),
         cwd(std::string()),
-        env(std::vector<std::string >())
+        env(std::vector<std::string >()),
+        sid(int64_t()),
+        selabel(std::string())
         { }
 };
 
@@ -206,13 +210,17 @@ struct File {
     int32_t restype;
     std::string path;
     containerId_t containerId;
+    int64_t sid;
+    std::string selabel;
     File() :
         state(SFObjectState()),
         oid(std::array<uint8_t, 20>()),
         ts(int64_t()),
         restype(int32_t()),
         path(std::string()),
-        containerId(containerId_t())
+        containerId(containerId_t()),
+        sid(int64_t()),
+        selabel(std::string())
         { }
 };
 
@@ -1032,6 +1040,8 @@ template<> struct codec_traits<sysflow::Process> {
         avro::encode(e, v.entry);
         avro::encode(e, v.cwd);
         avro::encode(e, v.env);
+        avro::encode(e, v.sid);
+        avro::encode(e, v.selabel);
     }
     static void decode(Decoder& d, sysflow::Process& v) {
         if (avro::ResolvingDecoder *rd =
@@ -1085,6 +1095,12 @@ template<> struct codec_traits<sysflow::Process> {
                 case 14:
                     avro::decode(d, v.env);
                     break;
+                case 15:
+                    avro::decode(d, v.sid);
+                    break;
+                case 16:
+                    avro::decode(d, v.selabel);
+                    break;
                 default:
                     break;
                 }
@@ -1105,6 +1121,8 @@ template<> struct codec_traits<sysflow::Process> {
             avro::decode(d, v.entry);
             avro::decode(d, v.cwd);
             avro::decode(d, v.env);
+            avro::decode(d, v.sid);
+            avro::decode(d, v.selabel);
         }
     }
 };
@@ -1148,6 +1166,8 @@ template<> struct codec_traits<sysflow::File> {
         avro::encode(e, v.restype);
         avro::encode(e, v.path);
         avro::encode(e, v.containerId);
+        avro::encode(e, v.sid);
+        avro::encode(e, v.selabel);
     }
     static void decode(Decoder& d, sysflow::File& v) {
         if (avro::ResolvingDecoder *rd =
@@ -1174,6 +1194,12 @@ template<> struct codec_traits<sysflow::File> {
                 case 5:
                     avro::decode(d, v.containerId);
                     break;
+                case 6:
+                    avro::decode(d, v.sid);
+                    break;
+                case 7:
+                    avro::decode(d, v.selabel);
+                    break;
                 default:
                     break;
                 }
@@ -1185,6 +1211,8 @@ template<> struct codec_traits<sysflow::File> {
             avro::decode(d, v.restype);
             avro::decode(d, v.path);
             avro::decode(d, v.containerId);
+            avro::decode(d, v.sid);
+            avro::decode(d, v.selabel);
         }
     }
 };

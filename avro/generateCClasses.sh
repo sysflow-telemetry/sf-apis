@@ -30,7 +30,7 @@ fi
 source ./manifest
 
 # install avro-tools
-wget -N -P avro-tools/ ${AVRO_TOOLS_URL}
+#wget -N -P avro-tools/ ${AVRO_TOOLS_URL}
 
 # install avrogencpp
 if ! command -v avrogencpp &> /dev/null 
